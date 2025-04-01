@@ -22,9 +22,13 @@ class SpeechManager {
         }
     }
     func speak(_ text: String) {
+        if synthesizer.isSpeaking {
+            synthesizer.stopSpeaking(at: .immediate)
+        }
         let utterance = AVSpeechUtterance(string: text)
         utterance.voice = AVSpeechSynthesisVoice(language: "it-IT") // Italiano
         utterance.rate = 0.5
+        utterance.postUtteranceDelay = 0.5
         synthesizer.speak(utterance)
     }
 }
