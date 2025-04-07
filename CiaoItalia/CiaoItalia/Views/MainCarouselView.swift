@@ -95,6 +95,14 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
     }
     
     func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        insetForSectionAt section: Int) -> UIEdgeInsets {
+        let cardWidth = view.bounds.width * 0.9
+        let horizontalInset = (view.bounds.width - cardWidth) / 2
+        return UIEdgeInsets(top: 0, left: horizontalInset, bottom: 0, right: horizontalInset)
+    }
+
+    func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CarouselCell", for: indexPath) as! MainCarouselCardView
         let (imageName, title) = items[indexPath.item]
@@ -105,7 +113,7 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let cardWidth = view.bounds.width
+        let cardWidth = view.bounds.width * 0.9
         let cardHeight = cardWidth * 1.3
         return CGSize(width: cardWidth, height: cardHeight)
     }
