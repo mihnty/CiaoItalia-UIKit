@@ -11,8 +11,29 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
     
     private let items = [("squareImageTest", "Title 1"),
                          ("squareImageTest", "Title 2"),
-                         ("squareImageTest", "Title 3"),
-                        ]
+                         ("squareImageTest", "Title 3")]
+    
+    private var currentIndex: Int = 0
+    
+    private lazy var leftArrowButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("<", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 32, weight: .bold)
+        button.tintColor = .white
+        button.addTarget(self, action: #selector(didTapLeft), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    private lazy var rightArrowButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle(">", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 32, weight: .bold)
+        button.tintColor = .white
+        button.addTarget(self, action: #selector(didTapRight), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -26,6 +47,7 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
         cv.dataSource = self
         cv.delegate = self
         cv.showsHorizontalScrollIndicator = false
+        cv.isScrollEnabled = false
         cv.register(MainCarouselCardView.self, forCellWithReuseIdentifier: "CarouselCell")
         return cv
     }()
@@ -33,13 +55,39 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
+        
         view.addSubview(collectionView)
+        view.addSubview(leftArrowButton)
+        view.addSubview(rightArrowButton)
+
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
+        
+        NSLayoutConstraint.activate([
+            leftArrowButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            leftArrowButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            
+            rightArrowButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            rightArrowButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
+        ])
+    }
+    
+    @objc private func didTapLeft() {
+        guard currentIndex > 0 else { return }
+        currentIndex -= 1
+        let indexPath = IndexPath(item: currentIndex, section: 0)
+        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+    }
+    
+    @objc private func didTapRight() {
+        guard currentIndex < items.count - 1 else { return }
+        currentIndex += 1
+        let indexPath = IndexPath(item: currentIndex, section: 0)
+        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
