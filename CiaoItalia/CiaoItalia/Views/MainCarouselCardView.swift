@@ -6,13 +6,10 @@
 //
 
 import UIKit
+import SwiftUI
 
-class MainCarouselCardView: UIViewController {
-    
-    private var imageName: String
-    private var cardTitle: String
-    
-    lazy var image: UIImageView = {
+class MainCarouselCardView: UICollectionViewCell {
+    private let image: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
@@ -20,7 +17,7 @@ class MainCarouselCardView: UIViewController {
         return imageView
     }()
     
-    lazy var titleLabel: UILabel = {
+    private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
         label.textColor = .black
@@ -29,7 +26,7 @@ class MainCarouselCardView: UIViewController {
         return label
     }()
     
-    lazy var whiteSquare: UIView = {
+    private let whiteSquare: UIView = {
         let square = UIView()
         square.backgroundColor = .polaroidWhite
         square.layer.cornerRadius = 2
@@ -37,20 +34,9 @@ class MainCarouselCardView: UIViewController {
         return square
     }()
     
-    lazy var labelContainer: UIView = {
-        let container = UIView()
-        container.translatesAutoresizingMaskIntoConstraints = false
-        return container
-    }()
-    
-    init(frame:CGRect, image: String, title: String) {
-        imageName = image
-        cardTitle = title
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        contentView.backgroundColor = .clear
         setupView()
         setupConstraints()
     }
@@ -59,21 +45,16 @@ class MainCarouselCardView: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupView() {
-        image.image = UIImage(named: imageName)
-        titleLabel.text = cardTitle
-        whiteSquare.backgroundColor = .white
-        
-        view.addSubview(whiteSquare)
+    private func setupView() {
+        contentView.addSubview(whiteSquare)
         whiteSquare.addSubview(image)
         whiteSquare.addSubview(titleLabel)
-        view.backgroundColor = .black
     }
     
-    func setupConstraints() {
-        let width70Constraint = whiteSquare.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.7)
+    private func setupConstraints() {
+        let width70Constraint = whiteSquare.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.7)
         width70Constraint.priority = UILayoutPriority(750)
-
+        
         let maxWidthConstraint = whiteSquare.widthAnchor.constraint(lessThanOrEqualToConstant: 270)
         maxWidthConstraint.priority = UILayoutPriority(1000)
         
@@ -81,8 +62,8 @@ class MainCarouselCardView: UIViewController {
             width70Constraint,
             maxWidthConstraint,
             whiteSquare.heightAnchor.constraint(equalTo: whiteSquare.widthAnchor, multiplier: 1.3),
-            whiteSquare.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            whiteSquare.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            whiteSquare.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            whiteSquare.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             
             image.widthAnchor.constraint(equalTo: whiteSquare.widthAnchor, multiplier: 0.9),
             image.topAnchor.constraint(equalTo: whiteSquare.topAnchor, constant: -20),
@@ -92,8 +73,25 @@ class MainCarouselCardView: UIViewController {
             titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: whiteSquare.bottomAnchor, constant: -32)
         ])
     }
+    
+    func configure(withImageName imageName: String, title: String) {
+        image.image = UIImage(named: imageName)
+        titleLabel.text = title
+    }
+}
+
+struct MainCarouselCardViewPreview: UIViewRepresentable {
+    
+    func makeUIView(context: Context) -> UIView {
+        let cell = MainCarouselCardView(frame: CGRect(x: 0, y: 0, width: 300, height: 400))
+        cell.configure(withImageName: "squareImageTest", title: "Test Title")
+        return cell.contentView
+    }
+    
+    func updateUIView(_ uiView: UIView, context: Context) {
+    }
 }
 
 #Preview {
-    MainCarouselCardView(frame: CGRect(), image: "squareImageTest", title: "Teste de exemplo")
+    MainCarouselCardViewPreview()
 }
