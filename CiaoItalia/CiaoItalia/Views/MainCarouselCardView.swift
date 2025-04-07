@@ -16,6 +16,7 @@ class MainCarouselCardView: UIViewController {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
@@ -24,6 +25,7 @@ class MainCarouselCardView: UIViewController {
         label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
         label.textColor = .black
         label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -33,6 +35,12 @@ class MainCarouselCardView: UIViewController {
         square.layer.cornerRadius = 2
         square.translatesAutoresizingMaskIntoConstraints = false
         return square
+    }()
+    
+    lazy var labelContainer: UIView = {
+        let container = UIView()
+        container.translatesAutoresizingMaskIntoConstraints = false
+        return container
     }()
     
     init(frame:CGRect, image: String, title: String) {
@@ -53,9 +61,7 @@ class MainCarouselCardView: UIViewController {
     
     func setupView() {
         image.image = UIImage(named: imageName)
-        image.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = cardTitle
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
         whiteSquare.backgroundColor = .white
         
         view.addSubview(whiteSquare)
@@ -65,8 +71,15 @@ class MainCarouselCardView: UIViewController {
     }
     
     func setupConstraints() {
+        let width70Constraint = whiteSquare.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.7)
+        width70Constraint.priority = UILayoutPriority(750)
+
+        let maxWidthConstraint = whiteSquare.widthAnchor.constraint(lessThanOrEqualToConstant: 270)
+        maxWidthConstraint.priority = UILayoutPriority(1000)
+        
         NSLayoutConstraint.activate([
-            whiteSquare.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.7),
+            width70Constraint,
+            maxWidthConstraint,
             whiteSquare.heightAnchor.constraint(equalTo: whiteSquare.widthAnchor, multiplier: 1.3),
             whiteSquare.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             whiteSquare.centerYAnchor.constraint(equalTo: view.centerYAnchor),
