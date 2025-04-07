@@ -14,7 +14,7 @@
 		DD371CAF2D8B58C800A51CBB /* Exceptions for "CiaoItalia" folder in "CiaoItalia" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				SupportingFiles/Info.plist,
+				Info.plist,
 			);
 			target = DD371C9C2D8B58C800A51CBB /* CiaoItalia */;
 		};
