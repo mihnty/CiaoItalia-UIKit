@@ -64,8 +64,8 @@ class MainCarouselCardView: UICollectionViewCell {
         
         let deviceWidth = UIScreen.main.bounds.width
         let isScreenWide = deviceWidth < 405
-        let dynamicBottomConstant = isScreenWide ? -40.0 : -48.0
-        let dynamicTopConstant = isScreenWide ? 0.0 : 20.0
+        let dynamicBottomConstant = isScreenWide ? -32.0 : -48.0
+        let dynamicTopConstant = isScreenWide ? -12.0 : 20.0
         
         NSLayoutConstraint.activate([
             width70Constraint,
