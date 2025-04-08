@@ -19,7 +19,7 @@ class MainCarouselCardView: UICollectionViewCell {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 28, weight: .bold)
         label.textColor = .black
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -31,6 +31,10 @@ class MainCarouselCardView: UICollectionViewCell {
         square.backgroundColor = .polaroidWhite
         square.layer.cornerRadius = 2
         square.translatesAutoresizingMaskIntoConstraints = false
+        square.layer.shadowColor = UIColor.black.cgColor
+        square.layer.shadowOpacity = 0.1
+        square.layer.shadowOffset = .zero
+        square.layer.shadowRadius = 8
         return square
     }()
     
@@ -52,11 +56,16 @@ class MainCarouselCardView: UICollectionViewCell {
     }
     
     private func setupConstraints() {
-        let width70Constraint = whiteSquare.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.7)
+        let width70Constraint = whiteSquare.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.8)
         width70Constraint.priority = UILayoutPriority(750)
         
-        let maxWidthConstraint = whiteSquare.widthAnchor.constraint(lessThanOrEqualToConstant: 270)
+        let maxWidthConstraint = whiteSquare.widthAnchor.constraint(lessThanOrEqualToConstant: 360)
         maxWidthConstraint.priority = UILayoutPriority(1000)
+        
+        let deviceWidth = UIScreen.main.bounds.width
+        let isScreenWide = deviceWidth < 405
+        let dynamicBottomConstant = isScreenWide ? -40.0 : -48.0
+        let dynamicTopConstant = isScreenWide ? 0.0 : 20.0
         
         NSLayoutConstraint.activate([
             width70Constraint,
@@ -66,11 +75,11 @@ class MainCarouselCardView: UICollectionViewCell {
             whiteSquare.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             
             image.widthAnchor.constraint(equalTo: whiteSquare.widthAnchor, multiplier: 0.9),
-            image.topAnchor.constraint(equalTo: whiteSquare.topAnchor, constant: -20),
+            image.topAnchor.constraint(equalTo: whiteSquare.topAnchor, constant: dynamicTopConstant),
             image.centerXAnchor.constraint(equalTo: whiteSquare.centerXAnchor),
             
             titleLabel.centerXAnchor.constraint(equalTo: whiteSquare.centerXAnchor),
-            titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: whiteSquare.bottomAnchor, constant: -32)
+            titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: whiteSquare.bottomAnchor, constant: dynamicBottomConstant)
         ])
     }
     
