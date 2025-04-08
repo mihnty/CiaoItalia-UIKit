@@ -13,6 +13,8 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
                          ("squareImageTest", "Title 2"),
                          ("squareImageTest", "Title 3")]
     
+    let isScreenWide = UIScreen.main.bounds.width > 405
+    
     private var currentIndex: Int = 0
     
     private lazy var leftArrowButton: UIButton = {
@@ -84,7 +86,7 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
             rightArrowButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
             pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            pageControl.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor)
+            pageControl.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: isScreenWide ? 250.0 : 210.0)
         ])
     }
     
