@@ -9,6 +9,8 @@ import UIKit
 
 class CarouselContainerViewController: UIViewController {
     
+    let isScreenWide = UIScreen.main.bounds.width > 405
+    
     private let backgroundView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -38,6 +40,17 @@ class CarouselContainerViewController: UIViewController {
     
     private lazy var tagImageView: UIImageView = {
         return self.makeImageView(named: "MainScreenTag")
+    }()
+    
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 32, weight: .bold)
+        label.textColor = .textGray
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        label.text = "Diário de viagem"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     private let carouselVC = CarouselViewController()
@@ -74,6 +87,9 @@ class CarouselContainerViewController: UIViewController {
     func setupViews(){
         addChild(carouselVC)
         view.addSubview(carouselVC.view)
+        view.addSubview(titleLabel)
+        titleLabel.font = .systemFont(ofSize: isScreenWide ? 52 : 32, weight: .bold)
+
         carouselVC.view.translatesAutoresizingMaskIntoConstraints = false
     }
     
@@ -97,10 +113,10 @@ class CarouselContainerViewController: UIViewController {
             carouselVC.view.topAnchor.constraint(equalTo: view.topAnchor),
             carouselVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             carouselVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            carouselVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            carouselVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
         
-        if (UIScreen.main.bounds.width > 405) {
+        if (isScreenWide) {
             NSLayoutConstraint.activate([
                 scribbleImageView1.topAnchor.constraint(equalTo: view.topAnchor),
                 scribbleImageView1.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -117,6 +133,9 @@ class CarouselContainerViewController: UIViewController {
                 tapeImageView.widthAnchor.constraint(equalToConstant: 400),
                 
                 sealImageView.widthAnchor.constraint(equalToConstant: 300),
+                
+                titleLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+                titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 200)
 
             ])
         } else {
@@ -132,6 +151,10 @@ class CarouselContainerViewController: UIViewController {
                 mammaImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -32),
                 
                 tapeImageView.widthAnchor.constraint(equalToConstant: 200),
+                
+                
+                titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+                titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80)
 
             ])
         }
