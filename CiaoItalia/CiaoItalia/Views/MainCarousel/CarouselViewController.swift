@@ -43,7 +43,7 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
         pc.numberOfPages = items.count
         pc.currentPage = 0
         pc.pageIndicatorTintColor = UIColor.lightGray
-        pc.currentPageIndicatorTintColor = UIColor.white
+        pc.currentPageIndicatorTintColor = UIColor.black
         pc.isUserInteractionEnabled = false
         return pc
     }()
