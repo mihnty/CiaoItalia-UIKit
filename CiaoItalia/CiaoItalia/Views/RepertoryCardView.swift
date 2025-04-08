@@ -9,17 +9,24 @@ import UIKit
 
 class RepertoryCardView: UIView {
     private let image = UIImageView()
-    private let portuguese = UILabel()
-    private let italian = UILabel()
+    private let portugueseLabel = UILabel()
+    private let italianLabel = UILabel()
+    private let audio = UIImageView(image: UIImage(named: "audio"))
     init(frame:CGRect, pt:String, it:String, imageName:String) {
         super.init(frame: frame)
+        setupView()
         setupImage(imageName:imageName)
         setupLabels(pt:pt, it:it)
         setupConstraints()
     }
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-
+    }
+    func setupView() {
+        self.backgroundColor = UIColor(named: "cardColor")?.withAlphaComponent(0.3)
+        self.audio.contentMode = .scaleAspectFit
+        self.audio.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(self.audio)
     }
     func setupImage(imageName:String) {
         self.image.image = UIImage(named: imageName)
@@ -28,27 +35,29 @@ class RepertoryCardView: UIView {
         addSubview(self.image)
     }
     func setupLabels(pt:String, it:String) {
-        self.portuguese.text = pt
-        self.portuguese.textColor = .blue
-        self.portuguese.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(self.portuguese)
-        self.italian.text = it
-        self.italian.textColor = .blue
-        self.italian.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(self.italian)
+        self.portugueseLabel.text = pt
+        self.portugueseLabel.textColor = UIColor(named: "textColor")
+        self.portugueseLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(self.portugueseLabel)
+        self.italianLabel.text = it
+        self.italianLabel.textColor = UIColor(named: "textColor")
+        self.italianLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(self.italianLabel)
     }
    
     func setupConstraints(){
         NSLayoutConstraint.activate([
-            self.image.topAnchor.constraint(equalTo: self.topAnchor),
-            self.image.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            self.italian.topAnchor.constraint(equalTo: self.image.topAnchor),
-            self.italian.leadingAnchor.constraint(equalTo: self.image.trailingAnchor),
-            self.portuguese.topAnchor.constraint(equalTo: self.italian.bottomAnchor),
-            self.portuguese.leadingAnchor.constraint(equalTo: self.italian.leadingAnchor),
-            self.image.widthAnchor.constraint(equalToConstant: 80.0),
+            self.image.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            self.image.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
+            self.audio.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
+            self.audio.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            self.italianLabel.bottomAnchor.constraint(equalTo: self.image.centerYAnchor),
+            self.italianLabel.leadingAnchor.constraint(equalTo: self.image.trailingAnchor, constant: 10),
+            self.portugueseLabel.topAnchor.constraint(equalTo: self.italianLabel.bottomAnchor),
+            self.portugueseLabel.leadingAnchor.constraint(equalTo: self.italianLabel.leadingAnchor),
+            self.image.widthAnchor.constraint(equalToConstant: 60.0),
             self.image.heightAnchor.constraint(equalToConstant: 100.0),
-            self.image.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12),
+            self.heightAnchor.constraint(equalToConstant: 100.0)
         ])
     }
     func configure(it:String, pt:String, imageName:String) {
@@ -78,6 +87,10 @@ class RepertoryCardCell: UITableViewCell {
             cardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             cardView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
         ])
+        cardView.layer.cornerRadius = 12
+        cardView.clipsToBounds = true
+        cardView.layer.borderWidth = 2.0
+        cardView.layer.borderColor = UIColor(named: "textColor")?.cgColor
     }
     func configure(pt: String, it: String, imageName: String) {
         cardView.configure(it: it, pt: pt, imageName: imageName)
@@ -86,7 +99,8 @@ class RepertoryCardCell: UITableViewCell {
 
 class MyView: UIViewController, UITableViewDataSource, UITableViewDelegate {
     let tableView = UITableView()
-    let items = Food.allCases
+    let words = Coffee.allCases
+    let speechManager = SpeechManager.shared
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -107,17 +121,23 @@ class MyView: UIViewController, UITableViewDataSource, UITableViewDelegate {
         tableView.register(RepertoryCardCell.self, forCellReuseIdentifier: RepertoryCardCell.identifier)
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+        return words.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: RepertoryCardCell.identifier, for: indexPath) as? RepertoryCardCell else {
             return UITableViewCell()
         }
-        let item = items[indexPath.row]
-        cell.configure(pt: item.portuguese, it: item.italian, imageName: item.imageName)
+        let word = words[indexPath.row]
+        cell.configure(pt: word.portuguese, it: word.italian, imageName: word.imageName)
         return cell
     }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let word = words[indexPath.row]
+        print("selecionou a palavra \(word.italian)")
+        speechManager.speak(word.italian)
+    }
+
 }
 
 #Preview {
