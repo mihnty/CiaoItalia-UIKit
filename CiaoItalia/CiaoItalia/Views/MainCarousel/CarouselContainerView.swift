@@ -44,7 +44,7 @@ class CarouselContainerViewController: UIViewController {
     
     private func makeImageView(named imageName: String) -> UIImageView {
         let imageView = UIImageView(image: UIImage(named: imageName))
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }
@@ -79,23 +79,15 @@ class CarouselContainerViewController: UIViewController {
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            scribbleImageView1.topAnchor.constraint(equalTo: view.topAnchor, constant: -140),
-            scribbleImageView1.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -140),
-            
-            scribbleImageView2.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 140),
-            scribbleImageView2.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 140),
-            
             tagImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -32),
-            tagImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -24),
             
             sealImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 56),
             sealImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 8),
             
-            tapeImageView.topAnchor.constraint(equalTo: view.topAnchor),
-            tapeImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tapeImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: -4),
+            tapeImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 20),
             
             mammaImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 80),
-            mammaImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -32),
             
             backgroundView.topAnchor.constraint(equalTo: view.topAnchor),
             backgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -107,6 +99,42 @@ class CarouselContainerViewController: UIViewController {
             carouselVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             carouselVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
+        
+        if (UIScreen.main.bounds.width > 405) {
+            NSLayoutConstraint.activate([
+                scribbleImageView1.topAnchor.constraint(equalTo: view.topAnchor),
+                scribbleImageView1.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                
+                scribbleImageView2.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                scribbleImageView2.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 70),
+                
+                tagImageView.widthAnchor.constraint(equalToConstant: 400),
+                tagImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -120),
+                
+                mammaImageView.widthAnchor.constraint(equalToConstant: 230),
+                mammaImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
+                
+                tapeImageView.widthAnchor.constraint(equalToConstant: 400),
+                
+                sealImageView.widthAnchor.constraint(equalToConstant: 300),
+
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                scribbleImageView1.topAnchor.constraint(equalTo: view.topAnchor, constant: -140),
+                scribbleImageView1.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -140),
+                
+                scribbleImageView2.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 140),
+                scribbleImageView2.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 140),
+                
+                tagImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -24),
+
+                mammaImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -32),
+                
+                tapeImageView.widthAnchor.constraint(equalToConstant: 200),
+
+            ])
+        }
         
         carouselVC.didMove(toParent: self)
     }
