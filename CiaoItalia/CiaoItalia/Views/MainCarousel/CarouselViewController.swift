@@ -35,6 +35,17 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
         return button
     }()
     
+    private lazy var pageControl: UIPageControl = {
+        let pc = UIPageControl()
+        pc.translatesAutoresizingMaskIntoConstraints = false
+        pc.numberOfPages = items.count
+        pc.currentPage = 0
+        pc.pageIndicatorTintColor = UIColor.lightGray
+        pc.currentPageIndicatorTintColor = UIColor.white
+        pc.isUserInteractionEnabled = false
+        return pc
+    }()
+    
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -58,20 +69,22 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
         view.addSubview(collectionView)
         view.addSubview(leftArrowButton)
         view.addSubview(rightArrowButton)
+        view.addSubview(pageControl)
 
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
-        
-        NSLayoutConstraint.activate([
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
             leftArrowButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             leftArrowButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             
             rightArrowButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            rightArrowButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
+            rightArrowButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            
+            pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            pageControl.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor)
         ])
     }
     
@@ -80,6 +93,7 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
         currentIndex -= 1
         let indexPath = IndexPath(item: currentIndex, section: 0)
         collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        pageControl.currentPage = currentIndex
     }
     
     @objc private func didTapRight() {
@@ -87,6 +101,7 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
         currentIndex += 1
         let indexPath = IndexPath(item: currentIndex, section: 0)
         collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        pageControl.currentPage = currentIndex
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -119,5 +134,5 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
 }
 
 #Preview {
-    CarouselViewController()
+    CarouselContainerViewController()
 }
