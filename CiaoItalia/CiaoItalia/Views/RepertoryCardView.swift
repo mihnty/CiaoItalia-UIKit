@@ -12,8 +12,6 @@ class RepertoryCardView: UIView{
     private let portugueseLabel = UILabel()
     private let italianLabel = UILabel()
     let audio = UIImageView()
-
-    
     var isSpeaking:Bool = false {
         didSet {
             isSpeaking ? startAudioAnimation() : stopAudioAnimation()
@@ -30,6 +28,7 @@ class RepertoryCardView: UIView{
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
+    //MARK: view configuration
     func setupView() {
         self.backgroundColor = UIColor(named: "cardColor")?.withAlphaComponent(0.3)
         self.audio.animationImages = [
@@ -84,6 +83,7 @@ class RepertoryCardView: UIView{
         setupLabels(pt:pt, it:it)
         setupConstraints()
     }
+    //MARK: audio animation
     func startAudioAnimation() {
         audio.startAnimating()
         UIView.animate(withDuration: 0.6,
@@ -105,107 +105,4 @@ class RepertoryCardView: UIView{
             self.audio.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
-}
-
-class RepertoryCardCell: UITableViewCell {
-    static let identifier = "RepertoryCardCell"
-    let cardView = RepertoryCardView(frame: .zero, pt: "Café", it: "Caffè", imageName: "coffee")
-   
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.selectionStyle = .none
-        setupCardView()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    func setSpeaking() {
-        cardView.isSpeaking.toggle()
-    }
-    func setupCardView(){
-        contentView.addSubview(cardView)
-        cardView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            cardView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            cardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            cardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            cardView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
-        ])
-        cardView.layer.cornerRadius = 12
-        cardView.clipsToBounds = true
-        cardView.layer.borderWidth = 2.0
-        cardView.layer.borderColor = UIColor(named: "textColor")?.cgColor
-    }
-    func configure(pt: String, it: String, imageName: String) {
-        cardView.configure(it: it, pt: pt, imageName: imageName)
-    }
-}
-
-class MyView: UIViewController, UITableViewDataSource, UITableViewDelegate, SpeechManagerDelegate {
-    let tableView = UITableView()
-    //passar pela view inicial
-    let words = Train.allCases
-    let speechManager = SpeechManager.shared
-    var whoIsSpeaking:IndexPath?
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .white
-        speechManager.delegate = self
-        setupTableView()
-    }
-    func setupTableView(){
-        view.addSubview(tableView)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.separatorStyle = .none
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
-        tableView.register(RepertoryCardCell.self, forCellReuseIdentifier: RepertoryCardCell.identifier)
-    }
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return words.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: RepertoryCardCell.identifier, for: indexPath) as? RepertoryCardCell else {
-            return UITableViewCell()
-        }
-        let word = words[indexPath.row]
-        cell.configure(pt: word.portuguese, it: word.italian, imageName: word.imageName)
-        return cell
-    }
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let word = words[indexPath.row]
-        self.whoIsSpeaking = indexPath
-        print("selecionou a palavra \(word.italian)")
-        speechManager.speak(word.italian)
-        
-    }
-    func startSpeech() {
-        guard let whoIsSpeaking = whoIsSpeaking else {
-            return
-        }
-        if let cell = tableView.cellForRow(at: whoIsSpeaking) as? RepertoryCardCell {
-            cell.setSpeaking()
-        }
-    }
-    func finishSpeech() {
-        guard let whoIsSpeaking = whoIsSpeaking else {
-            return
-        }
-        if let cell = tableView.cellForRow(at: whoIsSpeaking) as? RepertoryCardCell {
-            cell.setSpeaking()
-        }
-    }
-    
-}
-
-#Preview {
-    MyView()
 }
