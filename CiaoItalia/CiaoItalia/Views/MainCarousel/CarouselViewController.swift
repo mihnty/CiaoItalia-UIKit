@@ -43,7 +43,7 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.backgroundColor = .black
+        cv.backgroundColor = .clear
         cv.dataSource = self
         cv.delegate = self
         cv.showsHorizontalScrollIndicator = false
@@ -54,7 +54,6 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .black
         
         view.addSubview(collectionView)
         view.addSubview(leftArrowButton)
