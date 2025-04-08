@@ -10,6 +10,7 @@ import AVFoundation
 class SpeechManager:NSObject, AVSpeechSynthesizerDelegate {
     static let shared = SpeechManager()
     let synthesizer = Synthesizer()
+    weak var delegate:SpeechManagerDelegate?
     override private init() {
         super.init()
         setAudioSession()
@@ -30,6 +31,13 @@ class SpeechManager:NSObject, AVSpeechSynthesizerDelegate {
             await self.synthesizer.speak(text)
         }
     }
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didStart utterance: AVSpeechUtterance) {
+        self.delegate?.startSpeech()
+    }
+
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+        self.delegate?.finishSpeech()
+    }
     
 }
 actor Synthesizer {
@@ -48,7 +56,7 @@ actor Synthesizer {
         synthesizer.speak(utterance)
     }
 }
-protocol SpeechManagerProtocol: AnyObject {
+protocol SpeechManagerDelegate: AnyObject {
     func startSpeech()
     func finishSpeech()
 }
