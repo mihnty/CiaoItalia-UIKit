@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+//TODO: fix labels font 
 class RepertoryCardView: UIView {
     private let image = UIImageView()
     private let portugueseLabel = UILabel()
@@ -72,6 +72,7 @@ class RepertoryCardCell: UITableViewCell {
     let cardView = RepertoryCardView(frame: .zero, pt: "Café", it: "Caffè", imageName: "coffee")
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.selectionStyle = .none
         setupCardView()
     }
     

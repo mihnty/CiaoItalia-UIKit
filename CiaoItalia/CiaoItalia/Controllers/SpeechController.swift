@@ -7,11 +7,15 @@
 
 import AVFoundation
 
-class SpeechManager {
-    private let synthesizer = AVSpeechSynthesizer()
+class SpeechManager:NSObject, AVSpeechSynthesizerDelegate {
     static let shared = SpeechManager()
-    private init() {
+    let synthesizer = Synthesizer()
+    override private init() {
+        super.init()
         setAudioSession()
+        Task {
+            await synthesizer.setDelegate(delegate: self)
+        }
     }
     private func setAudioSession() {
         do {
@@ -20,6 +24,18 @@ class SpeechManager {
         } catch {
             print("audio session config error: " + error.localizedDescription)
         }
+    }
+    func speak(_ text:String){
+        Task {
+            await self.synthesizer.speak(text)
+        }
+    }
+    
+}
+actor Synthesizer {
+    private let synthesizer = AVSpeechSynthesizer()
+    func setDelegate(delegate:AVSpeechSynthesizerDelegate) {
+        synthesizer.delegate = delegate
     }
     func speak(_ text: String) {
         if synthesizer.isSpeaking {
@@ -31,4 +47,8 @@ class SpeechManager {
         utterance.postUtteranceDelay = 0.5
         synthesizer.speak(utterance)
     }
+}
+protocol SpeechManagerProtocol: AnyObject {
+    func startSpeech()
+    func finishSpeech()
 }
