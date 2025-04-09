@@ -13,11 +13,11 @@ enum Train:CaseIterable {
     var imageName:String {
         switch self {
         case .train:
-            return "train"
+            return "treno"
         case .ticketShop:
-            return "ticketShop"
+            return "biglietteria"
         case .platform:
-            return "platform"
+            return "binario"
         }
     }
     

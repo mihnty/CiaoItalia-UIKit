@@ -10,6 +10,7 @@ import AVFoundation
 class SpeechManager:NSObject, AVSpeechSynthesizerDelegate {
     static let shared = SpeechManager()
     let synthesizer = Synthesizer()
+    var indexPath:IndexPath?
     weak var delegate:SpeechManagerDelegate?
     override private init() {
         super.init()
@@ -26,37 +27,51 @@ class SpeechManager:NSObject, AVSpeechSynthesizerDelegate {
             print("audio session config error: " + error.localizedDescription)
         }
     }
-    func speak(_ text:String){
-        Task {
+    func speak(_ text:String, indexPath:IndexPath){
+        Task { @MainActor in
             await self.synthesizer.speak(text)
+            print(text)
+            self.indexPath = indexPath
         }
     }
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didStart utterance: AVSpeechUtterance) {
+        guard let path = self.indexPath else {
+            print("não possui referência ao index path")
+            return
+        }
+        self.delegate?.changeWhoIsSpeaking(indexPath: path)
         self.delegate?.startSpeech()
     }
 
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
         self.delegate?.finishSpeech()
     }
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didPause utterance: AVSpeechUtterance) {
+        self.delegate?.finishSpeech()
+    }
     
 }
 actor Synthesizer {
-    private let synthesizer = AVSpeechSynthesizer()
+    private var synthesizer = AVSpeechSynthesizer()
     func setDelegate(delegate:AVSpeechSynthesizerDelegate) {
         synthesizer.delegate = delegate
     }
     func speak(_ text: String) {
+        print("chegou no speak com \(text)")
         if synthesizer.isSpeaking {
+            print("chegou no speak com \(text)")
             synthesizer.stopSpeaking(at: .immediate)
+            
         }
         let utterance = AVSpeechUtterance(string: text)
+        print(text)
         utterance.voice = AVSpeechSynthesisVoice(language: "it-IT") // Italiano
         utterance.rate = 0.5
-        utterance.postUtteranceDelay = 0.5
         synthesizer.speak(utterance)
     }
 }
 protocol SpeechManagerDelegate: AnyObject {
     func startSpeech()
     func finishSpeech()
+    func changeWhoIsSpeaking(indexPath:IndexPath)
 }

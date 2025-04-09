@@ -7,10 +7,10 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class StartViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .brown
+        view.backgroundColor = UIColor(named: "darkGreen")
         setupBackground()
         setupElements()
         setupButton()
@@ -18,7 +18,7 @@ class ViewController: UIViewController {
     }
     private func setupBackground(){
         let backgroundImage = UIImageView(frame: view.bounds)
-        backgroundImage.image = UIImage(named: "background")
+        backgroundImage.image = UIImage(named: "backgroundTexture")
         //preenche toda a tela
         backgroundImage.contentMode = .scaleAspectFill
         backgroundImage.clipsToBounds = true

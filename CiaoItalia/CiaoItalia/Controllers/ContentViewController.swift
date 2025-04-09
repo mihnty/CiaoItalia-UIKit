@@ -7,6 +7,8 @@
 import UIKit
 
 class MyView: UIViewController, UITableViewDataSource, UITableViewDelegate, SpeechManagerDelegate {
+    
+    
     let tableView = UITableView()
     //passar pela view inicial
     let words = Train.allCases
@@ -46,10 +48,12 @@ class MyView: UIViewController, UITableViewDataSource, UITableViewDelegate, Spee
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let word = words[indexPath.row]
-        self.whoIsSpeaking = indexPath
         print("selecionou a palavra \(word.italian)")
-        speechManager.speak(word.italian)
-        
+        speechManager.speak(word.italian, indexPath:indexPath)
+      
+    }
+    func changeWhoIsSpeaking(indexPath:IndexPath) {
+        self.whoIsSpeaking = indexPath
     }
     func startSpeech() {
         guard let whoIsSpeaking = whoIsSpeaking else {

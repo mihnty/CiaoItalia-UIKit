@@ -38,6 +38,8 @@ class RepertoryCardCell: UITableViewCell {
     }
     func configure(pt: String, it: String, imageName: String) {
         cardView.configure(it: it, pt: pt, imageName: imageName)
+        self.accessibilityLabel = "Palavra em português: \(pt). Tradução em italiano: \(it)"
+        self.accessibilityTraits = .button
     }
 }
 
