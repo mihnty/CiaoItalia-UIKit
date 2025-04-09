@@ -133,8 +133,20 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
         let cardHeight = cardWidth * 1.3
         return CGSize(width: cardWidth, height: cardHeight)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let mockVC = MockViewController()
+        
+        if let navController = self.navigationController {
+            navController.pushViewController(mockVC, animated: true)
+        } else {
+            mockVC.modalPresentationStyle = .fullScreen
+            present(mockVC, animated: true, completion: nil)
+        }
+    }
 }
 
+
 #Preview {
-    CarouselContainerViewController()
+    UINavigationController(rootViewController: CarouselContainerViewController())
 }
