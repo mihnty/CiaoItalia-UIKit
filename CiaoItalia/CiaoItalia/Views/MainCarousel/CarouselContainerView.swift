@@ -11,11 +11,8 @@ class CarouselContainerViewController: UIViewController {
     
     let isScreenWide = UIScreen.main.bounds.width > 405
     
-    private let backgroundView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .background
-        return view
+    private let backgroundImageView: UIImageView = {
+        return UIImageView(image: UIImage(named: "backgroundPattern"))
     }()
     
     private lazy var scribbleImageView1: UIImageView = {
@@ -69,7 +66,7 @@ class CarouselContainerViewController: UIViewController {
     }
     
     func setup() {
-        view.addSubview(backgroundView)
+        view.addSubview(backgroundImageView)
         setupImages()
         setupViews()
         setupConstraints()
@@ -105,10 +102,10 @@ class CarouselContainerViewController: UIViewController {
             
             mammaImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 80),
             
-            backgroundView.topAnchor.constraint(equalTo: view.topAnchor),
-            backgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor),
+            backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            backgroundImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            backgroundImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
             carouselVC.view.topAnchor.constraint(equalTo: view.topAnchor),
             carouselVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
