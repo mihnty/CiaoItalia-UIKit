@@ -151,7 +151,7 @@ class CarouselContainerViewController: UIViewController {
                 
                 
                 titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-                titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80)
+                titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40)
 
             ])
         }
@@ -161,5 +161,5 @@ class CarouselContainerViewController: UIViewController {
 }
 
 #Preview {
-    CarouselContainerViewController()
+    UINavigationController(rootViewController: CarouselContainerViewController())
 }
