@@ -9,6 +9,8 @@ import UIKit
 import SwiftUI
 
 class MainCarouselCardView: UICollectionViewCell {
+    weak var delegate: MainCarouselCardViewDelegate?
+    
     private let image: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -53,6 +55,14 @@ class MainCarouselCardView: UICollectionViewCell {
         contentView.addSubview(whiteSquare)
         whiteSquare.addSubview(image)
         whiteSquare.addSubview(titleLabel)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        whiteSquare.isUserInteractionEnabled = true
+        whiteSquare.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func handleTap() {
+        delegate?.mainCarouselCardViewDidTap(self)
     }
     
     private func setupConstraints() {

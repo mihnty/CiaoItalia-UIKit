@@ -7,14 +7,17 @@
 
 import UIKit
 
-class CarouselViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+protocol MainCarouselCardViewDelegate: AnyObject {
+    func mainCarouselCardViewDidTap(_ cell: MainCarouselCardView)
+}
+
+class CarouselViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, MainCarouselCardViewDelegate {
     
     private let items = [("squareImageTest", "Title 1"),
                          ("squareImageTest", "Title 2"),
                          ("squareImageTest", "Title 3")]
     
     let isScreenWide = UIScreen.main.bounds.width > 405
-    
     private var currentIndex: Int = 0
     
     private lazy var leftArrowButton: UIButton = {
@@ -59,6 +62,7 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
         cv.delegate = self
         cv.showsHorizontalScrollIndicator = false
         cv.isScrollEnabled = false
+        cv.allowsSelection = false
         cv.register(MainCarouselCardView.self, forCellWithReuseIdentifier: "CarouselCell")
         return cv
     }()
@@ -121,6 +125,7 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CarouselCell", for: indexPath) as! MainCarouselCardView
         let (imageName, title) = items[indexPath.item]
         cell.configure(withImageName: imageName, title: title)
+        cell.delegate = self
         return cell
     }
     
@@ -132,7 +137,8 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
         return CGSize(width: cardWidth, height: cardHeight)
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    
+    func mainCarouselCardViewDidTap(_ cell: MainCarouselCardView) {
         let mockVC = MockViewController()
         
         if let navController = self.navigationController {
