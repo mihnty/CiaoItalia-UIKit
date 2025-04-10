@@ -21,8 +21,8 @@ class MainCarouselCardView: UICollectionViewCell {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 28, weight: .bold)
-        label.textColor = .textGray
+        label.font = UIFont(name: "FuzzyBubbles-Bold", size: 28)!
+        label.textColor = .lightGrayText
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label

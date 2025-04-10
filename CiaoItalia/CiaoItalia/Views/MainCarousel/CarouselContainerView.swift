@@ -42,7 +42,7 @@ class CarouselContainerViewController: UIViewController {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 32, weight: .bold)
-        label.textColor = .textGray
+        label.textColor = .lightGrayText
         label.textAlignment = .center
         label.numberOfLines = 0
         label.text = "Diário de viagem"
