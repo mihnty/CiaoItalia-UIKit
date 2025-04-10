@@ -18,20 +18,18 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
     private var currentIndex: Int = 0
     
     private lazy var leftArrowButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("<", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 32, weight: .bold)
-        button.tintColor = .white
+        let button = UIButton(type: .custom)
+        let image = UIImage(named: "MainScreenLeftArrow")
+        button.setImage(image, for: .normal)
         button.addTarget(self, action: #selector(didTapLeft), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
     private lazy var rightArrowButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle(">", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 32, weight: .bold)
-        button.tintColor = .white
+        let button = UIButton(type: .custom)
+        let image = UIImage(named: "MainScreenRightArrow")
+        button.setImage(image, for: .normal)
         button.addTarget(self, action: #selector(didTapRight), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
