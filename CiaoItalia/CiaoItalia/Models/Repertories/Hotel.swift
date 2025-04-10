@@ -6,7 +6,7 @@
 //
 
 
-enum Hotel:CaseIterable {
+enum Hotel:ContentType {
     case reservation
     case key
     

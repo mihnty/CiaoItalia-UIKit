@@ -5,7 +5,7 @@
 //  Created by Ana Paula Sá Barreto Paiva da Cunha on 04/04/25.
 //
 
-enum Food:CaseIterable {
+enum Food:ContentType {
     case carbonara
     case pizza
     case cheese

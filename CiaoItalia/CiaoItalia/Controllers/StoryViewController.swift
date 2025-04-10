@@ -6,14 +6,19 @@
 //
 import UIKit
 
-class MyView: UIViewController, UITableViewDataSource, UITableViewDelegate, SpeechManagerDelegate {
-    
-    
+class StoryViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SpeechManagerDelegate {
     let tableView = UITableView()
-    //passar pela view inicial
-    let words = Train.allCases
     let speechManager = SpeechManager.shared
     var whoIsSpeaking:IndexPath?
+    var words: [any ContentType] = []
+    init(content:[any ContentType]) {
+        super.init(nibName: nil, bundle: nil)
+        self.words = content
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -75,5 +80,5 @@ class MyView: UIViewController, UITableViewDataSource, UITableViewDelegate, Spee
 }
 
 #Preview {
-    MyView()
+    StoryViewController(content:Food.allCases)
 }

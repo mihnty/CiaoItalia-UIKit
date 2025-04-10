@@ -5,7 +5,7 @@
 //  Created by Ana Paula Sá Barreto Paiva da Cunha on 04/04/25.
 //
 
-enum Suitcase:CaseIterable {
+enum Suitcase:ContentType {
     case ticket
     case passport
     case map
