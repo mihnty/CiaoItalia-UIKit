@@ -15,31 +15,24 @@ class OnBoardingMainViewController: UIViewController {
     }()
     
     private let titleLabel: UILabel = {
-        let label = UILabel()
-        let customFont = UIFont(name: "FuzzyBubbles-Bold", size: 28)!
-        label.textColor = .darkGray
-        label.text = "Cada página traz uma nova situação"
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        label.adjustsFontForContentSizeCategory = true
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFontMetrics(forTextStyle: .body).scaledFont(for: customFont)
+        let label = FuzzyFontLabel(text: "Cada página traz uma nova situação", textStyle: .title1, textColor: .darkGrey)
+       
         return label
     }()
     
     private let subtitleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Vivencie desafios reais de viagem e aprenda expressões para guardar na memória."
-        label.textColor = .darkGray
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        label.adjustsFontForContentSizeCategory = true
-        label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-        label.translatesAutoresizingMaskIntoConstraints = false
+        let label = NormalFontLabel(text: "Vivencie desafios reais de viagem e aprenda expressões para guardar na memória.", textStyle: .body, textColor: .darkGrey, textWeight: .medium)
         
         return label
     }()
-
+    
+    private func makeImageView(named imageName: String) -> UIImageView {
+        let imageView = UIImageView(image: UIImage(named: imageName))
+        imageView.contentMode = .scaleAspectFill
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -51,12 +44,12 @@ class OnBoardingMainViewController: UIViewController {
         view.addSubview(titleLabel)
         view.addSubview(subtitleLabel)
         setupConstraints()
-
+        
     }
     
     func setupImages(){
         view.addSubview(backgroundImageView)
-    
+        
     }
     
     func setupConstraints() {
@@ -73,7 +66,7 @@ class OnBoardingMainViewController: UIViewController {
             backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             backgroundImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             backgroundImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-
+            
         ])
     }
 }
