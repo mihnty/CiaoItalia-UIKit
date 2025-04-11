@@ -9,7 +9,12 @@ enum Food:ContentType {
     case carbonara
     case pizza
     case cheese
-    static let header = "restaurantLand"
+    var header:String {
+        return "restaurantLand"
+    }
+    var title:String {
+        return "almoço pela rua"
+    }
     var imageName:String {
         switch self {
         case .carbonara:

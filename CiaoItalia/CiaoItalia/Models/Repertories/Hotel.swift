@@ -9,7 +9,12 @@
 enum Hotel:ContentType {
     case reservation
     case key
-    static let header = "hotelLand"
+    var header:String {
+        return "hotelLand"
+    }
+    var title:String {
+        return "no hotel"
+    }
     var imageName:String {
         switch self {
         case .reservation:

@@ -9,7 +9,12 @@ enum Suitcase:ContentType {
     case ticket
     case passport
     case map
-    static let header = "suitcaseLand"
+    var header:String {
+        return "suitcaseLand"
+    }
+    var title:String {
+        return "arrumando a mala"
+    }
     var imageName:String {
         switch self {
         case .ticket:

@@ -8,7 +8,12 @@
 enum Coffee:ContentType {
     case coffee
     case coffeeShop
-    static let header = "caffetteriaLand"
+    var header:String {
+        return "caffetteriaLand"
+    }
+    var title:String {
+        return "ida ao café"
+    }
     var imageName:String {
         switch self {
         case .coffee:

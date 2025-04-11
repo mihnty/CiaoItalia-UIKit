@@ -6,14 +6,25 @@
 //
 import UIKit
 
-class StoryViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SpeechManagerDelegate {
+class StoryViewController: UIViewController, SpeechManagerDelegate {
+    var headerImage = UIImageView()
     let tableView = UITableView()
     let speechManager = SpeechManager.shared
     var whoIsSpeaking:IndexPath?
     var words: [any ContentType] = []
+    let segmentedControl = UISegmentedControl(items: ["Repertório", "Diálogo"])
+    let backgroundImageView: UIImageView = {
+        return UIImageView(image: UIImage(named: "backgroundPattern"))
+    }()
     init(content:[any ContentType]) {
         super.init(nibName: nil, bundle: nil)
         self.words = content
+        if let header = content.first?.header {
+            print(header)
+            headerImage.image = UIImage(named: header)
+        } else {
+            print("content está vazio")
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -21,9 +32,39 @@ class StoryViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "background")
         speechManager.delegate = self
+        view.addSubview(backgroundImageView)
+        view.addSubview(headerImage)
+        headerImage.translatesAutoresizingMaskIntoConstraints = false
         setupTableView()
+        setupSegmentedControl()
+        setupConstraints()
+    }
+    func setupConstraints() {
+        NSLayoutConstraint.activate([
+            backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor),
+            backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            backgroundImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            backgroundImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            headerImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
+            headerImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            tableView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            segmentedControl.topAnchor.constraint(equalTo: headerImage.bottomAnchor, constant: 16),
+            segmentedControl.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
+            segmentedControl.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15)
+        ])
+    }
+    func setupSegmentedControl(){
+        self.segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.backgroundColor = .systemGray6.withAlphaComponent(0.8)
+        segmentedControl.selectedSegmentTintColor =  UIColor(named: "background")
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(segmentedControl)
     }
     func setupTableView(){
         view.addSubview(tableView)
@@ -31,32 +72,13 @@ class StoryViewController: UIViewController, UITableViewDataSource, UITableViewD
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
+        tableView.backgroundColor = .clear
         tableView.register(RepertoryCardCell.self, forCellReuseIdentifier: RepertoryCardCell.identifier)
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return words.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: RepertoryCardCell.identifier, for: indexPath) as? RepertoryCardCell else {
-            return UITableViewCell()
-        }
-        let word = words[indexPath.row]
-        cell.configure(pt: word.portuguese, it: word.italian, imageName: word.imageName)
-        return cell
-    }
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let word = words[indexPath.row]
-        print("selecionou a palavra \(word.italian)")
-        speechManager.speak(word.italian, indexPath:indexPath)
-      
-    }
     func changeWhoIsSpeaking(indexPath:IndexPath) {
         self.whoIsSpeaking = indexPath
     }
@@ -78,7 +100,22 @@ class StoryViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
 }
-
+extension StoryViewController:UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: RepertoryCardCell.identifier, for: indexPath) as? RepertoryCardCell else {
+            return UITableViewCell()
+        }
+        let word = words[indexPath.row]
+        cell.configure(pt: word.portuguese, it: word.italian, imageName: word.imageName)
+        return cell
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let word = words[indexPath.row]
+        print("selecionou a palavra \(word.italian)")
+        speechManager.speak(word.italian, indexPath:indexPath)
+      
+    }
+}
 #Preview {
     StoryViewController(content:Food.allCases)
 }

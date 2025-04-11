@@ -9,7 +9,12 @@ enum Train:ContentType {
     case train
     case ticketShop
     case platform
-    static let header = "trainLand"
+    var header:String {
+        return "trainLand"
+    }
+    var title:String {
+        return "pegando o trem"
+    }
     var imageName:String {
         switch self {
         case .train:
