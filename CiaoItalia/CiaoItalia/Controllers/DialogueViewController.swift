@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DialogueViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, DialogueCellDelegate {
+class DialogueViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
     func tapButton(_ sender: UIButton) {
         print("Botão de áudio tocado dentro da viewcontroller3")
         
@@ -23,27 +23,15 @@ class DialogueViewController: UIViewController, UITableViewDataSource, UITableVi
             for: indexPath) as? DialogueCell else { return UITableViewCell() }
             let dialogue = Museum.dialogue[indexPath.row]
             cell.configure(with: dialogue)
-            //cell.isUserInteractionEnabled = false
-        cell.action = {
-            print("Botão de áudio tocado dentro da viewcontroller")
-            guard let text = cell.italian.text else { return }
-            SpeechManager.shared.speak(text)
-        }
+
+ 
         //cell.selectionStyle = .none
-        cell.delegate = self
+//        cell.delegate = self
             return cell
     }
     
     
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        print("selecionou")
-//        let cell = tableView.cellForRow(at: indexPath) as! DialogueCell
-//        cell.action = {
-//            print("Botão de áudio tocado dentro da viewcontroller2")
-//            guard let text = cell.italian.text else { return }
-//            SpeechManager.shared.speak(text)
-//        }
-//    }
+
     
     lazy var dialogueTableView: UITableView = {
        let dialogueTableView = UITableView()

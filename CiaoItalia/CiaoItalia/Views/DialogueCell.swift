@@ -7,9 +7,9 @@
 
 import UIKit
 
-protocol DialogueCellDelegate: AnyObject {
-    func tapButton(_ sender: UIButton)
-}
+//protocol DialogueCellDelegate: AnyObject {
+//    func tapButton(_ sender: UIButton)
+//}
 
 class DialogueCell: UITableViewCell {
     private var leadingConstraint: NSLayoutConstraint?
@@ -105,9 +105,7 @@ class DialogueCell: UITableViewCell {
         view.spacing = 8
         return view
     }()
-    
-    weak var delegate: DialogueCellDelegate?
-    
+        
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -121,7 +119,6 @@ class DialogueCell: UITableViewCell {
         return view
     }()
     
-    var action: (() -> Void)?
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -135,15 +132,15 @@ class DialogueCell: UITableViewCell {
     }
     
     func setupHierarchy() {
-        self.addSubview(arrow)
-        self.addSubview(arrow2)
-        self.addSubview(verticalstack)
+        contentView.addSubview(arrow)
+        contentView.addSubview(arrow2)
+        contentView.addSubview(verticalstack)
         verticalstack.addArrangedSubview(container)
         verticalstack.addArrangedSubview(translation)
         container.addSubview(dialoguebox)
         container.addSubview(dialoguebox2)
         container.addSubview(dialoguestack)
-        dialoguestack.addArrangedSubview(buttonTeste)
+        dialoguestack.addArrangedSubview(playButton)
         
         
 
@@ -219,14 +216,8 @@ class DialogueCell: UITableViewCell {
     }
     
     @objc func handlePlayButtonTapped(_ sender: UIButton) {
-        print("tocado dentro da celula")
-        action?()
-        delegate?.tapButton(sender)
-        print("Botão de áudio tocado!")
         guard let text = italian.text else { return }
         SpeechManager.shared.speak(text)
-        
-        
     }
     
 
