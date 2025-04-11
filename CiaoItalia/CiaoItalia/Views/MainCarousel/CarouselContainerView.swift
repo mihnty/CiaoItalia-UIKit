@@ -46,7 +46,7 @@ class CarouselContainerViewController: UIViewController {
     private lazy var titleStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [])
         stackView.axis = .horizontal
-        stackView.spacing = 24
+        stackView.spacing = 12
         stackView.distribution = .equalSpacing
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
