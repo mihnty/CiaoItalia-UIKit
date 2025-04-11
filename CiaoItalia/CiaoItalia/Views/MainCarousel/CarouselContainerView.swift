@@ -40,7 +40,7 @@ class CarouselContainerViewController: UIViewController {
     }()
     
     private let titleLabel: UILabel = {
-        let label = FuzzyFontLabel(text: "Diário de Viagem", textStyle: .title1, textColor: .lightGrayText)
+        let label = FuzzyFontLabel(text: "Diário de Viagem", textStyle: .largeTitle, textColor: .lightGrayText)
         return label
     }()
     
@@ -79,7 +79,6 @@ class CarouselContainerViewController: UIViewController {
         addChild(carouselVC)
         view.addSubview(carouselVC.view)
         view.addSubview(titleLabel)
-        titleLabel.font = .systemFont(ofSize: isScreenWide ? 52 : 32, weight: .bold)
 
         carouselVC.view.translatesAutoresizingMaskIntoConstraints = false
     }

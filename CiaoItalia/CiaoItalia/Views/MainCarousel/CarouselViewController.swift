@@ -13,9 +13,13 @@ protocol MainCarouselCardViewDelegate: AnyObject {
 
 class CarouselViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, MainCarouselCardViewDelegate {
     
-    private let items = [("squareImageTest", "Title 1"),
-                         ("squareImageTest", "Title 2"),
-                         ("squareImageTest", "Title 3")]
+    private let items = [("caffetteria", "ida ao café"),
+                         ("suitcase", "arrumando a mala"),
+                         ("trainStation", "pegando o trem"),
+                         ("hotel", "no hotel"),
+                         ("city", "turistando"),
+                         ("restaurant", "almoço pela rua"),
+                        ]
     
     let isScreenWide = UIScreen.main.bounds.width > 405
     private var currentIndex: Int = 0
