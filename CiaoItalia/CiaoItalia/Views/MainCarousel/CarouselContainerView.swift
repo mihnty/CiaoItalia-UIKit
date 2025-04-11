@@ -39,6 +39,19 @@ class CarouselContainerViewController: UIViewController {
         return self.makeImageView(named: "MainScreenTag")
     }()
     
+    private lazy var detailsImageView: UIImageView = {
+        return self.makeImageView(named: "titleDetails")
+    }()
+    
+    private lazy var titleStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [])
+        stackView.axis = .horizontal
+        stackView.spacing = 24
+        stackView.distribution = .equalSpacing
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
     private let titleLabel: UILabel = {
         let label = FuzzyFontLabel(text: "Diário de Viagem", textStyle: .largeTitle, textColor: .lightGrayText)
         return label
@@ -78,7 +91,10 @@ class CarouselContainerViewController: UIViewController {
     func setupViews(){
         addChild(carouselVC)
         view.addSubview(carouselVC.view)
-        view.addSubview(titleLabel)
+        titleStackView.addArrangedSubview(titleLabel)
+        titleStackView.addArrangedSubview(detailsImageView)
+        view.addSubview(titleStackView)
+        //view.addSubview(titleLabel)
 
         carouselVC.view.translatesAutoresizingMaskIntoConstraints = false
     }
@@ -104,6 +120,8 @@ class CarouselContainerViewController: UIViewController {
             carouselVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             carouselVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             carouselVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            detailsImageView.widthAnchor.constraint(equalToConstant: 50)
         ])
         
         if (isScreenWide) {
@@ -124,8 +142,8 @@ class CarouselContainerViewController: UIViewController {
                 
                 sealImageView.widthAnchor.constraint(equalToConstant: 300),
                 
-                titleLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-                titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 200)
+                titleStackView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+                titleStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 200)
 
             ])
         } else {
@@ -143,8 +161,8 @@ class CarouselContainerViewController: UIViewController {
                 tapeImageView.widthAnchor.constraint(equalToConstant: 200),
                 
                 
-                titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-                titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40)
+                titleStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+                titleStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40)
 
             ])
         }
