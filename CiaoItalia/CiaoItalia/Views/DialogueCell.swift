@@ -158,15 +158,15 @@ class DialogueCell: UITableViewCell {
     
     func setupConstraints(){
         
-        leadingConstraint = verticalstack.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 16)
-        trailingConstraint = verticalstack.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -16)
+        leadingConstraint = verticalstack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
+        trailingConstraint = verticalstack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
        
         NSLayoutConstraint.activate([
             
-            verticalstack.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 4),
-            verticalstack.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor),
+            verticalstack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
+            verticalstack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             verticalstack.widthAnchor.constraint(equalToConstant: 252),
-            verticalstack.heightAnchor.constraint(equalToConstant: 168),
+            //verticalstack.heightAnchor.constraint(equalToConstant: 168),
             
             arrow2.leadingAnchor.constraint(equalTo: verticalstack.trailingAnchor, constant: -14),
             arrow2.topAnchor.constraint(equalTo: dialoguebox2.topAnchor, constant: 8),
@@ -189,7 +189,7 @@ class DialogueCell: UITableViewCell {
 //
             italian.widthAnchor.constraint(equalToConstant: 172.0),
         
-            translation.topAnchor.constraint(equalTo: container.bottomAnchor, constant: -4),
+            translation.topAnchor.constraint(equalTo: container.bottomAnchor, constant: +4),
             translation.leadingAnchor.constraint(equalTo: verticalstack.leadingAnchor),
             translation.trailingAnchor.constraint(equalTo: verticalstack.trailingAnchor),
             

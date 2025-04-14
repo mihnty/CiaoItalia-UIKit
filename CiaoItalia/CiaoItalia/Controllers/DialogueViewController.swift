@@ -60,7 +60,7 @@ class DialogueViewController: UIViewController, UITableViewDataSource, UITableVi
     
     private func setupViewAttributes() {
         dialogueTableView.backgroundColor = .black
-        dialogueTableView.rowHeight = 400
+        //dialogueTableView.rowHeight = 400
     }
     
     private func setupConstraints() {
