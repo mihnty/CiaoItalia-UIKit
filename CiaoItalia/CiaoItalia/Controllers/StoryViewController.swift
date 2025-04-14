@@ -8,8 +8,11 @@ import UIKit
 
 class StoryViewController: UIViewController, ContentDelegate {
     lazy var headerImage = UIImageView()
-  
     lazy var titleLabel = UILabel()
+    lazy var repertoryLabel = {
+        let lb = NormalFontLabel(text: "Repertório:", textStyle: .body, textColor: UIColor(named: "textColor") ?? .brown, textWeight: .bold)
+        return lb
+    }()
     lazy var repertoryVC = RepertoryViewController()
     var words: [any ContentType] = []
     lazy var segmentedControl = UISegmentedControl(items: ["Repertório", "Diálogo"])
@@ -44,6 +47,8 @@ class StoryViewController: UIViewController, ContentDelegate {
         view.addSubview(repertoryVC.view)
         repertoryVC.view.translatesAutoresizingMaskIntoConstraints = false
         headerImage.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(repertoryLabel)
+        repertoryLabel.translatesAutoresizingMaskIntoConstraints = false
         setupView()
         repertoryVC.didMove(toParent: self)
         setupConstraints()
@@ -54,14 +59,16 @@ class StoryViewController: UIViewController, ContentDelegate {
             backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             backgroundImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             backgroundImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            headerImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
+            headerImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             headerImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             titleLabel.topAnchor.constraint(equalTo: headerImage.bottomAnchor),
             segmentedControl.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
             segmentedControl.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
             segmentedControl.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
-            repertoryVC.view.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor),
+            repertoryLabel.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 5),
+            repertoryLabel.leadingAnchor.constraint(equalTo: segmentedControl.leadingAnchor, constant: 5),
+            repertoryVC.view.topAnchor.constraint(equalTo: repertoryLabel.bottomAnchor),
             repertoryVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             repertoryVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             repertoryVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
@@ -80,15 +87,23 @@ class StoryViewController: UIViewController, ContentDelegate {
         titleLabel.numberOfLines = 0
         titleLabel.translatesAutoresizingMaskIntoConstraints = false 
         view.addSubview(titleLabel)
-        //setar a fonte
+        /*
+        repertoryLabel.textColor = UIColor(named: "textColor")
+        repertoryLabel.textAlignment = .center
+        repertoryLabel.numberOfLines = 0
+        repertoryLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(repertoryLabel)
+        */
     }
     
     @objc func changeTableView(_ sender:UISegmentedControl){
         switch sender.selectedSegmentIndex {
         case 0:
             repertoryVC.view.isHidden = false
+            repertoryLabel.isHidden = false
         case 1:
-            repertoryVC.view.gisHidden = true
+            repertoryVC.view.isHidden = true
+            repertoryLabel.isHidden = true
         default:
             print("algo deu errado")
         }
