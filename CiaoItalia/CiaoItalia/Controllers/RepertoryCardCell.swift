@@ -8,7 +8,7 @@ import UIKit
 
 class RepertoryCardCell: UITableViewCell {
     static let identifier = "RepertoryCardCell"
-    let cardView = RepertoryCardView(frame: .zero, pt: "Café", it: "Caffè", imageName: "coffee")
+    lazy var cardView = RepertoryCardView(frame: .zero, pt: "", it: "", imageName: "")
    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

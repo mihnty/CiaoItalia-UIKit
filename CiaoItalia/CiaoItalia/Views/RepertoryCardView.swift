@@ -6,11 +6,11 @@
 //
 
 import UIKit
-//TODO: fix labels font 
+
 class RepertoryCardView: UIView{
     private let image = UIImageView()
-    private let portugueseLabel = UILabel()
-    private let italianLabel = UILabel()
+    lazy var portugueseLabel = UILabel()
+    lazy var italianLabel = UILabel()
     let audio = UIImageView()
     var isSpeaking:Bool = false {
         didSet {
@@ -51,11 +51,10 @@ class RepertoryCardView: UIView{
         addSubview(self.image)
     }
     func setupLabels(pt:String, it:String) {
-        self.portugueseLabel.text = pt
-        self.portugueseLabel.textColor = UIColor(named: "textColor")
+        self.portugueseLabel = NormalFontLabel(text: pt, textStyle: .subheadline, textColor:  UIColor(named: "textColor") ?? .brown, textWeight: .regular)
         self.portugueseLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(self.portugueseLabel)
-        self.italianLabel.text = it
+        self.italianLabel = FuzzyFontLabel(text: it, textStyle: .body)
         self.italianLabel.textColor = UIColor(named: "textColor")
         self.italianLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(self.italianLabel)
