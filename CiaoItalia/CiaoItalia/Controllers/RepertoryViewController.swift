@@ -15,13 +15,11 @@ class RepertoryViewController:UIViewController,UITableViewDelegate, UITableViewD
   
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("carregou a view")
         speechManager.delegate = self
         setupTableView()
         setupConstraints()
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(delegate?.words.count ?? 0)
         return delegate?.words.count ?? 0
     }
     func changeWhoIsSpeaking(indexPath:IndexPath) {
@@ -59,7 +57,6 @@ class RepertoryViewController:UIViewController,UITableViewDelegate, UITableViewD
             return
         }
         let word = delegate.words[indexPath.row]
-        print("selecionou a palavra \(word.italian)")
         speechManager.speak(word.italian, indexPath:indexPath)
     }
     func setupConstraints(){

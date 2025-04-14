@@ -168,7 +168,6 @@ class StartViewController: UIViewController {
     @objc func openApp(){
         let nextView = SecondController()
         nextView.view.backgroundColor = .white
-        print("executou isso")
         navigationController?.pushViewController(nextView, animated: true)
     }
 }

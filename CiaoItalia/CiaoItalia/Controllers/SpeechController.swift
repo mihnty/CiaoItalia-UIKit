@@ -30,7 +30,6 @@ class SpeechManager:NSObject, AVSpeechSynthesizerDelegate {
     func speak(_ text:String, indexPath:IndexPath){
         Task { @MainActor in
             await self.synthesizer.speak(text)
-            print(text)
             self.indexPath = indexPath
         }
     }
@@ -57,14 +56,11 @@ actor Synthesizer {
         synthesizer.delegate = delegate
     }
     func speak(_ text: String) {
-        print("chegou no speak com \(text)")
         if synthesizer.isSpeaking {
-            print("chegou no speak com \(text)")
             synthesizer.stopSpeaking(at: .immediate)
             
         }
         let utterance = AVSpeechUtterance(string: text)
-        print(text)
         utterance.voice = AVSpeechSynthesisVoice(language: "it-IT") // Italiano
         utterance.rate = 0.5
         synthesizer.speak(utterance)

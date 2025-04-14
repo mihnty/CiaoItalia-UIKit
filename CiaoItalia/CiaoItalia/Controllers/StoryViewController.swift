@@ -36,6 +36,8 @@ class StoryViewController: UIViewController, ContentDelegate {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.navigationItem.backButtonTitle = "Voltar"
+        navigationController?.navigationBar.tintColor = UIColor(named: "textColor")
         view.backgroundColor = UIColor(named: "background")
         
         view.addSubview(backgroundImageView)

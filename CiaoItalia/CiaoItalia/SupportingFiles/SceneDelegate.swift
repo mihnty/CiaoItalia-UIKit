@@ -18,6 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         //cria a pilha de navegação do aplicativo e diz qual view começa
         let navController = UINavigationController(rootViewController: CarouselContainerViewController())
+        navController.navigationItem.backButtonTitle = "VOLTAR"
         window.rootViewController = navController
         window.makeKeyAndVisible()
             

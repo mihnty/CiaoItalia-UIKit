@@ -95,7 +95,6 @@ class RepertoryCardView: UIView{
     }
     func stopAudioAnimation(){
         audio.stopAnimating()
-        print("parou a animação")
         audio.image = UIImage(named: "audio")
         NSLayoutConstraint.activate([
             self.audio.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
