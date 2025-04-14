@@ -16,7 +16,7 @@ class NextViewController: UIViewController {
 
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "abrobora"
+        label.text = "abrobora 🎃🎃"
         label.font = UIFont.systemFont(ofSize: 24)
         label.textColor = .black
         label.textAlignment = .center

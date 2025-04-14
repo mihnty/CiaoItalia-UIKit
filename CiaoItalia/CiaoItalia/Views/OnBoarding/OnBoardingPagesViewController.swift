@@ -15,7 +15,6 @@ class OnboardingPagesViewController: UIViewController {
         self.subtitleLabel = NormalFontLabel(text: subtitleText, textStyle: isScreenWide ? .largeTitle : .body, textColor: .darkGrey, textWeight: .medium)
         self.imageView.contentMode = .scaleAspectFill
         super.init(nibName: nil, bundle: nil)
-        
         imageView.image = UIImage(named: imageName)
     }
     
@@ -36,7 +35,7 @@ extension OnboardingPagesViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.alignment = .center
-        stackView.spacing = 12
+        stackView.spacing = 8
         
     }
         
@@ -49,10 +48,7 @@ extension OnboardingPagesViewController {
         
         NSLayoutConstraint.activate([
             stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor,constant: 60),
-            
-            imageView.bottomAnchor.constraint(equalTo: titleLabel.topAnchor, constant: -30),
-            
+                        
             titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             titleLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             
@@ -63,17 +59,25 @@ extension OnboardingPagesViewController {
         
         if (isScreenWide) {
             NSLayoutConstraint.activate([
-               
+                               
                 imageView.widthAnchor.constraint(equalToConstant: 700),
                 imageView.bottomAnchor.constraint(equalTo: titleLabel.topAnchor, constant: -240),
-                                                
+                
+                stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor,constant: 80),
+
             ])
         } else {
             NSLayoutConstraint.activate([
 
-                stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+                stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor,constant: -20),
 
-                imageView.widthAnchor.constraint(equalToConstant: 200),
+                
+                imageView.bottomAnchor.constraint(equalTo: titleLabel.topAnchor, constant: -15),
+                imageView.widthAnchor.constraint(equalToConstant: 100),
+                imageView.heightAnchor.constraint(equalToConstant: 325),
+//                stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+
+//                imageView.widthAnchor.constraint(equalToConstant: 200),
 
             ])
         }

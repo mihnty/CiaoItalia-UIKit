@@ -35,7 +35,6 @@ class OnBoardingMainViewController: UIViewController {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }
-    
 
     private let mainOnBoardingVC = DemoViewController()
     
@@ -95,6 +94,9 @@ class OnBoardingMainViewController: UIViewController {
             NSLayoutConstraint.activate([
 
                 tapeImageView.widthAnchor.constraint(equalToConstant: 200),
+                
+                mapImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -100),
+
 
             ])
         }

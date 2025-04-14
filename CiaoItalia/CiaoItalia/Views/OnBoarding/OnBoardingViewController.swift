@@ -67,7 +67,7 @@ extension DemoViewController {
         backButton.addTarget(self, action: #selector(backTapped(_:)), for: .primaryActionTriggered)
         
         if isScreenWide {
-                nextButton.titleLabel?.font = UIFont.systemFont(ofSize: 30, weight: .medium)
+            nextButton.titleLabel?.font = UIFont.systemFont(ofSize: 30, weight: .medium)
             backButton.titleLabel?.font = UIFont.systemFont(ofSize: 30, weight: .medium)
         } else {
             nextButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -83,9 +83,9 @@ extension DemoViewController {
         NSLayoutConstraint.activate([
             
             pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            view.bottomAnchor.constraint(equalTo: pageControl.bottomAnchor,constant: 54),
+            view.bottomAnchor.constraint(equalTo: pageControl.bottomAnchor,constant: 24),
             
-            view.bottomAnchor.constraint(equalTo: nextButton.bottomAnchor, constant: 48),
+            view.bottomAnchor.constraint(equalTo: nextButton.bottomAnchor, constant: 24),
             view.trailingAnchor.constraint(equalTo: nextButton.trailingAnchor, constant: 24),
             
             view.leadingAnchor.constraint(equalTo: backButton.leadingAnchor, constant: -24),
@@ -182,7 +182,7 @@ extension DemoViewController: UIPageViewControllerDelegate {
         }
 
         private func showControls() {
-            backButtonBottomAnchor?.constant = 48
+            backButtonBottomAnchor?.constant = 24
         }
     
 }
