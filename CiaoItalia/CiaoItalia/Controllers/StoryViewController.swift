@@ -86,9 +86,9 @@ class StoryViewController: UIViewController, ContentDelegate {
     @objc func changeTableView(_ sender:UISegmentedControl){
         switch sender.selectedSegmentIndex {
         case 0:
-            print("repertório")
+            repertoryVC.view.isHidden = false
         case 1:
-            print("dialogo")
+            repertoryVC.view.gisHidden = true
         default:
             print("algo deu errado")
         }
