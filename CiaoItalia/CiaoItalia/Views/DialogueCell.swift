@@ -7,9 +7,6 @@
 
 import UIKit
 
-//protocol DialogueCellDelegate: AnyObject {
-//    func tapButton(_ sender: UIButton)
-//}
 
 class DialogueCell: UITableViewCell {
     private var leadingConstraint: NSLayoutConstraint?
@@ -38,19 +35,24 @@ class DialogueCell: UITableViewCell {
         return arrow
     }()
     
+    private var playIcon = {
+        let playIcon = UIImageView(image: UIImage(named: "dialogueSpeaker"))
+        playIcon.translatesAutoresizingMaskIntoConstraints = false
+        playIcon.contentMode = .scaleAspectFit
+        
+        return playIcon
+        
+    }()
+    
     private var playButton = {
         let playButton = UIButton(type: .custom)
-        playButton.setImage(UIImage(named: "dialogueSpeaker"), for: .normal)
+        playButton.backgroundColor = .clear
         playButton.translatesAutoresizingMaskIntoConstraints = false
+        
         return playButton
     }()
     
-    private var buttonTeste = {
-        let button = UIButton(type: .system)
-        button.setTitle("Teste", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+
     
     private var translation = {
         let text = UILabel()
@@ -88,7 +90,6 @@ class DialogueCell: UITableViewCell {
         rectangle.layer.shadowRadius = 0.1
         rectangle.layer.masksToBounds = false
         return rectangle
-        
     }()
     
     private var verticalstack: UIStackView = {
@@ -136,11 +137,13 @@ class DialogueCell: UITableViewCell {
         contentView.addSubview(arrow2)
         contentView.addSubview(verticalstack)
         verticalstack.addArrangedSubview(container)
+        
         verticalstack.addArrangedSubview(translation)
         container.addSubview(dialoguebox)
         container.addSubview(dialoguebox2)
         container.addSubview(dialoguestack)
-        dialoguestack.addArrangedSubview(playButton)
+        container.addSubview(playButton)
+        dialoguestack.addArrangedSubview(playIcon)
         
         
 
@@ -166,13 +169,15 @@ class DialogueCell: UITableViewCell {
             verticalstack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
             verticalstack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             verticalstack.widthAnchor.constraint(equalToConstant: 252),
-            //verticalstack.heightAnchor.constraint(equalToConstant: 168),
+            verticalstack.heightAnchor.constraint(equalToConstant: 168),
             
             arrow2.leadingAnchor.constraint(equalTo: verticalstack.trailingAnchor, constant: -14),
             arrow2.topAnchor.constraint(equalTo: dialoguebox2.topAnchor, constant: 8),
             
             container.centerYAnchor.constraint(equalTo: verticalstack.centerYAnchor),
             container.centerXAnchor.constraint(equalTo: verticalstack.centerXAnchor),
+            
+            
             
             
             dialoguestack.topAnchor.constraint(equalTo: dialoguebox2.topAnchor, constant: 8),
@@ -184,9 +189,16 @@ class DialogueCell: UITableViewCell {
             dialoguebox2.leadingAnchor.constraint(equalTo: dialoguebox.leadingAnchor),
             dialoguebox2.trailingAnchor.constraint(equalTo: dialoguebox.trailingAnchor),
             dialoguebox2.heightAnchor.constraint(equalTo: dialoguebox.heightAnchor),
-//
+            
+            playButton.topAnchor.constraint(equalTo: container.topAnchor),
+            playButton.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            playButton.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            playButton.heightAnchor.constraint(equalTo: container.heightAnchor),
+            
+            
+            
             dialoguebox.heightAnchor.constraint(greaterThanOrEqualToConstant: 60),
-//
+
             italian.widthAnchor.constraint(equalToConstant: 172.0),
         
             translation.topAnchor.constraint(equalTo: container.bottomAnchor, constant: +4),
@@ -195,25 +207,17 @@ class DialogueCell: UITableViewCell {
             
             arrow.leadingAnchor.constraint(equalTo: verticalstack.leadingAnchor, constant: -12),
             arrow.topAnchor.constraint(equalTo: dialoguebox2.topAnchor, constant: 8),
-            //playButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            //playButton.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+
             
             
         ])
-        //self.bringSubviewToFront(playButton)
         trailingConstraint?.isActive = true
     }
     
     func setupActions() {
-        print("eae ner??")
         playButton.addTarget(self, action: #selector(handlePlayButtonTapped), for: .touchUpInside)
-        print("abdkasjh")
-        buttonTeste.addTarget(self, action: #selector(teste), for: .touchUpInside)
     }
     
-    @objc func teste(){
-        print("toquei")
-    }
     
     @objc func handlePlayButtonTapped(_ sender: UIButton) {
         guard let text = italian.text else { return }
@@ -229,13 +233,12 @@ class DialogueCell: UITableViewCell {
         arrow2.isHidden = true
 
                 
-        // Limpa a stack antes de reconfigurar
             dialoguestack.arrangedSubviews.forEach { dialoguestack.removeArrangedSubview($0); $0.removeFromSuperview() }
 
             if line.type == .question {
                 verticalstack.alignment = .leading
                 dialoguestack.alignment = .center
-                dialoguestack.addArrangedSubview(playButton)
+                dialoguestack.addArrangedSubview(playIcon)
                 dialoguestack.addArrangedSubview(italian)
                 trailingConstraint?.isActive = true
                 leadingConstraint?.isActive = false
@@ -246,7 +249,7 @@ class DialogueCell: UITableViewCell {
                 verticalstack.alignment = .trailing
                 dialoguestack.alignment = .center
                 dialoguestack.addArrangedSubview(italian)
-                dialoguestack.addArrangedSubview(playButton)
+                dialoguestack.addArrangedSubview(playIcon)
                 trailingConstraint?.isActive = false
                 leadingConstraint?.isActive = true
                 dialoguebox.backgroundColor = .darkBeige

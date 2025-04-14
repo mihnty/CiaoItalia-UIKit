@@ -24,9 +24,6 @@ class DialogueViewController: UIViewController, UITableViewDataSource, UITableVi
             let dialogue = Museum.dialogue[indexPath.row]
             cell.configure(with: dialogue)
 
- 
-        //cell.selectionStyle = .none
-//        cell.delegate = self
             return cell
     }
     
@@ -46,7 +43,6 @@ class DialogueViewController: UIViewController, UITableViewDataSource, UITableVi
         super.viewDidLoad()
         setup()
 
-        // Do any additional setup after loading the view.
     }
     private func setup(){
         setupViewHierarchy()
