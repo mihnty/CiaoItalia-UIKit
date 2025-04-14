@@ -75,9 +75,6 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
         view.addSubview(rightArrowButton)
         view.addSubview(pageControl)
         
-        //navigationItem.backBarButtonItem = UIBarButtonItem(title: "Diário de Viagem", style: .plain, target: nil, action: nil)
-        
-        navigationItem.backButtonTitle = "Voltar"
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),

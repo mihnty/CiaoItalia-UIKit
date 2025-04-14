@@ -34,10 +34,12 @@ class StoryViewController: UIViewController, ContentDelegate {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationItem.backButtonTitle = "Voltar"
-        navigationController?.navigationBar.tintColor = UIColor(named: "textColor")
+        
+        navigationController?.navigationBar.tintColor = UIColor(named:"textColor")
+        
         view.backgroundColor = UIColor(named: "background")
         
         view.addSubview(backgroundImageView)
@@ -109,6 +111,9 @@ class StoryViewController: UIViewController, ContentDelegate {
         default:
             print("algo deu errado")
         }
+    }
+    @objc func customBackAction() {
+        navigationController?.popViewController(animated: true)
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
