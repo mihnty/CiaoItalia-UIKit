@@ -10,20 +10,23 @@ import UIKit
 class OnBoardingMainViewController: UIViewController {
     let isScreenWide = UIScreen.main.bounds.width > 405
     
-    private let backgroundImageView: UIImageView = {
-        return UIImageView(image: UIImage(named: "backgroundOnBoard"))
+    private lazy var backgroundImageView: UIImageView = {
+        return self.makeImageView(named: "backgroundOnBoard")
     }()
     
-    private let titleLabel: UILabel = {
-        let label = FuzzyFontLabel(text: "Cada página traz uma nova situação", textStyle: .title1, textColor: .darkGrey)
-       
-        return label
+    private lazy var mapImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "mapa"))
+        if isScreenWide {
+            imageView.contentMode = .scaleAspectFill
+        } else {
+            imageView.contentMode = .scaleAspectFit
+        }
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
     }()
     
-    private let subtitleLabel: UILabel = {
-        let label = NormalFontLabel(text: "Vivencie desafios reais de viagem e aprenda expressões para guardar na memória.", textStyle: .body, textColor: .darkGrey, textWeight: .medium)
-        
-        return label
+    private lazy var tapeImageView: UIImageView = {
+        return self.makeImageView(named: "tape")
     }()
     
     private func makeImageView(named imageName: String) -> UIImageView {
@@ -33,6 +36,9 @@ class OnBoardingMainViewController: UIViewController {
         return imageView
     }
     
+
+    private let mainOnBoardingVC = DemoViewController()
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -40,34 +46,59 @@ class OnBoardingMainViewController: UIViewController {
     }
     
     func setup() {
+        view.addSubview(backgroundImageView)
         setupImages()
-        view.addSubview(titleLabel)
-        view.addSubview(subtitleLabel)
+        setupViews()
         setupConstraints()
-        
     }
     
     func setupImages(){
-        view.addSubview(backgroundImageView)
-        
+        view.addSubview(mapImageView)
+        view.addSubview(tapeImageView)
+    }
+    
+    func setupViews(){
+        addChild(mainOnBoardingVC)
+        view.addSubview(mainOnBoardingVC.view)
     }
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            titleLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            titleLabel.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
-            titleLabel.widthAnchor.constraint(equalToConstant: 400),
             
-            subtitleLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
-            subtitleLabel.widthAnchor.constraint(equalToConstant: 400),
-            
-            backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor),
-            backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            backgroundImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            backgroundImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            
+                backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor),
+                backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                backgroundImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                backgroundImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                
+                mainOnBoardingVC.view.topAnchor.constraint(equalTo: view.topAnchor),
+                mainOnBoardingVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                mainOnBoardingVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                mainOnBoardingVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                
+                mapImageView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+                mapImageView.widthAnchor.constraint(equalTo: view.widthAnchor),
+                
+                tapeImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: -4),
+                tapeImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 20),
         ])
+        
+        if (isScreenWide) {
+            NSLayoutConstraint.activate([
+               
+                tapeImageView.widthAnchor.constraint(equalToConstant: 400),
+                
+                mapImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -180),
+                
+                
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+
+                tapeImageView.widthAnchor.constraint(equalToConstant: 200),
+
+            ])
+        }
+        
     }
 }
 

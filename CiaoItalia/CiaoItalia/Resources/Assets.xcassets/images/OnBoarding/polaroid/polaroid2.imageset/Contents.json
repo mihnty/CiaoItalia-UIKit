@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "turistando.png",
+      "filename" : "polaroid2.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -12,11 +12,12 @@
           "value" : "dark"
         }
       ],
+      "filename" : "dpolaroid2.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "turistando@2x.png",
+      "filename" : "polaroid2@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
@@ -27,11 +28,12 @@
           "value" : "dark"
         }
       ],
+      "filename" : "dpolaroid2@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "turistando@3x.png",
+      "filename" : "polaroid2@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     },
@@ -42,6 +44,7 @@
           "value" : "dark"
         }
       ],
+      "filename" : "dpolaroid2@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
