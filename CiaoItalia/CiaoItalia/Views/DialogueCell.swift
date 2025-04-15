@@ -15,7 +15,7 @@ class DialogueCell: UITableViewCell {
     var italian = {
         let text = UILabel()
         text.translatesAutoresizingMaskIntoConstraints = false
-        text.textColor = .black
+        text.textColor = .mediumGray
         text.textAlignment = .left
         
         text.numberOfLines = 0
@@ -57,10 +57,10 @@ class DialogueCell: UITableViewCell {
     private var translation = {
         let text = UILabel()
         text.translatesAutoresizingMaskIntoConstraints = false
-        text.font = .systemFont(ofSize: 16, weight: .medium)
+        //text.font = .systemFont(ofSize: 16, weight: .medium)
         
         text.numberOfLines = 0
-        text.textColor = .black
+        text.textColor = .mediumGray
         return text
     }()
     private var dialoguebox = {
@@ -107,13 +107,7 @@ class DialogueCell: UITableViewCell {
         view.spacing = 8
         return view
     }()
-    
-    private var ab: UIView = {
-        let teste = UIView()
-        teste.backgroundColor = .red
-        teste.translatesAutoresizingMaskIntoConstraints = false
-        return teste
-    }()
+
         
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -176,16 +170,17 @@ class DialogueCell: UITableViewCell {
             verticalstack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
             verticalstack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             verticalstack.widthAnchor.constraint(equalToConstant: 252),
-            verticalstack.heightAnchor.constraint(greaterThanOrEqualToConstant: 400),
+            //verticalstack.heightAnchor.constraint(greaterThanOrEqualToConstant: 400),
             
-            ab.heightAnchor.constraint(equalToConstant: 20),
-            ab.widthAnchor.constraint(equalToConstant: 20),
             
             arrow2.leadingAnchor.constraint(equalTo: verticalstack.trailingAnchor, constant: -14),
             arrow2.topAnchor.constraint(equalTo: dialoguebox2.topAnchor, constant: 8),
             
             container.centerYAnchor.constraint(equalTo: verticalstack.centerYAnchor),
             container.centerXAnchor.constraint(equalTo: verticalstack.centerXAnchor),
+            
+            dialoguebox.topAnchor.constraint(equalTo: verticalstack.topAnchor),
+            dialoguebox.bottomAnchor.constraint(equalTo: translation.topAnchor, constant: -20),
             
             dialoguestack.topAnchor.constraint(equalTo: dialoguebox2.topAnchor, constant: 8),
             dialoguestack.leadingAnchor.constraint(equalTo: dialoguebox2.leadingAnchor, constant: 16),
@@ -209,6 +204,7 @@ class DialogueCell: UITableViewCell {
             translation.topAnchor.constraint(equalTo: dialoguebox.bottomAnchor, constant: 20),
             translation.leadingAnchor.constraint(equalTo: verticalstack.leadingAnchor, constant: 4),
             translation.trailingAnchor.constraint(equalTo: verticalstack.trailingAnchor, constant: -4),
+            translation.bottomAnchor.constraint(equalTo: verticalstack.bottomAnchor, constant: -18),
             
             arrow.leadingAnchor.constraint(equalTo: verticalstack.leadingAnchor, constant: -12),
             arrow.topAnchor.constraint(equalTo: dialoguebox2.topAnchor, constant: 8),
@@ -231,7 +227,11 @@ class DialogueCell: UITableViewCell {
     
     func configure(with line: DialogueLine) {
         italian.text = line.italian
+        let italianFont = NormalFontLabel(text: line.italian, textStyle: .body, textColor: .mediumGray, textWeight: .medium)
+        italian.font = italianFont.font
         translation.text = line.translation
+        let translationFont = NormalFontLabel(text: line.italian, textStyle: .callout, textColor: .mediumGray, textWeight: .medium)
+        translation.font = translationFont.font
         arrow.isHidden = true
         arrow2.isHidden = true
 
