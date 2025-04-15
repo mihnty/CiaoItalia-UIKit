@@ -9,7 +9,7 @@ import UIKit
 
 class OnBoardingMainViewController: UIViewController {
     let isScreenWide = UIScreen.main.bounds.width > 405
-    
+            
     private lazy var backgroundImageView: UIImageView = {
         return self.makeImageView(named: "backgroundOnBoard")
     }()
@@ -38,10 +38,28 @@ class OnBoardingMainViewController: UIViewController {
 
     private let mainOnBoardingVC = DemoViewController()
     
+    private var isOnBoardingSeen: Bool!
+    
+//    private func showInitialOnBoarding() {
+//        if isOnBoardingSeen {
+//            NextViewController()
+//        } else {
+//            OnBoardingMainViewController()
+//        }
+//    }
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
         setup()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        if isBeingPresented || isMovingToParent {
+        } else {
+        }
     }
     
     func setup() {

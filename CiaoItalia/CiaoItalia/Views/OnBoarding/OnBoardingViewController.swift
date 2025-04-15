@@ -205,6 +205,7 @@ extension DemoViewController {
             transition.type = .moveIn
             transition.subtype = .fromRight
             view.window!.layer.add(transition, forKey: kCATransition)
+            UserDefaults.standard.hasBoarded = true
             present(nextVC, animated: false, completion: nil)
         } else {
             pageControl.currentPage += 1
