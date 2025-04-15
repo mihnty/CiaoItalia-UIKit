@@ -11,3 +11,4 @@ struct DialogueLine {
     let translation: String
     let type: DialogueType
 }
+

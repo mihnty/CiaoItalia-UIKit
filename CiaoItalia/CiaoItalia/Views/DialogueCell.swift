@@ -57,8 +57,6 @@ class DialogueCell: UITableViewCell {
     private var translation = {
         let text = UILabel()
         text.translatesAutoresizingMaskIntoConstraints = false
-        //text.font = .systemFont(ofSize: 16, weight: .medium)
-        
         text.numberOfLines = 0
         text.textColor = .mediumGray
         return text
@@ -104,7 +102,7 @@ class DialogueCell: UITableViewCell {
         let view = UIStackView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.axis = .horizontal
-        view.spacing = 8
+        view.spacing = 16
         return view
     }()
 
@@ -170,8 +168,6 @@ class DialogueCell: UITableViewCell {
             verticalstack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
             verticalstack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             verticalstack.widthAnchor.constraint(equalToConstant: 252),
-            //verticalstack.heightAnchor.constraint(greaterThanOrEqualToConstant: 400),
-            
             
             arrow2.leadingAnchor.constraint(equalTo: verticalstack.trailingAnchor, constant: -14),
             arrow2.topAnchor.constraint(equalTo: dialoguebox2.topAnchor, constant: 8),
@@ -181,11 +177,12 @@ class DialogueCell: UITableViewCell {
             
             dialoguebox.topAnchor.constraint(equalTo: verticalstack.topAnchor),
             dialoguebox.bottomAnchor.constraint(equalTo: translation.topAnchor, constant: -20),
+            //dialoguebox.trailingAnchor.constraint(equalTo: verticalstack.trailingAnchor, constant: -16),
             
             dialoguestack.topAnchor.constraint(equalTo: dialoguebox2.topAnchor, constant: 8),
             dialoguestack.leadingAnchor.constraint(equalTo: dialoguebox2.leadingAnchor, constant: 16),
             dialoguestack.bottomAnchor.constraint(equalTo: dialoguebox2.bottomAnchor, constant: -8),
-            dialoguestack.trailingAnchor.constraint(equalTo: dialoguebox2.trailingAnchor, constant: -12),
+            dialoguestack.trailingAnchor.constraint(equalTo: dialoguebox2.trailingAnchor, constant: -4),
 
             dialoguebox2.topAnchor.constraint(equalTo: dialoguebox.topAnchor),
             dialoguebox2.leadingAnchor.constraint(equalTo: dialoguebox.leadingAnchor),

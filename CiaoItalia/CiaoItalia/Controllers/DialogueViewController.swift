@@ -8,38 +8,60 @@
 import UIKit
 
 class DialogueViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
-
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         Museum.dialogue.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = dialogueTableView.dequeueReusableCell(
-            withIdentifier: DialogueCell.identifier,
-            for: indexPath) as? DialogueCell else { return UITableViewCell() }
-            let dialogue = Museum.dialogue[indexPath.row]
-            cell.configure(with: dialogue)
-            cell.selectionStyle = .none
+        
+        let dialogue = Museum.dialogue[indexPath.row]
+        
+        switch(dialogue){
+        case .title(let text):
+            guard let cell = dialogueTableView.dequeueReusableCell(withIdentifier: TitleCell.identifier, for: indexPath ) as? TitleCell else {
+                return UITableViewCell()
+                
+            }
+            cell.configure(with: text)
             return cell
+        case .dialogue(let line):
+            guard let cell = dialogueTableView.dequeueReusableCell(withIdentifier: DialogueCell.identifier, for: indexPath ) as? DialogueCell else {
+                return UITableViewCell()
+                
+            }
+            cell.configure(with: line)
+            return cell
+            
+        case .end(let text):
+            guard let cell = dialogueTableView.dequeueReusableCell(withIdentifier: EndCell.identifier, for: indexPath ) as? EndCell else {
+                return UITableViewCell()
+                
+            }
+            cell.configure(with: text)
+            return cell
+            }
     }
     
     
-
+    
     
     lazy var dialogueTableView: UITableView = {
-       let dialogueTableView = UITableView()
+        let dialogueTableView = UITableView()
         dialogueTableView.translatesAutoresizingMaskIntoConstraints = false
         dialogueTableView.dataSource = self
         dialogueTableView.delegate = self
         dialogueTableView.register(DialogueCell.self, forCellReuseIdentifier: DialogueCell.identifier)
+        dialogueTableView.register(TitleCell.self, forCellReuseIdentifier: TitleCell.identifier)
+        dialogueTableView.register(EndCell.self, forCellReuseIdentifier: EndCell.identifier)
         return dialogueTableView
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-
+        
     }
     private func setup(){
         setupViewHierarchy()
@@ -56,24 +78,17 @@ class DialogueViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     private func setupConstraints() {
-      NSLayoutConstraint.activate([
-        dialogueTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-        dialogueTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-        dialogueTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-        dialogueTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-      ])
+        NSLayoutConstraint.activate([
+            dialogueTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            dialogueTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            dialogueTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            dialogueTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+        ])
     }
+    
+     // MARK: - Navigation
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    
 }
 
 #Preview{

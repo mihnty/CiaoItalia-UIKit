@@ -11,3 +11,9 @@ enum DialogueType {
     case question
     case answer
 }
+
+enum DialogueItem {
+    case title(String)
+    case dialogue(DialogueLine)
+    case end(String)
+}
