@@ -58,6 +58,7 @@ class DialogueCell: UITableViewCell {
         let text = UILabel()
         text.translatesAutoresizingMaskIntoConstraints = false
         text.font = .systemFont(ofSize: 16, weight: .medium)
+        
         text.numberOfLines = 0
         text.textColor = .black
         return text
@@ -106,6 +107,13 @@ class DialogueCell: UITableViewCell {
         view.spacing = 8
         return view
     }()
+    
+    private var ab: UIView = {
+        let teste = UIView()
+        teste.backgroundColor = .red
+        teste.translatesAutoresizingMaskIntoConstraints = false
+        return teste
+    }()
         
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -137,13 +145,12 @@ class DialogueCell: UITableViewCell {
         contentView.addSubview(arrow2)
         contentView.addSubview(verticalstack)
         verticalstack.addArrangedSubview(container)
-        
-        verticalstack.addArrangedSubview(translation)
+        contentView.addSubview(translation)
+        dialoguestack.addArrangedSubview(playIcon)
         container.addSubview(dialoguebox)
         container.addSubview(dialoguebox2)
         container.addSubview(dialoguestack)
         container.addSubview(playButton)
-        dialoguestack.addArrangedSubview(playIcon)
         
         
 
@@ -169,7 +176,10 @@ class DialogueCell: UITableViewCell {
             verticalstack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
             verticalstack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             verticalstack.widthAnchor.constraint(equalToConstant: 252),
-            verticalstack.heightAnchor.constraint(equalToConstant: 168),
+            verticalstack.heightAnchor.constraint(greaterThanOrEqualToConstant: 400),
+            
+            ab.heightAnchor.constraint(equalToConstant: 20),
+            ab.widthAnchor.constraint(equalToConstant: 20),
             
             arrow2.leadingAnchor.constraint(equalTo: verticalstack.trailingAnchor, constant: -14),
             arrow2.topAnchor.constraint(equalTo: dialoguebox2.topAnchor, constant: 8),
@@ -177,39 +187,32 @@ class DialogueCell: UITableViewCell {
             container.centerYAnchor.constraint(equalTo: verticalstack.centerYAnchor),
             container.centerXAnchor.constraint(equalTo: verticalstack.centerXAnchor),
             
-            
-            
-            
             dialoguestack.topAnchor.constraint(equalTo: dialoguebox2.topAnchor, constant: 8),
             dialoguestack.leadingAnchor.constraint(equalTo: dialoguebox2.leadingAnchor, constant: 16),
             dialoguestack.bottomAnchor.constraint(equalTo: dialoguebox2.bottomAnchor, constant: -8),
-            dialoguestack.trailingAnchor.constraint(equalTo: dialoguebox2.trailingAnchor, constant: -8),
+            dialoguestack.trailingAnchor.constraint(equalTo: dialoguebox2.trailingAnchor, constant: -12),
 
             dialoguebox2.topAnchor.constraint(equalTo: dialoguebox.topAnchor),
             dialoguebox2.leadingAnchor.constraint(equalTo: dialoguebox.leadingAnchor),
             dialoguebox2.trailingAnchor.constraint(equalTo: dialoguebox.trailingAnchor),
             dialoguebox2.heightAnchor.constraint(equalTo: dialoguebox.heightAnchor),
             
-            playButton.topAnchor.constraint(equalTo: container.topAnchor),
-            playButton.leadingAnchor.constraint(equalTo: container.leadingAnchor),
-            playButton.trailingAnchor.constraint(equalTo: container.trailingAnchor),
-            playButton.heightAnchor.constraint(equalTo: container.heightAnchor),
-            
-            
+            playButton.topAnchor.constraint(equalTo: dialoguebox.topAnchor),
+            playButton.leadingAnchor.constraint(equalTo: dialoguebox.leadingAnchor),
+            playButton.trailingAnchor.constraint(equalTo: dialoguebox.trailingAnchor),
+            playButton.heightAnchor.constraint(equalTo: dialoguebox.heightAnchor),
             
             dialoguebox.heightAnchor.constraint(greaterThanOrEqualToConstant: 60),
 
             italian.widthAnchor.constraint(equalToConstant: 172.0),
         
-            translation.topAnchor.constraint(equalTo: container.bottomAnchor, constant: +4),
-            translation.leadingAnchor.constraint(equalTo: verticalstack.leadingAnchor),
-            translation.trailingAnchor.constraint(equalTo: verticalstack.trailingAnchor),
+            translation.topAnchor.constraint(equalTo: dialoguebox.bottomAnchor, constant: 20),
+            translation.leadingAnchor.constraint(equalTo: verticalstack.leadingAnchor, constant: 4),
+            translation.trailingAnchor.constraint(equalTo: verticalstack.trailingAnchor, constant: -4),
             
             arrow.leadingAnchor.constraint(equalTo: verticalstack.leadingAnchor, constant: -12),
             arrow.topAnchor.constraint(equalTo: dialoguebox2.topAnchor, constant: 8),
 
-            
-            
         ])
         trailingConstraint?.isActive = true
     }

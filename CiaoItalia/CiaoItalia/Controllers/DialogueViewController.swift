@@ -8,10 +8,7 @@
 import UIKit
 
 class DialogueViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
-    func tapButton(_ sender: UIButton) {
-        print("Botão de áudio tocado dentro da viewcontroller3")
-        
-    }
+
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         Museum.dialogue.count
@@ -23,7 +20,7 @@ class DialogueViewController: UIViewController, UITableViewDataSource, UITableVi
             for: indexPath) as? DialogueCell else { return UITableViewCell() }
             let dialogue = Museum.dialogue[indexPath.row]
             cell.configure(with: dialogue)
-
+            cell.selectionStyle = .none
             return cell
     }
     
@@ -56,7 +53,6 @@ class DialogueViewController: UIViewController, UITableViewDataSource, UITableVi
     
     private func setupViewAttributes() {
         dialogueTableView.backgroundColor = .black
-        //dialogueTableView.rowHeight = 400
     }
     
     private func setupConstraints() {
