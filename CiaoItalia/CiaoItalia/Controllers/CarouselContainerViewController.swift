@@ -52,7 +52,7 @@ class CarouselContainerViewController: UIViewController {
         return stackView
     }()
     
-    private let titleLabel: UILabel = {
+    private var titleLabel: UILabel = {
         let label = FuzzyFontLabel(text: "Diário de Viagem", textStyle: .largeTitle, textColor: .lightGrayText)
         return label
     }()
@@ -91,6 +91,7 @@ class CarouselContainerViewController: UIViewController {
     func setupViews(){
         addChild(carouselVC)
         view.addSubview(carouselVC.view)
+        titleLabel = FuzzyFontLabel(text: "Diário de Viagem", textStyle: isScreenWide ? .extraLargeTitle : .largeTitle, textColor: .lightGrayText)
         titleStackView.addArrangedSubview(titleLabel)
         titleStackView.addArrangedSubview(detailsImageView)
         view.addSubview(titleStackView)
