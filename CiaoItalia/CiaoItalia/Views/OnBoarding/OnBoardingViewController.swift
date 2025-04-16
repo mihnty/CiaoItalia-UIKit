@@ -30,9 +30,9 @@ extension DemoViewController {
         
         pageControl.addTarget(self, action: #selector(pageControlTapped(_:)), for: .valueChanged)
 
-        let page1 = OnboardingPagesViewController(imageName: "polaroid1", titleText: "Cada página traz uma nova situação", subtitleText: "Vivencie desafios reais de viagem e aprenda expressões para guardar na memória.")
-        let page2 = OnboardingPagesViewController(imageName: "polaroid2", titleText: "Seu diário revela momentos únicos", subtitleText: "Explore o idioma em experiências autênticas e fale como um verdadeiro local.")
-        let page3 = OnboardingPagesViewController(imageName: "polaroid3", titleText: "Escute o idioma ganhando vida", subtitleText: "O italiano ganha vida quando você escuta, explora e sente cada palavra.\nÉ hora de abrir seu diário de viagem!")
+        let page1 = OnboardingPagesViewController(imageName: "polaroid1", titleText: "Cada página traz uma nova situação", subtitleText: "Vivencie desafios reais de viagem e aprenda expressões para guardar na memória.", imageAccessibilityLabel: "Polaroid Meu Diário de Viagem")
+        let page2 = OnboardingPagesViewController(imageName: "polaroid2", titleText: "Seu diário revela momentos únicos", subtitleText: "Explore o idioma em experiências autênticas e fale como um verdadeiro local.", imageAccessibilityLabel: "Polaroids Edificios na Cidade e Cafeteria")
+        let page3 = OnboardingPagesViewController(imageName: "polaroid3", titleText: "Escute o idioma ganhando vida", subtitleText: "O italiano ganha vida quando você escuta, explora e sente cada palavra.\nÉ hora de abrir seu diário de viagem!", imageAccessibilityLabel: "Polaroid Mesa com Pratos de Comida")
         
         pages.append(page1)
         pages.append(page2)
@@ -61,6 +61,7 @@ extension DemoViewController {
         backButton.setTitleColor(.darkGrey, for: .normal)
         backButton.layer.cornerRadius = 12
         backButton.setTitle("Voltar", for: .normal)
+        backButton.accessibilityLabel = "Botão de voltar página"
         backButton.backgroundColor = .mustard.withAlphaComponent(0.5)
         backButton.layer.borderColor = UIColor.darkYellow.cgColor
         backButton.layer.borderWidth = 2
@@ -159,8 +160,12 @@ extension DemoViewController: UIPageViewControllerDelegate {
         
         if lastPage {
             nextButton.setTitle("Continuar", for: .normal)
+            nextButton.accessibilityLabel = "Botão de continuar"
+
         } else {
             nextButton.setTitle("Avançar", for: .normal)
+            nextButton.accessibilityLabel = "Botão de avançar página"
+
         }
         
         if firstPage {

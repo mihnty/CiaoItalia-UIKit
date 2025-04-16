@@ -10,10 +10,14 @@ class OnboardingPagesViewController: UIViewController {
     private let titleLabel: FuzzyFontLabel
     private let subtitleLabel: NormalFontLabel
     
-    init(imageName: String, titleText: String, subtitleText: String) {
+    init(imageName: String, titleText: String, subtitleText: String, imageAccessibilityLabel: String) {
         self.titleLabel = FuzzyFontLabel(text: titleText, textStyle: isScreenWide ? .largeTitle : .title1, textColor: .darkGrey)
         self.subtitleLabel = NormalFontLabel(text: subtitleText, textStyle: isScreenWide ? .largeTitle : .body, textColor: .darkGrey, textWeight: .medium)
         self.imageView.contentMode = .scaleAspectFill
+        self.imageView.backgroundColor = .red
+        self.imageView.isAccessibilityElement = true
+        self.imageView.accessibilityLabel = imageAccessibilityLabel
+
         super.init(nibName: nil, bundle: nil)
         imageView.image = UIImage(named: imageName)
     }
@@ -73,8 +77,8 @@ extension OnboardingPagesViewController {
 
                 
                 imageView.bottomAnchor.constraint(equalTo: titleLabel.topAnchor, constant: -15),
-                imageView.widthAnchor.constraint(equalToConstant: 100),
-                imageView.heightAnchor.constraint(equalToConstant: 325),
+                imageView.widthAnchor.constraint(equalToConstant: 270),
+                imageView.heightAnchor.constraint(equalToConstant: 300),
 //                stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
 
 //                imageView.widthAnchor.constraint(equalToConstant: 200),
