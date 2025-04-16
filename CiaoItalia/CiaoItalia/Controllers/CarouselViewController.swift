@@ -79,7 +79,7 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
             rightArrowButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: isScreenWide ? -60 : -16),
             
             pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            pageControl.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: isScreenWide ? 250.0 : 210.0)
+            pageControl.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: isScreenWide ? 340.0 : 210.0)
         ])
         
         if(isScreenWide){
