@@ -13,7 +13,7 @@ class MainCarouselCardView: UICollectionViewCell {
     
     private let image: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -69,7 +69,7 @@ class MainCarouselCardView: UICollectionViewCell {
         let width70Constraint = whiteSquare.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.8)
         width70Constraint.priority = UILayoutPriority(750)
         
-        let maxWidthConstraint = whiteSquare.widthAnchor.constraint(lessThanOrEqualToConstant: 360)
+        let maxWidthConstraint = whiteSquare.widthAnchor.constraint(lessThanOrEqualToConstant: 480)
         maxWidthConstraint.priority = UILayoutPriority(1000)
         
         let deviceWidth = UIScreen.main.bounds.width
@@ -85,6 +85,7 @@ class MainCarouselCardView: UICollectionViewCell {
             whiteSquare.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             
             image.widthAnchor.constraint(equalTo: whiteSquare.widthAnchor, multiplier: 0.9),
+            image.heightAnchor.constraint(equalTo: image.widthAnchor),
             image.topAnchor.constraint(equalTo: whiteSquare.topAnchor, constant: dynamicTopConstant),
             image.centerXAnchor.constraint(equalTo: whiteSquare.centerXAnchor),
             
@@ -112,5 +113,5 @@ struct MainCarouselCardViewPreview: UIViewRepresentable {
 }
 
 #Preview {
-    MainCarouselCardViewPreview()
+    UINavigationController(rootViewController: CarouselContainerViewController())
 }
