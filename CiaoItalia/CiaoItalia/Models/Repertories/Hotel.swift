@@ -15,6 +15,7 @@ enum Hotel:ContentType {
     var title:String {
         return "no hotel"
     }
+    
     var imageName:String {
         switch self {
         case .reservation:

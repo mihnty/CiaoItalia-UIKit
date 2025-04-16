@@ -61,6 +61,7 @@ class CarouselContainerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.hidesBackButton = true
         navigationItem.backButtonTitle = "Diário de Viagem"
         view.backgroundColor = .background
         setup()
