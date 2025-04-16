@@ -17,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let window = UIWindow(windowScene: windowScene)
         //cria a pilha de navegação do aplicativo e diz qual view começa
-        let navController = UINavigationController(rootViewController: DialogueViewController())
+        let navController = UINavigationController(rootViewController: CarouselContainerViewController())
         window.rootViewController = navController
         window.makeKeyAndVisible()
             
