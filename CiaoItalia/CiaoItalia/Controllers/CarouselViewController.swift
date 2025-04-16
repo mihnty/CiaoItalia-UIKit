@@ -24,23 +24,10 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
     let isScreenWide = UIScreen.main.bounds.width > 405
     private var currentIndex: Int = 0
     
-    private lazy var leftArrowButton: UIButton = {
-        let button = UIButton(type: .custom)
-        let image = UIImage(named: "MainScreenLeftArrow")
-        button.setImage(image, for: .normal)
-        button.addTarget(self, action: #selector(didTapLeft), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    private lazy var rightArrowButton: UIButton = {
-        let button = UIButton(type: .custom)
-        let image = UIImage(named: "MainScreenRightArrow")
-        button.setImage(image, for: .normal)
-        button.addTarget(self, action: #selector(didTapRight), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+    private let arrowSize: CGFloat = 64
+        
+    private lazy var leftArrowButton: UIButton  = makeArrowButton(direction: .left)
+    private lazy var rightArrowButton: UIButton = makeArrowButton(direction: .right)
     
     private lazy var pageControl: UIPageControl = {
         let pc = UIPageControl()
@@ -86,17 +73,27 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
             leftArrowButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            leftArrowButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            leftArrowButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: isScreenWide ? 60 : 16),
             
             rightArrowButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            rightArrowButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            rightArrowButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: isScreenWide ? -60 : -16),
             
             pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             pageControl.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: isScreenWide ? 250.0 : 210.0)
         ])
+        
+        if(isScreenWide){
+            NSLayoutConstraint.activate([
+                rightArrowButton.widthAnchor.constraint(equalToConstant: arrowSize),
+                rightArrowButton.heightAnchor.constraint(equalTo: rightArrowButton.widthAnchor),
+                
+                leftArrowButton.widthAnchor.constraint(equalToConstant: arrowSize),
+                leftArrowButton.heightAnchor.constraint(equalTo: rightArrowButton.widthAnchor),
+            ])
+        }
     }
     
-    @objc private func didTapLeft() {
+    @objc func didTapLeft() {
         guard currentIndex > 0 else { return }
         currentIndex -= 1
         let indexPath = IndexPath(item: currentIndex, section: 0)
@@ -104,7 +101,7 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
         pageControl.currentPage = currentIndex
     }
     
-    @objc private func didTapRight() {
+    @objc func didTapRight() {
         guard currentIndex < items.count - 1 else { return }
         currentIndex += 1
         let indexPath = IndexPath(item: currentIndex, section: 0)
@@ -112,6 +109,20 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
         pageControl.currentPage = currentIndex
     }
     
+    private func makeArrowButton(direction: ArrowDirection) -> UIButton {
+        let btn = UIButton(type: .custom)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        if let img = UIImage(named: direction.imageName) {
+            btn.setImage(img, for: .normal)
+        }
+        btn.imageView?.contentMode = .scaleAspectFit
+        btn.imageView?.contentMode = .scaleAspectFit
+        btn.contentHorizontalAlignment = .fill
+        btn.contentVerticalAlignment   = .fill
+        btn.addTarget(self, action: direction.action, for: .touchUpInside)
+        return btn
+    }
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return items.count
     }
