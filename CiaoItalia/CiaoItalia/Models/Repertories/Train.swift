@@ -5,19 +5,24 @@
 //  Created by Ana Paula Sá Barreto Paiva da Cunha on 04/04/25.
 //
 
-enum Train:CaseIterable {
+enum Train:ContentType {
     case train
     case ticketShop
     case platform
-    
+    var header:String {
+        return "trainLand"
+    }
+    var title:String {
+        return "pegando o trem"
+    }
     var imageName:String {
         switch self {
         case .train:
-            return "train"
+            return "treno"
         case .ticketShop:
-            return "ticketShop"
+            return "biglietteria"
         case .platform:
-            return "platform"
+            return "binario"
         }
     }
     
