@@ -12,11 +12,15 @@ class MainCarouselCardView: UICollectionViewCell {
     weak var delegate: MainCarouselCardViewDelegate?
     
     private let image: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
+      let iv = UIImageView()
+      iv.contentMode = .scaleAspectFill
+      iv.clipsToBounds = true
+      iv.translatesAutoresizingMaskIntoConstraints = false
+      iv.setContentHuggingPriority(.defaultLow, for: .horizontal)
+      iv.setContentHuggingPriority(.defaultLow, for: .vertical)
+      iv.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+      iv.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+      return iv
     }()
     
     private let titleLabel: UILabel = {
@@ -73,9 +77,9 @@ class MainCarouselCardView: UICollectionViewCell {
         maxWidthConstraint.priority = UILayoutPriority(1000)
         
         let deviceWidth = UIScreen.main.bounds.width
-        let isScreenWide = deviceWidth < 405
-        let dynamicBottomConstant = isScreenWide ? -32.0 : -48.0
-        let dynamicTopConstant = isScreenWide ? -12.0 : 20.0
+        let isScreenWide = deviceWidth > 405
+        let dynamicBottomConstant = isScreenWide ? -48.0 : -32.0
+        let dynamicTopConstant = isScreenWide ? 20.0 : 12.0
         
         NSLayoutConstraint.activate([
             width70Constraint,
