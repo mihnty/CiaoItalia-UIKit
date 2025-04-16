@@ -25,6 +25,7 @@ enum FuzzyBubbles: DynamicFont {
     func fontSize(style: UIFont.TextStyle) -> CGFloat {
         switch style {
         case .extraLargeTitle: return 48.0
+        case .extraLargeTitle2: return 42.0
         case .largeTitle: return 34.0
         case .title1: return 28.0
         case .title2: return 22.0

@@ -10,6 +10,8 @@ import SwiftUI
 
 class MainCarouselCardView: UICollectionViewCell {
     weak var delegate: MainCarouselCardViewDelegate?
+
+    let isScreenWide = UIScreen.main.bounds.width > 405
     
     private let image: UIImageView = {
       let iv = UIImageView()
@@ -23,14 +25,11 @@ class MainCarouselCardView: UICollectionViewCell {
       return iv
     }()
     
-    private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: "FuzzyBubbles-Bold", size: 28)!
-        label.textColor = .lightGrayText
-        label.numberOfLines = 0
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
+    private let titleLabel: FuzzyFontLabel = {
+        let lbl = FuzzyFontLabel(text: "", textStyle: .title1, textColor: .lightGrayText)
+        return lbl
     }()
+
     
     private let whiteSquare: UIView = {
         let square = UIView()
@@ -76,8 +75,6 @@ class MainCarouselCardView: UICollectionViewCell {
         let maxWidthConstraint = whiteSquare.widthAnchor.constraint(lessThanOrEqualToConstant: 480)
         maxWidthConstraint.priority = UILayoutPriority(1000)
         
-        let deviceWidth = UIScreen.main.bounds.width
-        let isScreenWide = deviceWidth > 405
         let dynamicBottomConstant = isScreenWide ? -48.0 : -32.0
         let dynamicTopConstant = isScreenWide ? 20.0 : 12.0
         
@@ -101,6 +98,8 @@ class MainCarouselCardView: UICollectionViewCell {
     func configure(withImageName imageName: String, title: String) {
         image.image = UIImage(named: imageName)
         titleLabel.text = title
+        let style: UIFont.TextStyle = isScreenWide ? .extraLargeTitle2 : .title2
+        titleLabel.font = UIFont.customFont(FuzzyBubbles.bold, forTextStyle: style)
     }
 }
 
