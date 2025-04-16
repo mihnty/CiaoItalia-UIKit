@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct Museum {
-    static let dialogue: [DialogueItem] = [
+struct Museum: Dialogue {
+    var dialogue: [DialogueItem] = [
         .title("Pedindo informação:"),
         .dialogue(DialogueLine(italian: "Buon pomeriggio! Scusi, mi sa dire dove è il museo?", translation: "Boa tarde! Com licença, você poderia me dizer onde é museu?", type: .question)),
         .dialogue(DialogueLine(italian: "Buon pomeriggio! Il museo è a destra di quella piazza.", translation: "Boa tarde! O museu é a direita daquela praça.", type: .answer)),

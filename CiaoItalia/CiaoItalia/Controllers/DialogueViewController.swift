@@ -8,15 +8,15 @@
 import UIKit
 
 class DialogueViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
-    
+    var museu = Museum()
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        Museum.dialogue.count
+        museu.dialogue.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let dialogue = Museum.dialogue[indexPath.row]
+        let dialogue = museu.dialogue[indexPath.row]
         
         switch(dialogue){
         case .title(let text):
