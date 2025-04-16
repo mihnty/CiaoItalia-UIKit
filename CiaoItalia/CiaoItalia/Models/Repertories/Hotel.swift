@@ -9,6 +9,10 @@
 enum Hotel:ContentType {
     case reservation
     case key
+    var dialogue:Dialogue {
+        let option = HotelCheckin()
+        return option as any Dialogue
+    }
     var header:String {
         return "hotelLand"
     }

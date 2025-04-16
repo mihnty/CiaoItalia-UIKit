@@ -9,6 +9,10 @@ enum Suitcase:ContentType {
     case ticket
     case passport
     case map
+    var dialogue:Dialogue {
+        let option = Travel()
+        return option as any Dialogue
+    }
     var header:String {
         return "suitcaseLand"
     }

@@ -11,6 +11,10 @@ enum Touristing:ContentType {
     case road
     case left
     case right
+    var dialogue:Dialogue {
+        let option = Museum()
+        return option as any Dialogue
+    }
     var header:String {
         return "cityLand"
     }

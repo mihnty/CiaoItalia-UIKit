@@ -8,6 +8,10 @@
 enum Coffee:ContentType {
     case coffee
     case coffeeShop
+    var dialogue:Dialogue {
+        let option = CoffeeShop()
+        return option as any Dialogue
+    }
     var header:String {
         return "caffetteriaLand"
     }

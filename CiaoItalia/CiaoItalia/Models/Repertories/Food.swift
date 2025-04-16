@@ -9,6 +9,10 @@ enum Food:ContentType {
     case carbonara
     case pizza
     case cheese
+    var dialogue:Dialogue {
+        let option = Restaurant()
+        return option as any Dialogue
+    }
     var header:String {
         return "restaurantLand"
     }

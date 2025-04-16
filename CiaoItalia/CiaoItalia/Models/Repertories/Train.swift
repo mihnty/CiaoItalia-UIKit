@@ -9,6 +9,10 @@ enum Train:ContentType {
     case train
     case ticketShop
     case platform
+    var dialogue:Dialogue {
+        let option = TrainStation()
+        return option as any Dialogue
+    }
     var header:String {
         return "trainLand"
     }
