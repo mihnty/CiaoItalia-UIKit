@@ -15,6 +15,19 @@ enum Train:ContentType {
     var title:String {
         return "pegando o trem"
     }
+    var acessibilityHints:String {
+        switch self {
+        case .train:
+            return "visão frontal de um trem"
+        case .ticketShop:
+            return "fachada de uma bilheteria de uma estação de trem"
+        case .platform:
+            return "placa indicando plataforma 04"
+        }
+    }
+    var headerAcessibilityHint:String {
+        return "plataforma de acesso ao trem"
+    }
     var imageName:String {
         switch self {
         case .train:

@@ -33,6 +33,11 @@ class SpeechManager:NSObject, AVSpeechSynthesizerDelegate {
             self.indexPath = indexPath
         }
     }
+    func speak(_ text:String){
+        Task { @MainActor in
+            await self.synthesizer.speak(text)
+        }
+    }
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didStart utterance: AVSpeechUtterance) {
         guard let path = self.indexPath else {
             print("não possui referência ao index path")

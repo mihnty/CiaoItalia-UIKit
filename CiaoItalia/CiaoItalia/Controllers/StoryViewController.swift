@@ -14,6 +14,7 @@ class StoryViewController: UIViewController, ContentDelegate {
         return lb
     }()
     lazy var repertoryVC = RepertoryViewController()
+    lazy var dialogueVC = DialogueViewController()
     var words: [any ContentType] = []
     lazy var segmentedControl = UISegmentedControl(items: ["Repertório", "Diálogo"])
     lazy var backgroundImageView: UIImageView = {
@@ -48,8 +49,12 @@ class StoryViewController: UIViewController, ContentDelegate {
         headerImage.translatesAutoresizingMaskIntoConstraints = false
         repertoryVC.delegate = self
         addChild(repertoryVC)
+        addChild(dialogueVC)
         view.addSubview(repertoryVC.view)
+        view.addSubview(dialogueVC.view)
         repertoryVC.view.translatesAutoresizingMaskIntoConstraints = false
+        dialogueVC.view.translatesAutoresizingMaskIntoConstraints = false
+        dialogueVC.view.isHidden = true
         headerImage.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(repertoryLabel)
         repertoryLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -58,6 +63,7 @@ class StoryViewController: UIViewController, ContentDelegate {
         setupConstraints()
     }
     func setupConstraints() {
+        dialogueVC.view.isHidden = true
         NSLayoutConstraint.activate([
             backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor),
             backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -75,7 +81,11 @@ class StoryViewController: UIViewController, ContentDelegate {
             repertoryVC.view.topAnchor.constraint(equalTo: repertoryLabel.bottomAnchor),
             repertoryVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             repertoryVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            repertoryVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            repertoryVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            dialogueVC.view.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor),
+            dialogueVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            dialogueVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            dialogueVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         repertoryVC.setupConstraints()
     }
@@ -105,9 +115,11 @@ class StoryViewController: UIViewController, ContentDelegate {
         case 0:
             repertoryVC.view.isHidden = false
             repertoryLabel.isHidden = false
+            dialogueVC.view.isHidden = true
         case 1:
             repertoryVC.view.isHidden = true
             repertoryLabel.isHidden = true
+            dialogueVC.view.isHidden = false
         default:
             print("algo deu errado")
         }
