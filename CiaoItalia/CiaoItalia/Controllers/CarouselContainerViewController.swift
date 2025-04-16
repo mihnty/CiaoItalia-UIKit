@@ -94,7 +94,6 @@ class CarouselContainerViewController: UIViewController {
         titleStackView.addArrangedSubview(titleLabel)
         titleStackView.addArrangedSubview(detailsImageView)
         view.addSubview(titleStackView)
-        //view.addSubview(titleLabel)
 
         carouselVC.view.translatesAutoresizingMaskIntoConstraints = false
     }
@@ -143,7 +142,7 @@ class CarouselContainerViewController: UIViewController {
                 sealImageView.widthAnchor.constraint(equalToConstant: 300),
                 
                 titleStackView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-                titleStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 200)
+                titleStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 130)
 
             ])
         } else {
