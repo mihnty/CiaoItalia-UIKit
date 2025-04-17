@@ -36,12 +36,6 @@ class SpeechManager:NSObject, AVSpeechSynthesizerDelegate {
     func speak(_ text:String){
         Task { @MainActor in
             await self.synthesizer.speak(text)
-            self.indexPath = indexPath
-        }
-    }
-    func speak(_ text:String){
-        Task { @MainActor in
-            await self.synthesizer.speak(text)
         }
     }
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didStart utterance: AVSpeechUtterance) {
