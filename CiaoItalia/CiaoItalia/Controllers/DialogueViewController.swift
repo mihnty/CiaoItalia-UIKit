@@ -74,7 +74,8 @@ class DialogueViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     private func setupViewAttributes() {
-        dialogueTableView.backgroundColor = .black
+        view.backgroundColor = .clear
+        dialogueTableView.backgroundColor = .clear
     }
     
     private func setupConstraints() {

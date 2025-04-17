@@ -25,7 +25,19 @@ enum Food:ContentType {
             return "cheese"
         }
     }
-    
+    var acessibilityHints:String {
+        switch self {
+        case .carbonara:
+            return "prato de macarrão a carbonara"
+        case .pizza:
+            return "prato de pizza marguerita"
+        case .cheese:
+            return "pedaço de queijo"
+        }
+    }
+    var headerAcessibilityHint:String {
+        return "mesa com pratos de comida"
+    }
     var portuguese:String {
         switch self {
         case .carbonara:

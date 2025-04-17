@@ -15,6 +15,19 @@ enum Suitcase:ContentType {
     var title:String {
         return "arrumando a mala"
     }
+    var acessibilityHints:String {
+        switch self {
+        case .ticket:
+            return "bilhete de trem"
+        case .passport:
+            return "passaporte vermelho fechado"
+        case .map:
+            return "mapa"
+        }
+    }
+    var headerAcessibilityHint:String {
+        return "mala aberta com roupas dentro"
+    }
     var imageName:String {
         switch self {
         case .ticket:
