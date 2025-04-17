@@ -65,7 +65,7 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
         view.addSubview(leftArrowButton)
         view.addSubview(rightArrowButton)
         view.addSubview(pageControl)
-
+        
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -157,7 +157,7 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
         let mockVC = MockViewController()
         
         if let navController = self.navigationController {
-            navController.pushViewController(mockVC, animated: true)
+            navController.pushViewController(StoryViewController(content: Food.allCases), animated: true)
         } else {
             mockVC.modalPresentationStyle = .fullScreen
             present(mockVC, animated: true, completion: nil)

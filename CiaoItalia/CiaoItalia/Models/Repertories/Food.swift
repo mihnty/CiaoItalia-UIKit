@@ -5,11 +5,16 @@
 //  Created by Ana Paula Sá Barreto Paiva da Cunha on 04/04/25.
 //
 
-enum Food:CaseIterable {
+enum Food:ContentType {
     case carbonara
     case pizza
     case cheese
-    
+    var header:String {
+        return "restaurantLand"
+    }
+    var title:String {
+        return "almoço pela rua"
+    }
     var imageName:String {
         switch self {
         case .carbonara:

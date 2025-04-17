@@ -5,11 +5,16 @@
 //  Created by Ana Paula Sá Barreto Paiva da Cunha on 04/04/25.
 //
 
-enum Suitcase:CaseIterable {
+enum Suitcase:ContentType {
     case ticket
     case passport
     case map
-    
+    var header:String {
+        return "suitcaseLand"
+    }
+    var title:String {
+        return "arrumando a mala"
+    }
     var imageName:String {
         switch self {
         case .ticket:

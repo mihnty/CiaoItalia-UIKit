@@ -6,9 +6,15 @@
 //
 
 
-enum Hotel:CaseIterable {
+enum Hotel:ContentType {
     case reservation
     case key
+    var header:String {
+        return "hotelLand"
+    }
+    var title:String {
+        return "no hotel"
+    }
     
     var imageName:String {
         switch self {

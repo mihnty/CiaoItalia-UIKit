@@ -7,10 +7,10 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class StartViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .brown
+        view.backgroundColor = UIColor(named: "darkGreen")
         setupBackground()
         setupElements()
         setupButton()
@@ -18,13 +18,10 @@ class ViewController: UIViewController {
     }
     private func setupBackground(){
         let backgroundImage = UIImageView(frame: view.bounds)
-        backgroundImage.image = UIImage(named: "background")
-        //preenche toda a tela
+        backgroundImage.image = UIImage(named: "backgroundSplash")
         backgroundImage.contentMode = .scaleAspectFill
         backgroundImage.clipsToBounds = true
-        //adiciona a imageview na view
         view.addSubview(backgroundImage)
-        //posiciona em relação a profundidade
         view.sendSubviewToBack(backgroundImage)
         let sewing = UIImageView(frame: view.bounds)
         sewing.image = UIImage(named: "sewing")
@@ -44,9 +41,7 @@ class ViewController: UIViewController {
         ])
     }
     private func setupLabels(){
-        let title = UILabel()
-        title.text = "MEU DIÁRIO DE VIAGEM"
-        title.font = UIFont.systemFont(ofSize: 36, weight: .bold)
+        let title = FuzzyFontLabel(text: "Meu Diário de Viagem", textStyle: .largeTitle, textColor: .white)
         title.textColor = .white
         title.textAlignment = .center
         title.numberOfLines = 0
@@ -97,9 +92,7 @@ class ViewController: UIViewController {
         NSLayoutConstraint.activate(
             [
                 tracing2.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
-                tracing2.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 40),
-                tracing2.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -30)
-                
+                tracing2.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 40)
             ]
         )
         let stampItaly = UIImageView()
@@ -166,9 +159,8 @@ class ViewController: UIViewController {
         openButton.transform = CGAffineTransform(rotationAngle: -(.pi / 60))
     }
     @objc func openApp(){
-        let nextView = SecondController()
+        let nextView = CarouselContainerViewController()
         nextView.view.backgroundColor = .white
-        print("executou isso")
         navigationController?.pushViewController(nextView, animated: true)
     }
 }
