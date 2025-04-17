@@ -13,13 +13,13 @@ protocol MainCarouselCardViewDelegate: AnyObject {
 
 class CarouselViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, MainCarouselCardViewDelegate {
     
-    private let items = [("caffetteria", "ida ao café"),
-                         ("suitcase", "arrumando a mala"),
-                         ("trainStation", "pegando o trem"),
-                         ("hotel", "no hotel"),
-                         ("city", "turistando"),
-                         ("restaurant", "almoço pela rua"),
-    ] as [(String,String)]
+    private let items = [("caffetteria", "ida ao café", "Polaroid cafeteria"),
+                         ("suitcase", "arrumando a mala", "Polaroid aberta com roupas dentro"),
+                         ("trainStation", "pegando o trem", "Polaroid plataforma de trem"),
+                         ("hotel", "no hotel", "Polaroid fachada de hotel"),
+                         ("city", "turistando", "Polaroid de edifícios"),
+                         ("restaurant", "almoço pela rua", "Polaroid de mesa com comidas"),
+    ] as [(String,String,String)]
     private let contents: [any ContentType.Type] = [Coffee.self, Suitcase.self, Train.self, Hotel.self, Touristing.self, Food.self]
     let isScreenWide = UIScreen.main.bounds.width > 405
     private var currentIndex: Int = 0
@@ -123,6 +123,9 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
         btn.contentVerticalAlignment   = .fill
         btn.addTarget(self, action: direction.action, for: .touchUpInside)
         btn.accessibilityLabel = buttonAccessibilityLabel
+        btn.accessibilityTraits = .button
+        btn.accessibilityIdentifier = "Botão do carrossel de imagens"
+        btn.accessibilityHint = "Toque para interagir"
         return btn
     }
 
@@ -141,8 +144,8 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CarouselCell", for: indexPath) as! MainCarouselCardView
-        let (imageName, title) = items[indexPath.item]
-        cell.configure(withImageName: imageName, title: title)
+        let (imageName, title, label) = items[indexPath.item]
+        cell.configure(withImageName: imageName, title: title, label: label)
         cell.delegate = self
         return cell
     }

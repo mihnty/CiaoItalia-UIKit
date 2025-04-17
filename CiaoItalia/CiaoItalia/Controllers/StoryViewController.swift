@@ -26,6 +26,7 @@ class StoryViewController: UIViewController, ContentDelegate {
         if let header = content.first?.header, let title = content.first?.title, let accessibility = content.first?.headerAcessibilityHint {
             headerImage.image = UIImage(named: header)
             headerImage.accessibilityLabel = accessibility
+            headerImage.isAccessibilityElement = true
             titleLabel = FuzzyFontLabel(text: title, textStyle: .largeTitle)
             
         } else {
