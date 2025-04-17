@@ -19,8 +19,8 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
                          ("hotel", "no hotel"),
                          ("city", "turistando"),
                          ("restaurant", "almoço pela rua"),
-                        ]
-    
+    ] as [(String,String)]
+    private let contents: [any ContentType.Type] = [Coffee.self, Suitcase.self, Train.self, Hotel.self, Touristing.self, Food.self]
     let isScreenWide = UIScreen.main.bounds.width > 405
     private var currentIndex: Int = 0
     
@@ -158,9 +158,10 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
     
     func mainCarouselCardViewDidTap(_ cell: MainCarouselCardView) {
         let mockVC = MockViewController()
-        
+        let content = contents[currentIndex]
+        print(content.self)
         if let navController = self.navigationController {
-            navController.pushViewController(StoryViewController(content: Food.allCases), animated: true)
+            navController.pushViewController(StoryViewController(content: content.allCases as! [any ContentType]), animated: true)
         } else {
             mockVC.modalPresentationStyle = .fullScreen
             present(mockVC, animated: true, completion: nil)
