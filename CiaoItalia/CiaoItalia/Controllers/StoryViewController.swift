@@ -23,8 +23,9 @@ class StoryViewController: UIViewController, ContentDelegate {
     init(content:[any ContentType]) {
         super.init(nibName: nil, bundle: nil)
         self.words = content
-        if let header = content.first?.header, let title = content.first?.title {
+        if let header = content.first?.header, let title = content.first?.title, let accessibility = content.first?.headerAcessibilityHint {
             headerImage.image = UIImage(named: header)
+            headerImage.accessibilityLabel = accessibility
             titleLabel = FuzzyFontLabel(text: title, textStyle: .largeTitle)
             
         } else {
@@ -43,21 +44,6 @@ class StoryViewController: UIViewController, ContentDelegate {
         
         view.backgroundColor = UIColor(named: "background")
         
-        view.addSubview(backgroundImageView)
-        backgroundImageView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(headerImage)
-        headerImage.translatesAutoresizingMaskIntoConstraints = false
-        repertoryVC.delegate = self
-        addChild(repertoryVC)
-        addChild(dialogueVC)
-        view.addSubview(repertoryVC.view)
-        view.addSubview(dialogueVC.view)
-        repertoryVC.view.translatesAutoresizingMaskIntoConstraints = false
-        dialogueVC.view.translatesAutoresizingMaskIntoConstraints = false
-        dialogueVC.view.isHidden = true
-        headerImage.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(repertoryLabel)
-        repertoryLabel.translatesAutoresizingMaskIntoConstraints = false
         setupView()
         repertoryVC.didMove(toParent: self)
         setupConstraints()
@@ -90,24 +76,38 @@ class StoryViewController: UIViewController, ContentDelegate {
         repertoryVC.setupConstraints()
     }
     func setupView(){
+        backgroundImageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(backgroundImageView)
+        
+        headerImage.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(headerImage)
+        
+        repertoryVC.delegate = self
+        repertoryVC.view.translatesAutoresizingMaskIntoConstraints = false
+        addChild(repertoryVC)
+        view.addSubview(repertoryVC.view)
+        
+        
+        dialogueVC.view.translatesAutoresizingMaskIntoConstraints = false
+        dialogueVC.view.isHidden = true
+        addChild(dialogueVC)
+        view.addSubview(dialogueVC.view)
+       
+        repertoryLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(repertoryLabel)
+        
         segmentedControl.selectedSegmentIndex = 0
         segmentedControl.backgroundColor = .systemGray6.withAlphaComponent(0.2)
         segmentedControl.selectedSegmentTintColor =  UIColor(named: "background")
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         segmentedControl.addTarget(self, action: #selector(changeTableView(_:)), for: .valueChanged)
         view.addSubview(segmentedControl)
+        
         titleLabel.textColor = UIColor(named: "textColor")
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 0
         titleLabel.translatesAutoresizingMaskIntoConstraints = false 
         view.addSubview(titleLabel)
-        /*
-        repertoryLabel.textColor = UIColor(named: "textColor")
-        repertoryLabel.textAlignment = .center
-        repertoryLabel.numberOfLines = 0
-        repertoryLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(repertoryLabel)
-        */
     }
     
     @objc func changeTableView(_ sender:UISegmentedControl){
@@ -124,16 +124,11 @@ class StoryViewController: UIViewController, ContentDelegate {
             print("algo deu errado")
         }
     }
-    @objc func customBackAction() {
-        navigationController?.popViewController(animated: true)
-    }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        print("tableView frame: \(repertoryVC.view.frame)")
     }
 
 }
-
   
 
 #Preview {
