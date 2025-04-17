@@ -26,8 +26,10 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
     
     private let arrowSize: CGFloat = 64
         
-    private lazy var leftArrowButton: UIButton  = makeArrowButton(direction: .left)
-    private lazy var rightArrowButton: UIButton = makeArrowButton(direction: .right)
+    private lazy var leftArrowButton: UIButton  = makeArrowButton(direction: .left, buttonAccessibilityLabel: "Botão de voltar polaroid para esquerda")
+   
+        
+    private lazy var rightArrowButton: UIButton = makeArrowButton(direction: .right, buttonAccessibilityLabel: "Botão de passar polaroid para direita")
     
     private lazy var pageControl: UIPageControl = {
         let pc = UIPageControl()
@@ -109,7 +111,7 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
         pageControl.currentPage = currentIndex
     }
     
-    private func makeArrowButton(direction: ArrowDirection) -> UIButton {
+    private func makeArrowButton(direction: ArrowDirection, buttonAccessibilityLabel: String) -> UIButton {
         let btn = UIButton(type: .custom)
         btn.translatesAutoresizingMaskIntoConstraints = false
         if let img = UIImage(named: direction.imageName) {
@@ -120,6 +122,7 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
         btn.contentHorizontalAlignment = .fill
         btn.contentVerticalAlignment   = .fill
         btn.addTarget(self, action: direction.action, for: .touchUpInside)
+        btn.accessibilityLabel = buttonAccessibilityLabel
         return btn
     }
 
