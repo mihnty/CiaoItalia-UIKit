@@ -56,12 +56,18 @@ extension DemoViewController {
         nextButton.layer.borderColor = UIColor.darkYellow.cgColor
         nextButton.layer.borderWidth = 2
         nextButton.addTarget(self, action: #selector(nextTapped(_:)), for: .primaryActionTriggered)
+        nextButton.accessibilityTraits = .button
+        nextButton.accessibilityIdentifier = "Botão de onboarding"
+        nextButton.accessibilityHint = "Toque para interagir"
         
         backButton.translatesAutoresizingMaskIntoConstraints = false
         backButton.setTitleColor(.darkGrey, for: .normal)
         backButton.layer.cornerRadius = 12
         backButton.setTitle("Voltar", for: .normal)
+        backButton.accessibilityTraits = .button
         backButton.accessibilityLabel = "Botão de voltar página"
+        backButton.accessibilityIdentifier = "Botão de onboarding"
+        backButton.accessibilityHint = "Toque para interagir"
         backButton.backgroundColor = .mustard.withAlphaComponent(0.5)
         backButton.layer.borderColor = UIColor.darkYellow.cgColor
         backButton.layer.borderWidth = 2

@@ -10,6 +10,7 @@ import SwiftUI
 
 class MainCarouselCardView: UICollectionViewCell {
     weak var delegate: MainCarouselCardViewDelegate?
+    var imageAccessibilityLabel: String = ""
 
     let isScreenWide = UIScreen.main.bounds.width > 405
     
@@ -22,6 +23,11 @@ class MainCarouselCardView: UICollectionViewCell {
       iv.setContentHuggingPriority(.defaultLow, for: .vertical)
       iv.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
       iv.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        
+      iv.accessibilityIdentifier = "Polaroid do carrossel"
+      iv.accessibilityHint = "Toque para exibir o repetório"
+      iv.isAccessibilityElement = true
+      iv.accessibilityTraits = .button
       return iv
     }()
     
@@ -95,11 +101,13 @@ class MainCarouselCardView: UICollectionViewCell {
         ])
     }
     
-    func configure(withImageName imageName: String, title: String) {
+    func configure(withImageName imageName: String, title: String, label: String) {
+        imageAccessibilityLabel = label
         image.image = UIImage(named: imageName)
         titleLabel.text = title
         let style: UIFont.TextStyle = isScreenWide ? .extraLargeTitle2 : .title2
         titleLabel.font = UIFont.customFont(FuzzyBubbles.bold, forTextStyle: style)
+        image.accessibilityLabel = imageAccessibilityLabel
     }
 }
 
@@ -107,7 +115,7 @@ struct MainCarouselCardViewPreview: UIViewRepresentable {
     
     func makeUIView(context: Context) -> UIView {
         let cell = MainCarouselCardView(frame: CGRect(x: 0, y: 0, width: 300, height: 400))
-        cell.configure(withImageName: "squareImageTest", title: "Test Title")
+        cell.configure(withImageName: "squareImageTest", title: "Test Title", label: "ansfasm")
         return cell.contentView
     }
     
