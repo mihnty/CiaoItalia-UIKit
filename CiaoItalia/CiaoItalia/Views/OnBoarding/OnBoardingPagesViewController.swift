@@ -14,6 +14,8 @@ class OnboardingPagesViewController: UIViewController {
         self.titleLabel = FuzzyFontLabel(text: titleText, textStyle: isScreenWide ? .largeTitle : .title1, textColor: .darkGrey)
         self.subtitleLabel = NormalFontLabel(text: subtitleText, textStyle: isScreenWide ? .largeTitle : .body, textColor: .darkGrey, textWeight: .medium)
         self.imageView.contentMode = .scaleAspectFill
+        self.imageView.accessibilityIdentifier = "Polaroid onboarding"
+        self.imageView.accessibilityTraits = .image
         self.imageView.isAccessibilityElement = true
         self.imageView.accessibilityLabel = imageAccessibilityLabel
 
