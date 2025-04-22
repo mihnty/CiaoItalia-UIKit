@@ -8,15 +8,24 @@
 import UIKit
 
 class DialogueViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
-    var museu = Museum()
+    var dialogue:[DialogueItem]
+    
+    init(dialogue: [DialogueItem]){
+        self.dialogue = dialogue
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        museu.dialogue.count
+        dialogue.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let dialogue = museu.dialogue[indexPath.row]
+        let dialogue = dialogue[indexPath.row]
         
         switch(dialogue){
         case .title(let text):
@@ -80,10 +89,10 @@ class DialogueViewController: UIViewController, UITableViewDataSource, UITableVi
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            dialogueTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            dialogueTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
             dialogueTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             dialogueTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            dialogueTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            dialogueTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
         ])
     }
     
@@ -93,5 +102,5 @@ class DialogueViewController: UIViewController, UITableViewDataSource, UITableVi
 }
 
 #Preview{
-    DialogueViewController()
+    UINavigationController(rootViewController: CarouselContainerViewController())
 }
