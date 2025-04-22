@@ -12,7 +12,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Memórias Novo Dark.png",
+      "filename" : "MemoriasNovoDark.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -28,7 +28,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Memórias Novo Dark@2x.png",
+      "filename" : "MemoriasNovoDark@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
@@ -44,7 +44,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Memórias Novo Dark@3x.png",
+      "filename" : "MemoriasNovoDark@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

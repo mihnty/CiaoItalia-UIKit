@@ -10,23 +10,32 @@ import SwiftUI
 
 class MainCarouselCardView: UICollectionViewCell {
     weak var delegate: MainCarouselCardViewDelegate?
+    var imageAccessibilityLabel: String = ""
+
+    let isScreenWide = UIScreen.main.bounds.width > 405
     
     private let image: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.clipsToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
+      let iv = UIImageView()
+      iv.contentMode = .scaleAspectFill
+      iv.clipsToBounds = true
+      iv.translatesAutoresizingMaskIntoConstraints = false
+      iv.setContentHuggingPriority(.defaultLow, for: .horizontal)
+      iv.setContentHuggingPriority(.defaultLow, for: .vertical)
+      iv.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+      iv.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        
+      iv.accessibilityIdentifier = "Polaroid do carrossel"
+      iv.accessibilityHint = "Toque para exibir o repetório"
+      iv.isAccessibilityElement = true
+      iv.accessibilityTraits = .button
+      return iv
     }()
     
-    private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 28, weight: .bold)
-        label.textColor = .textGray
-        label.numberOfLines = 0
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
+    private let titleLabel: FuzzyFontLabel = {
+        let lbl = FuzzyFontLabel(text: "", textStyle: .title1, textColor: .lightGrayText)
+        return lbl
     }()
+
     
     private let whiteSquare: UIView = {
         let square = UIView()
@@ -69,13 +78,11 @@ class MainCarouselCardView: UICollectionViewCell {
         let width70Constraint = whiteSquare.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.8)
         width70Constraint.priority = UILayoutPriority(750)
         
-        let maxWidthConstraint = whiteSquare.widthAnchor.constraint(lessThanOrEqualToConstant: 360)
+        let maxWidthConstraint = whiteSquare.widthAnchor.constraint(lessThanOrEqualToConstant: 480)
         maxWidthConstraint.priority = UILayoutPriority(1000)
         
-        let deviceWidth = UIScreen.main.bounds.width
-        let isScreenWide = deviceWidth < 405
-        let dynamicBottomConstant = isScreenWide ? -32.0 : -48.0
-        let dynamicTopConstant = isScreenWide ? -12.0 : 20.0
+        let dynamicBottomConstant = isScreenWide ? -48.0 : -32.0
+        let dynamicTopConstant = isScreenWide ? 20.0 : 12.0
         
         NSLayoutConstraint.activate([
             width70Constraint,
@@ -85,6 +92,7 @@ class MainCarouselCardView: UICollectionViewCell {
             whiteSquare.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             
             image.widthAnchor.constraint(equalTo: whiteSquare.widthAnchor, multiplier: 0.9),
+            image.heightAnchor.constraint(equalTo: image.widthAnchor),
             image.topAnchor.constraint(equalTo: whiteSquare.topAnchor, constant: dynamicTopConstant),
             image.centerXAnchor.constraint(equalTo: whiteSquare.centerXAnchor),
             
@@ -93,9 +101,13 @@ class MainCarouselCardView: UICollectionViewCell {
         ])
     }
     
-    func configure(withImageName imageName: String, title: String) {
+    func configure(withImageName imageName: String, title: String, label: String) {
+        imageAccessibilityLabel = label
         image.image = UIImage(named: imageName)
         titleLabel.text = title
+        let style: UIFont.TextStyle = isScreenWide ? .extraLargeTitle2 : .title2
+        titleLabel.font = UIFont.customFont(FuzzyBubbles.bold, forTextStyle: style)
+        image.accessibilityLabel = imageAccessibilityLabel
     }
 }
 
@@ -103,7 +115,7 @@ struct MainCarouselCardViewPreview: UIViewRepresentable {
     
     func makeUIView(context: Context) -> UIView {
         let cell = MainCarouselCardView(frame: CGRect(x: 0, y: 0, width: 300, height: 400))
-        cell.configure(withImageName: "squareImageTest", title: "Test Title")
+        cell.configure(withImageName: "squareImageTest", title: "Test Title", label: "ansfasm")
         return cell.contentView
     }
     
@@ -112,5 +124,5 @@ struct MainCarouselCardViewPreview: UIViewRepresentable {
 }
 
 #Preview {
-    MainCarouselCardViewPreview()
+    UINavigationController(rootViewController: CarouselContainerViewController())
 }

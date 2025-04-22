@@ -20,6 +20,7 @@ class TitleCell: UITableViewCell {
         }()
     
     func setup(){
+        self.backgroundColor = .clear
         setupHierarchy()
         setupConstraints()
     }

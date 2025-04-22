@@ -11,4 +11,6 @@ protocol ContentType:CaseIterable {
     var imageName:String {get}
     var header:String {get}
     var title:String {get}
+    var acessibilityHints:String {get}
+    var headerAcessibilityHint:String {get}
 }

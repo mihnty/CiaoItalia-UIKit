@@ -26,7 +26,17 @@ enum Coffee:ContentType {
             return "coffeeShop"
         }
     }
-    
+    var acessibilityHints:String {
+        switch self {
+        case .coffee:
+            return "copo de café"
+        case .coffeeShop:
+            return "cafeteira"
+        }
+    }
+    var headerAcessibilityHint:String {
+        return "cafeteria"
+    }
     var portuguese:String {
         switch self {
         case .coffee:

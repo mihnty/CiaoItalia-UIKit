@@ -19,6 +19,17 @@ enum Hotel:ContentType {
     var title:String {
         return "no hotel"
     }
+    var acessibilityHints:String {
+        switch self {
+        case .reservation:
+            return "bilhete comprovante de reserva"
+        case .key:
+            return "chaveiro com uma chave"
+        }
+    }
+    var headerAcessibilityHint:String {
+        return "fachada de hotel"
+    }
     
     var imageName:String {
         switch self {

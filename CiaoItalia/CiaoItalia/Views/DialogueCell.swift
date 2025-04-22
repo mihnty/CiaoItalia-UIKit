@@ -48,7 +48,10 @@ class DialogueCell: UITableViewCell {
         let playButton = UIButton(type: .custom)
         playButton.backgroundColor = .clear
         playButton.translatesAutoresizingMaskIntoConstraints = false
-        
+        playButton.accessibilityHint = "Clique para reproduzir diálogo"
+        playButton.accessibilityLabel = "Balão de diálogo"
+        playButton.accessibilityIdentifier = "Balão de diálogo"
+        playButton.accessibilityTraits = .button
         return playButton
     }()
     
@@ -103,13 +106,15 @@ class DialogueCell: UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.axis = .horizontal
         view.spacing = 16
+        
         return view
     }()
 
         
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+        self.selectionStyle = .none
+        self.backgroundColor = .clear
         setup()
         
     }
@@ -126,6 +131,7 @@ class DialogueCell: UITableViewCell {
     }
     
     func setup(){
+        self.backgroundColor = .clear
         setupHierarchy()
         setupConstraints()
         setupLayout()
@@ -152,10 +158,9 @@ class DialogueCell: UITableViewCell {
     
     
     func setupLayout() {
-            
-         
-            
-         
+        self.backgroundColor = .clear
+        self.contentView.backgroundColor = .clear
+        self.selectionStyle = .none
     }
     
     func setupConstraints(){

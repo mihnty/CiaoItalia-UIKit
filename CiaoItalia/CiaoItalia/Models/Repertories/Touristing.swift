@@ -21,6 +21,23 @@ enum Touristing:ContentType {
     var title:String {
         return "turistando"
     }
+    var acessibilityHints:String {
+        switch self {
+        case .museum:
+            return "fachada de um museu"
+        case .square:
+            return "praça com árvores e uma fonte no centro"
+        case .road:
+            return "rua com duas faixas"
+        case .right:
+            return "seta para a direita"
+        case .left:
+            return "seta para a esquerda"
+        }
+    }
+    var headerAcessibilityHint:String {
+        return "edifícios na cidade"
+    }
     var imageName:String {
         switch self {
         case .museum:
