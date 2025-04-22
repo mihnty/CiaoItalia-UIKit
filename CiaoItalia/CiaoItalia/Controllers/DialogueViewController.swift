@@ -83,7 +83,7 @@ class DialogueViewController: UIViewController, UITableViewDataSource, UITableVi
             dialogueTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             dialogueTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             dialogueTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            dialogueTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            dialogueTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     }
     
