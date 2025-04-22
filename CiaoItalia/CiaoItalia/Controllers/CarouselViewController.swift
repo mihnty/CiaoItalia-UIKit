@@ -110,34 +110,50 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
       }
     }
     
+    private func setArrowButtonsEnabled(_ enabled: Bool) {
+        leftArrowButton.isEnabled  = enabled
+        rightArrowButton.isEnabled = enabled
+        let alpha: CGFloat = enabled ? 1.0 : 0.5
+        leftArrowButton.alpha  = alpha
+        rightArrowButton.alpha = alpha
+    }
+    
     @objc func didTapLeft() {
-      currentIndex -= 1
-      let ip = IndexPath(item: currentIndex, section: 0)
-      collectionView.scrollToItem(at: ip, at: .centeredHorizontally, animated: true)
-      if currentIndex == 0 {
-        currentIndex = realItems.count
-        let jump = IndexPath(item: currentIndex, section: 0)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-          self.collectionView.scrollToItem(at: jump, at: .centeredHorizontally, animated: false)
+        guard leftArrowButton.isEnabled else { return }
+        setArrowButtonsEnabled(false)
+        currentIndex -= 1
+        
+        let ip = IndexPath(item: currentIndex, section: 0)
+        collectionView.scrollToItem(at: ip, at: .centeredHorizontally, animated: true)
+        if currentIndex == 0 {
+            currentIndex = realItems.count
+            let jump = IndexPath(item: currentIndex, section: 0)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                self.collectionView.scrollToItem(at: jump, at: .centeredHorizontally, animated: false)
+            }
         }
-      }
-      
-      pageControl.currentPage = (currentIndex - 1) % realItems.count
+        pageControl.currentPage = (currentIndex - 1) % realItems.count
     }
 
     @objc func didTapRight() {
-      currentIndex += 1
-      let ip = IndexPath(item: currentIndex, section: 0)
-      collectionView.scrollToItem(at: ip, at: .centeredHorizontally, animated: true)
-      if currentIndex == items.count - 1 {
-        currentIndex = 1
-        let jump = IndexPath(item: currentIndex, section: 0)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-          self.collectionView.scrollToItem(at: jump, at: .centeredHorizontally, animated: false)
+        guard rightArrowButton.isEnabled else { return }
+        setArrowButtonsEnabled(false)
+        currentIndex += 1
+        
+        let ip = IndexPath(item: currentIndex, section: 0)
+        collectionView.scrollToItem(at: ip, at: .centeredHorizontally, animated: true)
+        if currentIndex == items.count - 1 {
+            currentIndex = 1
+            let jump = IndexPath(item: currentIndex, section: 0)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                self.collectionView.scrollToItem(at: jump, at: .centeredHorizontally, animated: false)
+            }
         }
-      }
-      
-      pageControl.currentPage = (currentIndex - 1) % realItems.count
+        pageControl.currentPage = (currentIndex - 1) % realItems.count
+    }
+    
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        setArrowButtonsEnabled(true)
     }
     
     private func makeArrowButton(direction: ArrowDirection) -> UIButton {
@@ -185,6 +201,7 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
     
     
     func mainCarouselCardViewDidTap(_ cell: MainCarouselCardView) {
+        guard leftArrowButton.isEnabled && rightArrowButton.isEnabled else { return }
         let mockVC = MockViewController()
         let content = contents[currentIndex - 1]
         print(content.self)
