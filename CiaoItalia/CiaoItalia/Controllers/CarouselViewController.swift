@@ -13,16 +13,23 @@ protocol MainCarouselCardViewDelegate: AnyObject {
 
 class CarouselViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, MainCarouselCardViewDelegate {
     
-    private let items = [("caffetteria", "ida ao café", "Polaroid cafeteria"),
+    private let realItems = [("caffetteria", "ida ao café", "Polaroid cafeteria"),
                          ("suitcase", "arrumando a mala", "Polaroid aberta com roupas dentro"),
                          ("trainStation", "pegando o trem", "Polaroid plataforma de trem"),
                          ("hotel", "no hotel", "Polaroid fachada de hotel"),
                          ("city", "turistando", "Polaroid de edifícios"),
                          ("restaurant", "almoço pela rua", "Polaroid de mesa com comidas"),
     ] as [(String,String,String)]
+    
+    private lazy var items: [(String,String,String)] = {
+      var copy = realItems
+      copy.insert(realItems.last!, at: 0)
+      copy.append(realItems.first!)
+      return copy
+    }()
     private let contents: [any ContentType.Type] = [Coffee.self, Suitcase.self, Train.self, Hotel.self, Touristing.self, Food.self]
     let isScreenWide = UIScreen.main.bounds.width > 405
-    private var currentIndex: Int = 0
+    private var currentIndex: Int = 1
     
     private let arrowSize: CGFloat = 64
         
@@ -34,8 +41,8 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
     private lazy var pageControl: UIPageControl = {
         let pc = UIPageControl()
         pc.translatesAutoresizingMaskIntoConstraints = false
-        pc.numberOfPages = items.count
-        pc.currentPage = 0
+        pc.numberOfPages = realItems.count
+        pc.currentPage  = 0
         pc.pageIndicatorTintColor = UIColor.lightGray
         pc.currentPageIndicatorTintColor = UIColor.dotDetail
         pc.isUserInteractionEnabled = false
@@ -95,20 +102,59 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
         }
     }
     
-    @objc func didTapLeft() {
-        guard currentIndex > 0 else { return }
-        currentIndex -= 1
-        let indexPath = IndexPath(item: currentIndex, section: 0)
-        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-        pageControl.currentPage = currentIndex
+    override func viewDidLayoutSubviews() {
+      super.viewDidLayoutSubviews()
+      if collectionView.contentOffset.x == 0 {
+        let ip = IndexPath(item: currentIndex, section: 0)
+        collectionView.scrollToItem(at: ip, at: .centeredHorizontally, animated: false)
+        pageControl.currentPage = currentIndex - 1
+      }
     }
     
+    private func setArrowButtonsEnabled(_ enabled: Bool) {
+        leftArrowButton.isEnabled  = enabled
+        rightArrowButton.isEnabled = enabled
+        let alpha: CGFloat = enabled ? 1.0 : 0.5
+        leftArrowButton.alpha  = alpha
+        rightArrowButton.alpha = alpha
+    }
+    
+    @objc func didTapLeft() {
+        guard leftArrowButton.isEnabled else { return }
+        setArrowButtonsEnabled(false)
+        currentIndex -= 1
+        
+        let ip = IndexPath(item: currentIndex, section: 0)
+        collectionView.scrollToItem(at: ip, at: .centeredHorizontally, animated: true)
+        if currentIndex == 0 {
+            currentIndex = realItems.count
+            let jump = IndexPath(item: currentIndex, section: 0)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                self.collectionView.scrollToItem(at: jump, at: .centeredHorizontally, animated: false)
+            }
+        }
+        pageControl.currentPage = (currentIndex - 1) % realItems.count
+    }
+
     @objc func didTapRight() {
-        guard currentIndex < items.count - 1 else { return }
+        guard rightArrowButton.isEnabled else { return }
+        setArrowButtonsEnabled(false)
         currentIndex += 1
-        let indexPath = IndexPath(item: currentIndex, section: 0)
-        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-        pageControl.currentPage = currentIndex
+        
+        let ip = IndexPath(item: currentIndex, section: 0)
+        collectionView.scrollToItem(at: ip, at: .centeredHorizontally, animated: true)
+        if currentIndex == items.count - 1 {
+            currentIndex = 1
+            let jump = IndexPath(item: currentIndex, section: 0)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                self.collectionView.scrollToItem(at: jump, at: .centeredHorizontally, animated: false)
+            }
+        }
+        pageControl.currentPage = (currentIndex - 1) % realItems.count
+    }
+    
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        setArrowButtonsEnabled(true)
     }
     
     private func makeArrowButton(direction: ArrowDirection, buttonAccessibilityLabel: String) -> UIButton {
@@ -160,8 +206,9 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
     
     
     func mainCarouselCardViewDidTap(_ cell: MainCarouselCardView) {
+        guard leftArrowButton.isEnabled && rightArrowButton.isEnabled else { return }
         let mockVC = MockViewController()
-        let content = contents[currentIndex]
+        let content = contents[currentIndex - 1]
         print(content.self)
         if let navController = self.navigationController {
             navController.pushViewController(StoryViewController(content: content.allCases as! [any ContentType]), animated: true)
