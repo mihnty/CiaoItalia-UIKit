@@ -2,7 +2,7 @@ import UIKit
 
 class OnboardingPagesViewController: UIViewController {
     
-    let isScreenWide = UIScreen.main.bounds.width > 405
+    let isScreenWide = UIScreen.main.bounds.width > 440
 
     let stackView = UIStackView()
     let imageView = UIImageView()

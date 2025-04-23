@@ -2,7 +2,7 @@ import UIKit
 
 class DemoViewController: UIPageViewController {
 
-    let isScreenWide = UIScreen.main.bounds.width > 405
+    let isScreenWide = UIScreen.main.bounds.width > 440
     
     var pages = [UIViewController]()
 

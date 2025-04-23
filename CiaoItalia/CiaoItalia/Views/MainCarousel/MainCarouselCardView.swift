@@ -12,7 +12,7 @@ class MainCarouselCardView: UICollectionViewCell {
     weak var delegate: MainCarouselCardViewDelegate?
     var imageAccessibilityLabel: String = ""
 
-    let isScreenWide = UIScreen.main.bounds.width > 405
+    let isScreenWide = UIScreen.main.bounds.width > 440
     
     private let image: UIImageView = {
       let iv = UIImageView()

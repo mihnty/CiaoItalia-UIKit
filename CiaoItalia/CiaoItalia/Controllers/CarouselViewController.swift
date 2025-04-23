@@ -28,7 +28,7 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
       return copy
     }()
     private let contents: [any ContentType.Type] = [Coffee.self, Suitcase.self, Train.self, Hotel.self, Touristing.self, Food.self]
-    let isScreenWide = UIScreen.main.bounds.width > 405
+    let isScreenWide = UIScreen.main.bounds.width > 440
     private var currentIndex: Int = 1
     
     private let arrowSize: CGFloat = 64
@@ -88,7 +88,7 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
             rightArrowButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: isScreenWide ? -60 : -16),
             
             pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            pageControl.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: isScreenWide ? 340.0 : 210.0)
+            pageControl.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: isScreenWide ? 340.0 : 230.0)
         ])
         
         if(isScreenWide){
