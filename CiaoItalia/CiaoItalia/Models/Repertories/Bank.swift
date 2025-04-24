@@ -8,7 +8,7 @@
 enum Bank:ContentType {
     case cartaDiCredito
     case contoCorrente
-    case contani
+    case contanti
     case prelievo
     case estrattoConto
     case bancomat
@@ -22,15 +22,15 @@ enum Bank:ContentType {
     var imageName:String {
         switch self {
         case .cartaDiCredito:
-            return "cartaDiCredito"
+            return "carta"
         case .contoCorrente:
-            return "contoCorrente"
-        case .contani:
-            return "contani"
+            return "conto"
+        case .contanti:
+            return "contanti"
         case .prelievo:
             return "prelievo"
         case .estrattoConto:
-            return "estrattoConto"
+            return "estratto"
         case .bancomat:
             return "bancomat"
         }
@@ -41,7 +41,7 @@ enum Bank:ContentType {
             return "Cartão de crédito"
         case .contoCorrente:
             return "Conta corrente"
-        case .contani:
+        case .contanti:
             return "Dinheiro em espécie"
         case .prelievo:
             return "Saque"
@@ -60,7 +60,7 @@ enum Bank:ContentType {
             return "Cartão de crédito"
         case .contoCorrente:
             return "Conta corrente"
-        case .contani:
+        case .contanti:
             return "Dinheiro em espécie"
         case .prelievo:
             return "Saque"
@@ -76,8 +76,8 @@ enum Bank:ContentType {
             return "Cartão di Credito"
         case .contoCorrente:
             return "Conto Corrente"
-        case .contani:
-            return "Contani"
+        case .contanti:
+            return "Contanti"
         case .prelievo:
             return "Previelo"
         case .estrattoConto:
