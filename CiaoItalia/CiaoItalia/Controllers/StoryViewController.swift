@@ -18,7 +18,10 @@ class StoryViewController: UIViewController, ContentDelegate {
     var words: [any ContentType] = []
     lazy var segmentedControl = UISegmentedControl(items: ["Repertório", "Diálogo"])
     lazy var backgroundImageView: UIImageView = {
-        return UIImageView(image: UIImage(named: "backgroundPattern"))
+        let bg = UIImageView(image: UIImage(named: "backgroundPattern"))
+        bg.translatesAutoresizingMaskIntoConstraints = false
+        bg.contentMode = .scaleAspectFill
+        return bg
     }()
     init(content:[any ContentType]) {
         super.init(nibName: nil, bundle: nil)
@@ -42,7 +45,7 @@ class StoryViewController: UIViewController, ContentDelegate {
         setupConstraints()
     }
     func setupConstraints() {
-        dialogueVC.view.isHidden = true
+        //dialogueVC.view.isHidden = true
         NSLayoutConstraint.activate([
             backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor),
             backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -63,6 +66,7 @@ class StoryViewController: UIViewController, ContentDelegate {
             
             repertoryLabel.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 5),
             repertoryLabel.leadingAnchor.constraint(equalTo: segmentedControl.leadingAnchor, constant: 5),
+            
             repertoryVC.view.topAnchor.constraint(equalTo: repertoryLabel.bottomAnchor),
             repertoryVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             repertoryVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -104,13 +108,18 @@ class StoryViewController: UIViewController, ContentDelegate {
         segmentedControl.addTarget(self, action: #selector(changeTableView(_:)), for: .valueChanged)
         view.addSubview(segmentedControl)
         
-        if let header = words.first?.header, let title = words.first?.title, let accessibility = words.first?.headerAcessibilityHint {
+        if let header = words.first?.header,
+            let title = words.first?.title,
+            let accessibility = words.first?.headerAcessibilityHint,
+           let dialogue = words.first?.dialogue {
             headerImage.image = UIImage(named: header)
             headerImage.accessibilityLabel = accessibility
             headerImage.isAccessibilityElement = true
+            dialogueVC.dialogue = dialogue
             titleLabel = FuzzyFontLabel(text: title, textStyle: .largeTitle)
+            
         } else {
-            titleLabel = FuzzyFontLabel(text: "", textStyle: .largeTitle)
+            print("content está vazio")
         }
         
         titleLabel.textColor = UIColor(named: "textColor")
