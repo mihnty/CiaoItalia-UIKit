@@ -48,19 +48,26 @@ class StoryViewController: UIViewController, ContentDelegate {
             backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             backgroundImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             backgroundImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
             headerImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            headerImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            headerImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 23.5),
+            headerImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -23.5),
+            headerImage.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: -50),
+            
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             titleLabel.topAnchor.constraint(equalTo: headerImage.bottomAnchor),
+            
             segmentedControl.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
             segmentedControl.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
             segmentedControl.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
+            
             repertoryLabel.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 5),
             repertoryLabel.leadingAnchor.constraint(equalTo: segmentedControl.leadingAnchor, constant: 5),
             repertoryVC.view.topAnchor.constraint(equalTo: repertoryLabel.bottomAnchor),
             repertoryVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             repertoryVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             repertoryVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
             dialogueVC.view.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor),
             dialogueVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             dialogueVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -73,6 +80,7 @@ class StoryViewController: UIViewController, ContentDelegate {
         view.addSubview(backgroundImageView)
         
         headerImage.translatesAutoresizingMaskIntoConstraints = false
+        headerImage.contentMode = .scaleAspectFit
         view.addSubview(headerImage)
         
         repertoryVC.delegate = self
@@ -97,14 +105,12 @@ class StoryViewController: UIViewController, ContentDelegate {
         view.addSubview(segmentedControl)
         
         if let header = words.first?.header, let title = words.first?.title, let accessibility = words.first?.headerAcessibilityHint {
-            print("tentou criar")
             headerImage.image = UIImage(named: header)
             headerImage.accessibilityLabel = accessibility
             headerImage.isAccessibilityElement = true
             titleLabel = FuzzyFontLabel(text: title, textStyle: .largeTitle)
         } else {
             titleLabel = FuzzyFontLabel(text: "", textStyle: .largeTitle)
-            print("words está vazio")
         }
         
         titleLabel.textColor = UIColor(named: "textColor")
