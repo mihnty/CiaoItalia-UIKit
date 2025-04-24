@@ -11,29 +11,29 @@ class DialogueCell: UITableViewCell, SpeechManagerDelegate {
     private var leadingConstraint: NSLayoutConstraint?
     private var trailingConstraint: NSLayoutConstraint?
     static let identifier = "DialogueCell"
-    var italian = {
-        let text = UILabel()
-        text.translatesAutoresizingMaskIntoConstraints = false
-        text.textColor = .mediumGray
-        text.textAlignment = .left
-        
-        text.numberOfLines = 0
-        
-        text.font = .systemFont(ofSize: 17, weight: .medium)
-        return text
-        
+
+    private lazy var italian: UILabel = {
+        let lbl = UILabel()
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        lbl.textColor = .mediumGray
+        lbl.textAlignment = .left
+        lbl.numberOfLines = 0
+        lbl.font = .systemFont(ofSize: 17, weight: .medium)
+        return lbl
     }()
-    private var arrow = {
-        let arrow = UIImageView(image: UIImage(named: "dialogueTriangle"))
-        arrow.translatesAutoresizingMaskIntoConstraints = false
-        return arrow
+
+    private lazy var arrow: UIImageView = {
+        let iv = UIImageView(image: UIImage(named: "dialogueTriangle"))
+        iv.translatesAutoresizingMaskIntoConstraints = false
+        return iv
     }()
-    private var arrow2 = {
-        let arrow = UIImageView(image: UIImage(named: "dialogueTriangle2"))
-        arrow.translatesAutoresizingMaskIntoConstraints = false
-        return arrow
+
+    private lazy var arrow2: UIImageView = {
+        let iv = UIImageView(image: UIImage(named: "dialogueTriangle2"))
+        iv.translatesAutoresizingMaskIntoConstraints = false
+        return iv
     }()
-    
+
     private lazy var playIcon: UIImageView = {
         let iv = UIImageView(image: UIImage(named: "dialogueSpeakerOff"))
         iv.translatesAutoresizingMaskIntoConstraints = false
@@ -197,17 +197,23 @@ class DialogueCell: UITableViewCell, SpeechManagerDelegate {
 
     @objc private func handlePlayButtonTapped() {
         guard let text = italian.text, !text.isEmpty else { return }
+
+        // turn off previous cell's icon
+        (SpeechManager.shared.delegate as? DialogueCell)?.finishSpeech()
+
+        // assign ourselves as delegate
         SpeechManager.shared.delegate = self
+
+        // flip our icon on
         playIcon.image = UIImage(named: "dialogueSpeaker")
 
+        // find our indexPath
         var view: UIView? = self
         while view != nil && !(view is UITableView) {
             view = view?.superview
         }
         let table = view as? UITableView
-        let ip = table?.indexPath(for: self)
-
-        if let ip = ip {
+        if let ip = table?.indexPath(for: self) {
             SpeechManager.shared.speak(text, indexPath: ip)
         } else {
             SpeechManager.shared.speak(text)
@@ -229,45 +235,40 @@ class DialogueCell: UITableViewCell, SpeechManagerDelegate {
         let italianFont = NormalFontLabel(text: line.italian, textStyle: .body, textColor: .mediumGray, textWeight: .medium)
         italian.font = italianFont.font
         translation.text = line.translation
-        let translationFont = NormalFontLabel(text: line.italian, textStyle: .callout, textColor: .mediumGray, textWeight: .medium)
+        let translationFont = NormalFontLabel(text: line.translation, textStyle: .callout, textColor: .mediumGray, textWeight: .regular)
         translation.font = translationFont.font
         arrow.isHidden = true
         arrow2.isHidden = true
 
-                
-            dialoguestack.arrangedSubviews.forEach { dialoguestack.removeArrangedSubview($0); $0.removeFromSuperview() }
+        dialoguestack.arrangedSubviews.forEach {
+            dialoguestack.removeArrangedSubview($0)
+            $0.removeFromSuperview()
+        }
 
-            if line.type == .question {
-                verticalstack.alignment = .leading
-                dialoguestack.alignment = .center
-                dialoguestack.addArrangedSubview(playIcon)
-                dialoguestack.addArrangedSubview(italian)
-                trailingConstraint?.isActive = true
-                leadingConstraint?.isActive = false
-                dialoguebox.backgroundColor = .lightBeige
-                dialoguebox2.backgroundColor = .lightBeige
-                arrow2.isHidden = false
-            } else {
-                verticalstack.alignment = .trailing
-                dialoguestack.alignment = .center
-                dialoguestack.addArrangedSubview(italian)
-                dialoguestack.addArrangedSubview(playIcon)
-                trailingConstraint?.isActive = false
-                leadingConstraint?.isActive = true
-                dialoguebox.backgroundColor = .darkBeige
-                dialoguebox2.backgroundColor = .darkBeige
-                arrow.isHidden = false
-            }
-   }
-    
-
-    
-    
-
+        if line.type == .question {
+            verticalstack.alignment = .leading
+            dialoguestack.alignment = .center
+            dialoguestack.addArrangedSubview(playIcon)
+            dialoguestack.addArrangedSubview(italian)
+            trailingConstraint?.isActive = true
+            leadingConstraint?.isActive = false
+            dialoguebox.backgroundColor = .lightBeige
+            dialoguebox2.backgroundColor = .lightBeige
+            arrow2.isHidden = false
+        } else {
+            verticalstack.alignment = .trailing
+            dialoguestack.alignment = .center
+            dialoguestack.addArrangedSubview(italian)
+            dialoguestack.addArrangedSubview(playIcon)
+            trailingConstraint?.isActive = false
+            leadingConstraint?.isActive = true
+            dialoguebox.backgroundColor = .darkBeige
+            dialoguebox2.backgroundColor = .darkBeige
+            arrow.isHidden = false
+        }
+    }
 }
-
 
 #Preview {
     UINavigationController(rootViewController: CarouselContainerViewController())
 }
-
