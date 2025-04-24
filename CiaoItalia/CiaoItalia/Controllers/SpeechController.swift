@@ -9,6 +9,7 @@ import AVFoundation
 
 class SpeechManager:NSObject, AVSpeechSynthesizerDelegate {
     static let shared = SpeechManager()
+    private(set) var isPlaying = false
     let synthesizer = Synthesizer()
     var indexPath:IndexPath?
     weak var delegate:SpeechManagerDelegate?
@@ -27,13 +28,19 @@ class SpeechManager:NSObject, AVSpeechSynthesizerDelegate {
             print("audio session config error: " + error.localizedDescription)
         }
     }
-    func speak(_ text:String, indexPath:IndexPath){
+
+    func speak(_ text: String, indexPath: IndexPath) {
+        guard !isPlaying else { return }
+        isPlaying = true
         Task { @MainActor in
             await self.synthesizer.speak(text)
             self.indexPath = indexPath
         }
     }
-    func speak(_ text:String){
+
+    func speak(_ text: String) {
+        guard !isPlaying else { return }
+        isPlaying = true
         Task { @MainActor in
             await self.synthesizer.speak(text)
         }
@@ -48,10 +55,16 @@ class SpeechManager:NSObject, AVSpeechSynthesizerDelegate {
     }
 
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-        self.delegate?.finishSpeech()
+        DispatchQueue.main.async {
+            self.isPlaying = false
+            self.delegate?.finishSpeech()
+        }
     }
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didPause utterance: AVSpeechUtterance) {
-        self.delegate?.finishSpeech()
+        DispatchQueue.main.async {
+            self.isPlaying = false
+            self.delegate?.finishSpeech()
+        }
     }
     
 }

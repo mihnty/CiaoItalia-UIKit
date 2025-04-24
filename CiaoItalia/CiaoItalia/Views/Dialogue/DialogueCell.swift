@@ -196,6 +196,7 @@ class DialogueCell: UITableViewCell, SpeechManagerDelegate {
 
     @objc private func handlePlayButtonTapped() {
         guard let text = italian.text, !text.isEmpty else { return }
+        guard !SpeechManager.shared.isPlaying else { return }
         (SpeechManager.shared.delegate as? DialogueCell)?.finishSpeech()
         SpeechManager.shared.delegate = self
         playIcon.image = UIImage(named: "dialogueSpeaker")
