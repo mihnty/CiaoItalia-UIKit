@@ -40,102 +40,90 @@ class DialogueCell: UITableViewCell, SpeechManagerDelegate {
         iv.contentMode = .scaleAspectFit
         return iv
     }()
-    
-    private var playButton = {
-        let playButton = UIButton(type: .custom)
-        playButton.backgroundColor = .clear
-        playButton.translatesAutoresizingMaskIntoConstraints = false
-        playButton.accessibilityHint = "Clique para reproduzir diálogo"
-        playButton.accessibilityLabel = "Balão de diálogo"
-        playButton.accessibilityIdentifier = "Balão de diálogo"
-        playButton.accessibilityTraits = .button
-        return playButton
-    }()
-    
 
-    
-    private var translation = {
-        let text = UILabel()
-        text.translatesAutoresizingMaskIntoConstraints = false
-        text.numberOfLines = 0
-        text.textColor = .mediumGray
-        return text
-    }()
-    private var dialoguebox = {
-       let rectangle = UIView()
-        rectangle.translatesAutoresizingMaskIntoConstraints = false
-        rectangle.backgroundColor = .lightBeige
-        rectangle.layer.cornerRadius = 12
-        
-        
-        rectangle.layer.shadowColor = UIColor.darkGolden.cgColor
-        rectangle.layer.shadowOpacity = 1
-        rectangle.layer.shadowOffset = CGSize(width: 0, height: 4)
-        rectangle.layer.shadowRadius = 0.1
-        rectangle.layer.masksToBounds = false
-        return rectangle
-    }()
-    
-    private var dialoguebox2 = {
-       let rectangle = UIView()
-        rectangle.translatesAutoresizingMaskIntoConstraints = false
-        rectangle.backgroundColor = .lightBeige
-        rectangle.layer.cornerRadius = 12
-        
-        
-        rectangle.layer.shadowColor = UIColor.lightYellow.cgColor
-        rectangle.layer.shadowOpacity = 1
-        rectangle.layer.shadowOffset = CGSize(width: 0, height: -4)
-        rectangle.layer.shadowRadius = 0.1
-        rectangle.layer.masksToBounds = false
-        return rectangle
-    }()
-    
-    private var verticalstack: UIStackView = {
-        let view = UIStackView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.axis = .vertical
-        return view
-    }()
-    
-    private var dialoguestack: UIStackView = {
-        let view = UIStackView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.axis = .horizontal
-        view.spacing = 16
-        
-        return view
+    private lazy var playButton: UIButton = {
+        let btn = UIButton(type: .custom)
+        btn.backgroundColor = .clear
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.accessibilityHint = "Clique para reproduzir diálogo"
+        btn.accessibilityLabel = "Balão de diálogo"
+        btn.accessibilityIdentifier = "Balão de diálogo"
+        btn.accessibilityTraits = .button
+        return btn
     }()
 
-        
+    private lazy var translation: UILabel = {
+        let lbl = UILabel()
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        lbl.numberOfLines = 0
+        lbl.textColor = .mediumGray
+        return lbl
+    }()
+
+    private lazy var dialoguebox: UIView = {
+       let v = UIView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.backgroundColor = .lightBeige
+        v.layer.cornerRadius = 12
+        v.layer.shadowColor = UIColor.darkGolden.cgColor
+        v.layer.shadowOpacity = 1
+        v.layer.shadowOffset = CGSize(width: 0, height: 4)
+        v.layer.shadowRadius = 0.1
+        return v
+    }()
+
+    private lazy var dialoguebox2: UIView = {
+       let v = UIView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.backgroundColor = .lightBeige
+        v.layer.cornerRadius = 12
+        v.layer.shadowColor = UIColor.lightYellow.cgColor
+        v.layer.shadowOpacity = 1
+        v.layer.shadowOffset = CGSize(width: 0, height: -4)
+        v.layer.shadowRadius = 0.1
+        return v
+    }()
+
+    private lazy var verticalstack: UIStackView = {
+        let sv = UIStackView()
+        sv.translatesAutoresizingMaskIntoConstraints = false
+        sv.axis = .vertical
+        return sv
+    }()
+
+    private lazy var dialoguestack: UIStackView = {
+        let sv = UIStackView()
+        sv.translatesAutoresizingMaskIntoConstraints = false
+        sv.axis = .horizontal
+        sv.spacing = 16
+        return sv
+    }()
+
+    private lazy var container: UIView = {
+        let v = UIView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.selectionStyle = .none
-        self.backgroundColor = .clear
         SpeechManager.shared.delegate = self
+        selectionStyle = .none
+        backgroundColor = .clear
         setup()
-        
     }
-    
-    private var container: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    private func setup(){
-        self.backgroundColor = .clear
+
+    private func setup() {
         setupHierarchy()
         setupConstraints()
         setupLayout()
         setupActions()
     }
-    
+
     private func setupHierarchy() {
         contentView.addSubview(arrow)
         contentView.addSubview(arrow2)
@@ -151,7 +139,7 @@ class DialogueCell: UITableViewCell, SpeechManagerDelegate {
 
     private func setupLayout() {
         contentView.backgroundColor = .clear
-        self.selectionStyle = .none
+        selectionStyle = .none
     }
 
     private func setupConstraints() {
@@ -209,13 +197,24 @@ class DialogueCell: UITableViewCell, SpeechManagerDelegate {
 
     @objc private func handlePlayButtonTapped() {
         guard let text = italian.text, !text.isEmpty else { return }
+        SpeechManager.shared.delegate = self
         playIcon.image = UIImage(named: "dialogueSpeaker")
-        SpeechManager.shared.speak(text)
+
+        var view: UIView? = self
+        while view != nil && !(view is UITableView) {
+            view = view?.superview
+        }
+        let table = view as? UITableView
+        let ip = table?.indexPath(for: self)
+
+        if let ip = ip {
+            SpeechManager.shared.speak(text, indexPath: ip)
+        } else {
+            SpeechManager.shared.speak(text)
+        }
     }
 
-    func startSpeech() {
-        
-    }
+    func startSpeech() {}
 
     func finishSpeech() {
         DispatchQueue.main.async {
@@ -223,9 +222,7 @@ class DialogueCell: UITableViewCell, SpeechManagerDelegate {
         }
     }
 
-    func changeWhoIsSpeaking(indexPath: IndexPath) {
-        
-    }
+    func changeWhoIsSpeaking(indexPath: IndexPath) {}
 
     func configure(with line: DialogueLine) {
         italian.text = line.italian
