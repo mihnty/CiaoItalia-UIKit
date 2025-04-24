@@ -23,15 +23,7 @@ class StoryViewController: UIViewController, ContentDelegate {
     init(content:[any ContentType]) {
         super.init(nibName: nil, bundle: nil)
         self.words = content
-        if let header = content.first?.header, let title = content.first?.title, let accessibility = content.first?.headerAcessibilityHint {
-            headerImage.image = UIImage(named: header)
-            headerImage.accessibilityLabel = accessibility
-            headerImage.isAccessibilityElement = true
-            titleLabel = FuzzyFontLabel(text: title, textStyle: .largeTitle)
-            
-        } else {
-            print("content está vazio")
-        }
+        
     }
     
     required init?(coder: NSCoder) {
@@ -104,11 +96,25 @@ class StoryViewController: UIViewController, ContentDelegate {
         segmentedControl.addTarget(self, action: #selector(changeTableView(_:)), for: .valueChanged)
         view.addSubview(segmentedControl)
         
+        if let header = words.first?.header, let title = words.first?.title, let accessibility = words.first?.headerAcessibilityHint {
+            print("tentou criar")
+            headerImage.image = UIImage(named: header)
+            headerImage.accessibilityLabel = accessibility
+            headerImage.isAccessibilityElement = true
+            titleLabel = FuzzyFontLabel(text: title, textStyle: .largeTitle)
+        } else {
+            titleLabel = FuzzyFontLabel(text: "", textStyle: .largeTitle)
+            print("words está vazio")
+        }
+        
         titleLabel.textColor = UIColor(named: "textColor")
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 0
         titleLabel.translatesAutoresizingMaskIntoConstraints = false 
         view.addSubview(titleLabel)
+        
+        
+        
     }
     
     @objc func changeTableView(_ sender:UISegmentedControl){
