@@ -197,17 +197,11 @@ class DialogueCell: UITableViewCell, SpeechManagerDelegate {
 
     @objc private func handlePlayButtonTapped() {
         guard let text = italian.text, !text.isEmpty else { return }
-
-        // turn off previous cell's icon
         (SpeechManager.shared.delegate as? DialogueCell)?.finishSpeech()
-
-        // assign ourselves as delegate
         SpeechManager.shared.delegate = self
 
-        // flip our icon on
         playIcon.image = UIImage(named: "dialogueSpeaker")
 
-        // find our indexPath
         var view: UIView? = self
         while view != nil && !(view is UITableView) {
             view = view?.superview
