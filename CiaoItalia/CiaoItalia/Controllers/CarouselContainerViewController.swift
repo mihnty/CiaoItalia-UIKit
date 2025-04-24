@@ -9,7 +9,7 @@ import UIKit
 
 class CarouselContainerViewController: UIViewController {
     
-    let isScreenWide = UIScreen.main.bounds.width > 405
+    let isScreenWide = UIScreen.main.bounds.width > 440
     
     private let backgroundImageView: UIImageView = {
         return UIImageView(image: UIImage(named: "backgroundPattern"))

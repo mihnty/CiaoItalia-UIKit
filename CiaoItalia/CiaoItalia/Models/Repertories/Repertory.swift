@@ -13,4 +13,5 @@ protocol ContentType:CaseIterable {
     var title:String {get}
     var acessibilityHints:String {get}
     var headerAcessibilityHint:String {get}
+    var dialogue: [DialogueItem] {get}
 }

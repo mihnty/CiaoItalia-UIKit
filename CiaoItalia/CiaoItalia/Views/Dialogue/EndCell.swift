@@ -21,8 +21,10 @@ class EndCell: UITableViewCell {
     
     func setup(){
         self.backgroundColor = .clear
+        self.selectionStyle = .none
         setupHierarchy()
         setupConstraints()
+        
     }
     func setupHierarchy(){
         
@@ -31,10 +33,10 @@ class EndCell: UITableViewCell {
     func setupConstraints(){
         
         NSLayoutConstraint.activate([
-            label.topAnchor.constraint(equalTo: contentView.topAnchor),
+            label.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
             label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 16)
+            label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
         ])
     }
 

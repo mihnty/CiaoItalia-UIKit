@@ -14,7 +14,7 @@ class StoryViewController: UIViewController, ContentDelegate {
         return lb
     }()
     lazy var repertoryVC = RepertoryViewController()
-    lazy var dialogueVC = DialogueViewController()
+    lazy var dialogueVC = DialogueViewController(dialogue: [])
     var words: [any ContentType] = []
     lazy var segmentedControl = UISegmentedControl(items: ["Repertório", "Diálogo"])
     lazy var backgroundImageView: UIImageView = {
@@ -139,5 +139,5 @@ class StoryViewController: UIViewController, ContentDelegate {
   
 
 #Preview {
-    StoryViewController(content:Food.allCases)
+    UINavigationController(rootViewController: CarouselContainerViewController())
 }

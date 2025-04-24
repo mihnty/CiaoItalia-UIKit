@@ -8,7 +8,7 @@
 import UIKit
 
 class OnBoardingMainViewController: UIViewController {
-    let isScreenWide = UIScreen.main.bounds.width > 405
+    let isScreenWide = UIScreen.main.bounds.width > 440
             
     private lazy var backgroundImageView: UIImageView = {
         return self.makeImageView(named: "backgroundOnBoard")

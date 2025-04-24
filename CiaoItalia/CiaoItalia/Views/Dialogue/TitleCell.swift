@@ -21,6 +21,7 @@ class TitleCell: UITableViewCell {
     
     func setup(){
         self.backgroundColor = .clear
+        self.selectionStyle = .none
         setupHierarchy()
         setupConstraints()
     }
