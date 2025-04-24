@@ -107,7 +107,6 @@ class DialogueCell: UITableViewCell, SpeechManagerDelegate {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        SpeechManager.shared.delegate = self
         selectionStyle = .none
         backgroundColor = .clear
         setup()
@@ -199,7 +198,6 @@ class DialogueCell: UITableViewCell, SpeechManagerDelegate {
         guard let text = italian.text, !text.isEmpty else { return }
         (SpeechManager.shared.delegate as? DialogueCell)?.finishSpeech()
         SpeechManager.shared.delegate = self
-
         playIcon.image = UIImage(named: "dialogueSpeaker")
 
         var view: UIView? = self

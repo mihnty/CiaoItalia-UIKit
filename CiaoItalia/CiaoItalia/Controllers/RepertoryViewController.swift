@@ -53,12 +53,14 @@ class RepertoryViewController:UIViewController,UITableViewDelegate, UITableViewD
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let delegate = delegate else {
+        speechManager.delegate = self
+        guard let words = delegate?.words else {
             return
         }
-        let word = delegate.words[indexPath.row]
-        speechManager.speak(word.italian, indexPath:indexPath)
+        let word = words[indexPath.row]
+        speechManager.speak(word.italian, indexPath: indexPath)
     }
+
     func setupConstraints(){
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
