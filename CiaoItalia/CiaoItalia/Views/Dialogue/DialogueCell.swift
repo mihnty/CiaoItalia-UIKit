@@ -7,8 +7,7 @@
 
 import UIKit
 
-
-class DialogueCell: UITableViewCell {
+class DialogueCell: UITableViewCell, SpeechManagerDelegate {
     private var leadingConstraint: NSLayoutConstraint?
     private var trailingConstraint: NSLayoutConstraint?
     static let identifier = "DialogueCell"
@@ -35,13 +34,11 @@ class DialogueCell: UITableViewCell {
         return arrow
     }()
     
-    private var playIcon = {
-        let playIcon = UIImageView(image: UIImage(named: "dialogueSpeaker"))
-        playIcon.translatesAutoresizingMaskIntoConstraints = false
-        playIcon.contentMode = .scaleAspectFit
-        
-        return playIcon
-        
+    private lazy var playIcon: UIImageView = {
+        let iv = UIImageView(image: UIImage(named: "dialogueSpeakerOff"))
+        iv.translatesAutoresizingMaskIntoConstraints = false
+        iv.contentMode = .scaleAspectFit
+        return iv
     }()
     
     private var playButton = {
@@ -115,6 +112,7 @@ class DialogueCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.selectionStyle = .none
         self.backgroundColor = .clear
+        SpeechManager.shared.delegate = self
         setup()
         
     }
@@ -130,7 +128,7 @@ class DialogueCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setup(){
+    private func setup(){
         self.backgroundColor = .clear
         setupHierarchy()
         setupConstraints()
@@ -138,7 +136,7 @@ class DialogueCell: UITableViewCell {
         setupActions()
     }
     
-    func setupHierarchy() {
+    private func setupHierarchy() {
         contentView.addSubview(arrow)
         contentView.addSubview(arrow2)
         contentView.addSubview(verticalstack)
@@ -149,84 +147,86 @@ class DialogueCell: UITableViewCell {
         container.addSubview(dialoguebox2)
         container.addSubview(dialoguestack)
         container.addSubview(playButton)
-        
-        
-
     }
-    
-    
-    
-    
-    func setupLayout() {
-        self.backgroundColor = .clear
-        self.contentView.backgroundColor = .clear
+
+    private func setupLayout() {
+        contentView.backgroundColor = .clear
         self.selectionStyle = .none
     }
-    
-    func setupConstraints(){
-        
+
+    private func setupConstraints() {
         leadingConstraint = verticalstack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
         trailingConstraint = verticalstack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
-       
+
         NSLayoutConstraint.activate([
-            
             verticalstack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
             verticalstack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             verticalstack.widthAnchor.constraint(equalToConstant: 252),
-            
+
             arrow2.leadingAnchor.constraint(equalTo: verticalstack.trailingAnchor, constant: -14),
             arrow2.topAnchor.constraint(equalTo: dialoguebox2.topAnchor, constant: 8),
-            
+
             container.centerYAnchor.constraint(equalTo: verticalstack.centerYAnchor),
             container.centerXAnchor.constraint(equalTo: verticalstack.centerXAnchor),
-            
+
             dialoguebox.topAnchor.constraint(equalTo: verticalstack.topAnchor),
             dialoguebox.bottomAnchor.constraint(equalTo: translation.topAnchor, constant: -20),
-            //dialoguebox.trailingAnchor.constraint(equalTo: verticalstack.trailingAnchor, constant: -16),
-            
-            dialoguestack.topAnchor.constraint(equalTo: dialoguebox2.topAnchor, constant: 8),
-            dialoguestack.leadingAnchor.constraint(equalTo: dialoguebox2.leadingAnchor, constant: 16),
-            dialoguestack.bottomAnchor.constraint(equalTo: dialoguebox2.bottomAnchor, constant: -8),
-            dialoguestack.trailingAnchor.constraint(equalTo: dialoguebox2.trailingAnchor, constant: -16),
 
             dialoguebox2.topAnchor.constraint(equalTo: dialoguebox.topAnchor),
             dialoguebox2.leadingAnchor.constraint(equalTo: dialoguebox.leadingAnchor),
             dialoguebox2.trailingAnchor.constraint(equalTo: dialoguebox.trailingAnchor),
             dialoguebox2.heightAnchor.constraint(equalTo: dialoguebox.heightAnchor),
-            
+
+            dialoguestack.topAnchor.constraint(equalTo: dialoguebox2.topAnchor, constant: 8),
+            dialoguestack.leadingAnchor.constraint(equalTo: dialoguebox2.leadingAnchor, constant: 16),
+            dialoguestack.bottomAnchor.constraint(equalTo: dialoguebox2.bottomAnchor, constant: -8),
+            dialoguestack.trailingAnchor.constraint(equalTo: dialoguebox2.trailingAnchor, constant: -16),
+
             playButton.topAnchor.constraint(equalTo: dialoguebox.topAnchor),
             playButton.leadingAnchor.constraint(equalTo: dialoguebox.leadingAnchor),
             playButton.trailingAnchor.constraint(equalTo: dialoguebox.trailingAnchor),
             playButton.heightAnchor.constraint(equalTo: dialoguebox.heightAnchor),
-            
+
             dialoguebox.heightAnchor.constraint(greaterThanOrEqualToConstant: 60),
 
             italian.widthAnchor.constraint(equalToConstant: 172.0),
-        
+
             translation.topAnchor.constraint(equalTo: dialoguebox.bottomAnchor, constant: 20),
             translation.leadingAnchor.constraint(equalTo: verticalstack.leadingAnchor, constant: 4),
             translation.trailingAnchor.constraint(equalTo: verticalstack.trailingAnchor, constant: -4),
             translation.bottomAnchor.constraint(equalTo: verticalstack.bottomAnchor, constant: -18),
-            
+
             arrow.leadingAnchor.constraint(equalTo: verticalstack.leadingAnchor, constant: -12),
             arrow.topAnchor.constraint(equalTo: dialoguebox2.topAnchor, constant: 8),
-
         ])
+
         trailingConstraint?.isActive = true
     }
-    
-    func setupActions() {
+
+    private func setupActions() {
         playButton.addTarget(self, action: #selector(handlePlayButtonTapped), for: .touchUpInside)
     }
-    
-    
-    @objc func handlePlayButtonTapped(_ sender: UIButton) {
-        guard let text = italian.text else { return }
+
+    @objc private func handlePlayButtonTapped() {
+        guard let text = italian.text, !text.isEmpty else { return }
+        playIcon.image = UIImage(named: "dialogueSpeaker")
         SpeechManager.shared.speak(text)
     }
-    
 
-    
+    func startSpeech() {
+        
+    }
+
+    func finishSpeech() {
+        DispatchQueue.main.async {
+            self.playIcon.image = UIImage(named: "dialogueSpeakerOff")
+        }
+    }
+
+    func changeWhoIsSpeaking(indexPath: IndexPath) {
+        
+    }
+
     func configure(with line: DialogueLine) {
         italian.text = line.italian
         let italianFont = NormalFontLabel(text: line.italian, textStyle: .body, textColor: .mediumGray, textWeight: .medium)
@@ -268,6 +268,7 @@ class DialogueCell: UITableViewCell {
     
 
 }
+
 
 #Preview {
     UINavigationController(rootViewController: CarouselContainerViewController())
