@@ -107,6 +107,7 @@ class DialogueCell: UITableViewCell, SpeechManagerDelegate {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        SpeechManager.shared.delegate = self
         selectionStyle = .none
         backgroundColor = .clear
         setup()
@@ -185,6 +186,9 @@ class DialogueCell: UITableViewCell, SpeechManagerDelegate {
 
             arrow.leadingAnchor.constraint(equalTo: verticalstack.leadingAnchor, constant: -12),
             arrow.topAnchor.constraint(equalTo: dialoguebox2.topAnchor, constant: 8),
+
+            playIcon.widthAnchor.constraint(equalToConstant: 24),
+            playIcon.heightAnchor.constraint(equalToConstant: 24)
         ])
 
         trailingConstraint?.isActive = true
@@ -196,7 +200,6 @@ class DialogueCell: UITableViewCell, SpeechManagerDelegate {
 
     @objc private func handlePlayButtonTapped() {
         guard let text = italian.text, !text.isEmpty else { return }
-        guard !SpeechManager.shared.isPlaying else { return }
         (SpeechManager.shared.delegate as? DialogueCell)?.finishSpeech()
         SpeechManager.shared.delegate = self
         playIcon.image = UIImage(named: "dialogueSpeaker")
