@@ -187,7 +187,7 @@ class DialogueCell: UITableViewCell {
             dialoguestack.topAnchor.constraint(equalTo: dialoguebox2.topAnchor, constant: 8),
             dialoguestack.leadingAnchor.constraint(equalTo: dialoguebox2.leadingAnchor, constant: 16),
             dialoguestack.bottomAnchor.constraint(equalTo: dialoguebox2.bottomAnchor, constant: -8),
-            dialoguestack.trailingAnchor.constraint(equalTo: dialoguebox2.trailingAnchor, constant: -4),
+            dialoguestack.trailingAnchor.constraint(equalTo: dialoguebox2.trailingAnchor, constant: -16),
 
             dialoguebox2.topAnchor.constraint(equalTo: dialoguebox.topAnchor),
             dialoguebox2.leadingAnchor.constraint(equalTo: dialoguebox.leadingAnchor),
@@ -270,6 +270,6 @@ class DialogueCell: UITableViewCell {
 }
 
 #Preview {
-    DialogueCell()
+    UINavigationController(rootViewController: CarouselContainerViewController())
 }
 
