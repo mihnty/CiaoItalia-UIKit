@@ -255,6 +255,6 @@ extension UIPageViewController {
 }
 
 #Preview {
-    OnBoardingMainViewController()
-//    DemoViewController()
+//    OnBoardingMainViewController()
+    DemoViewController()
 }
