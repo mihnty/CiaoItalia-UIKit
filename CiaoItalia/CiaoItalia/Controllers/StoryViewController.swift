@@ -14,7 +14,7 @@ class StoryViewController: UIViewController, ContentDelegate {
         return lb
     }()
     lazy var repertoryVC = RepertoryViewController()
-    lazy var dialogueVC = DialogueViewController()
+    lazy var dialogueVC = DialogueViewController(dialogue: [])
     var words: [any ContentType] = []
     lazy var segmentedControl = UISegmentedControl(items: ["Repertório", "Diálogo"])
     lazy var backgroundImageView: UIImageView = {
@@ -23,9 +23,11 @@ class StoryViewController: UIViewController, ContentDelegate {
     init(content:[any ContentType]) {
         super.init(nibName: nil, bundle: nil)
         self.words = content
-        if let header = content.first?.header, let title = content.first?.title, let accessibility = content.first?.headerAcessibilityHint {
+        if let header = content.first?.header, let title = content.first?.title, let accessibility = content.first?.headerAcessibilityHint, let dialogue = content.first?.dialogue {
             headerImage.image = UIImage(named: header)
             headerImage.accessibilityLabel = accessibility
+            headerImage.isAccessibilityElement = true
+            dialogueVC.dialogue = dialogue
             titleLabel = FuzzyFontLabel(text: title, textStyle: .largeTitle)
             
         } else {
@@ -132,5 +134,5 @@ class StoryViewController: UIViewController, ContentDelegate {
   
 
 #Preview {
-    StoryViewController(content:Food.allCases)
+    UINavigationController(rootViewController: CarouselContainerViewController())
 }
