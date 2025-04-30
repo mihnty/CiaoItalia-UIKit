@@ -11,6 +11,7 @@ class DialogueCell: UITableViewCell, SpeechManagerDelegate {
     private var leadingConstraint: NSLayoutConstraint?
     private var trailingConstraint: NSLayoutConstraint?
     static let identifier = "DialogueCell"
+    private var isAudioPlaying = false
 
     private lazy var italian: UILabel = {
         let lbl = UILabel()
@@ -199,28 +200,38 @@ class DialogueCell: UITableViewCell, SpeechManagerDelegate {
     }
 
     @objc private func handlePlayButtonTapped() {
-        guard let text = italian.text, !text.isEmpty else { return }
-        (SpeechManager.shared.delegate as? DialogueCell)?.finishSpeech()
-        SpeechManager.shared.delegate = self
-        playIcon.image = UIImage(named: "dialogueSpeaker")
-
-        var view: UIView? = self
-        while view != nil && !(view is UITableView) {
-            view = view?.superview
-        }
-        let table = view as? UITableView
-        if let ip = table?.indexPath(for: self) {
-            SpeechManager.shared.speak(text, indexPath: ip)
-        } else {
-            SpeechManager.shared.speak(text)
+        if !isAudioPlaying {
+            guard !isAudioPlaying, let text = italian.text, !text.isEmpty else { return }
+            (SpeechManager.shared.delegate as? DialogueCell)?.finishSpeech()
+            SpeechManager.shared.delegate = self
+            
+            isAudioPlaying = true
+            playIcon.image = UIImage(named: "dialogueSpeaker")
+            playButton.isEnabled = false
+            
+            var view: UIView? = self
+            while view != nil && !(view is UITableView) {
+                view = view?.superview
+            }
+            let table = view as? UITableView
+            if let ip = table?.indexPath(for: self) {
+                SpeechManager.shared.speak(text, indexPath: ip)
+            } else {
+                SpeechManager.shared.speak(text)
+            }
         }
     }
 
     func startSpeech() {}
 
     func finishSpeech() {
-        DispatchQueue.main.async {
-            self.playIcon.image = UIImage(named: "dialogueSpeakerOff")
+        if isAudioPlaying {
+            DispatchQueue.main.async {
+                self.playIcon.image = UIImage(named: "dialogueSpeakerOff")
+                self.isAudioPlaying = false
+                self.playButton.isEnabled = true
+                print("terminou")
+            }
         }
     }
 
