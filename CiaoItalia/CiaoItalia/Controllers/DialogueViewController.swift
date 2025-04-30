@@ -5,7 +5,7 @@ class DialogueViewController: UIViewController,
                               UITableViewDelegate,
                               SpeechManagerDelegate {
     var dialogue: [DialogueItem]
-    private var isAudioPlaying = false
+    var isAudioPlaying = false
     private var currentSpeaking: IndexPath?
 
     init(dialogue: [DialogueItem]) {

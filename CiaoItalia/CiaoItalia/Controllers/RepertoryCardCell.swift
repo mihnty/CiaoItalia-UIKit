@@ -20,10 +20,17 @@ class RepertoryCardCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func setPlayable(_ isPlayable: Bool) {
+        cardView.isUserInteractionEnabled = isPlayable
+        cardView.alpha = isPlayable ? 1.0 : 0.5
+    }
+    
     func setSpeaking() {
         cardView.isSpeaking.toggle()
     }
-    func setupCardView(){
+
+    func setupCardView() {
         contentView.addSubview(cardView)
         cardView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
