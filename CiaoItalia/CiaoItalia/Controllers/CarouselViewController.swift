@@ -19,6 +19,7 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
                          ("hotel", "no hotel", "Polaroid fachada de hotel"),
                          ("city", "turistando", "Polaroid de edifícios"),
                          ("restaurant", "almoço pela rua", "Polaroid de mesa com comidas"),
+                             ("airplane", "serviço de bordo", "Polaroid cabine de avião"),("bank", "no banco", "Polaroid de maquineta e dinheiro"),
     ] as [(String,String,String)]
     
     private lazy var items: [(String,String,String)] = {
@@ -27,7 +28,7 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
       copy.append(realItems.first!)
       return copy
     }()
-    private let contents: [any ContentType.Type] = [Coffee.self, Suitcase.self, Train.self, Hotel.self, Touristing.self, Food.self]
+    private let contents: [any ContentType.Type] = [Coffee.self, Suitcase.self, Train.self, Hotel.self, Touristing.self, Food.self, Airplane.self, Bank.self]
     let isScreenWide = UIScreen.main.bounds.width > 440
     private var currentIndex: Int = 1
     
