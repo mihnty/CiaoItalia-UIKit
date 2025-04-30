@@ -7,11 +7,11 @@
 
 import UIKit
 
-class DialogueCell: UITableViewCell, SpeechManagerDelegate {
+class DialogueCell: UITableViewCell {
     private var leadingConstraint: NSLayoutConstraint?
     private var trailingConstraint: NSLayoutConstraint?
     static let identifier = "DialogueCell"
-    private var isAudioPlaying = false
+    var isAudioPlaying: Bool = false
 
     private lazy var italian: UILabel = {
         let lbl = UILabel()
@@ -108,7 +108,6 @@ class DialogueCell: UITableViewCell, SpeechManagerDelegate {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        SpeechManager.shared.delegate = self
         selectionStyle = .none
         backgroundColor = .clear
         setup()
@@ -200,45 +199,32 @@ class DialogueCell: UITableViewCell, SpeechManagerDelegate {
     }
 
     @objc private func handlePlayButtonTapped() {
-        if !isAudioPlaying {
-            guard !isAudioPlaying, let text = italian.text, !text.isEmpty else { return }
-            (SpeechManager.shared.delegate as? DialogueCell)?.finishSpeech()
-            SpeechManager.shared.delegate = self
-            
-            isAudioPlaying = true
-            playIcon.image = UIImage(named: "dialogueSpeaker")
-            playButton.isEnabled = false
-            
-            var view: UIView? = self
-            while view != nil && !(view is UITableView) {
-                view = view?.superview
-            }
-            let table = view as? UITableView
-            if let ip = table?.indexPath(for: self) {
-                SpeechManager.shared.speak(text, indexPath: ip)
-            } else {
-                SpeechManager.shared.speak(text)
-            }
+        guard let text = italian.text, !text.isEmpty else { return }
+        setSpeakingOn()
+        var view: UIView? = self
+        while view != nil, !(view is UITableView) { view = view?.superview }
+        if let table = view as? UITableView,
+           let ip = table.indexPath(for: self) {
+            SpeechManager.shared.speak(text, indexPath: ip)
+        } else {
+            SpeechManager.shared.speak(text)
         }
     }
 
-    func startSpeech() {}
-
-    func finishSpeech() {
-        if isAudioPlaying {
-            DispatchQueue.main.async {
-                self.playIcon.image = UIImage(named: "dialogueSpeakerOff")
-                self.isAudioPlaying = false
-                self.playButton.isEnabled = true
-                print("terminou")
-            }
-        }
+    func setSpeakingOn() {
+        playIcon.image = UIImage(named: "dialogueSpeaker")
     }
-
-    func changeWhoIsSpeaking(indexPath: IndexPath) {}
+    func setSpeakingOff() {
+        playIcon.image = UIImage(named: "dialogueSpeakerOff")
+    }
+    func setPlayable(_ yes: Bool) {
+        playButton.isEnabled = yes
+    }
 
     func configure(with line: DialogueLine) {
         italian.text = line.italian
+        setSpeakingOff()
+        setPlayable(true)
         let italianFont = NormalFontLabel(text: line.italian, textStyle: .body, textColor: .mediumGray, textWeight: .medium)
         italian.font = italianFont.font
         translation.text = line.translation
