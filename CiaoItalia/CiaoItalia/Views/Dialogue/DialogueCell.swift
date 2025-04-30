@@ -225,6 +225,10 @@ class DialogueCell: UITableViewCell {
         SpeechManager.shared.speak(text)
     }
     
+    func stopAudio(){
+        SpeechManager.shared.stop()
+    }
+    
 
     
     func configure(with line: DialogueLine) {

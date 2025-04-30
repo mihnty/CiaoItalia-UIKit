@@ -54,6 +54,12 @@ class SpeechManager:NSObject, AVSpeechSynthesizerDelegate {
         self.delegate?.finishSpeech()
     }
     
+    func stop() {
+        Task {
+            await self.synthesizer.stop()
+        }
+    }
+    
 }
 actor Synthesizer {
     private var synthesizer = AVSpeechSynthesizer()
@@ -69,6 +75,11 @@ actor Synthesizer {
         utterance.voice = AVSpeechSynthesisVoice(language: "it-IT") // Italiano
         utterance.rate = 0.5
         synthesizer.speak(utterance)
+    }
+    func stop() {
+        if synthesizer.isSpeaking {
+            synthesizer.stopSpeaking(at: .immediate)
+        }
     }
 }
 protocol SpeechManagerDelegate: AnyObject {

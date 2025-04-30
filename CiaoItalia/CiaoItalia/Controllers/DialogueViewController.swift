@@ -96,6 +96,16 @@ class DialogueViewController: UIViewController, UITableViewDataSource, UITableVi
         ])
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        for cell in dialogueTableView.visibleCells {
+            if let audioCell = cell as? DialogueCell {
+                audioCell.stopAudio()
+            }
+        }
+    }
+    
      // MARK: - Navigation
 
     

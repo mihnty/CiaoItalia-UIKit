@@ -113,6 +113,8 @@ class StoryViewController: UIViewController, ContentDelegate {
     }
     
     @objc func changeTableView(_ sender:UISegmentedControl){
+        SpeechManager.shared.stop()
+        
         switch sender.selectedSegmentIndex {
         case 0:
             repertoryVC.view.isHidden = false
