@@ -7,6 +7,8 @@ class OnboardingPagesViewController: UIViewController {
     let stackView = UIStackView()
     let imageView = UIImageView()
     
+    private let bgOnBoardingVC = OnBoardingBackgroundViewController()
+    
     private let titleLabel: FuzzyFontLabel
     private let subtitleLabel: NormalFontLabel
     
@@ -36,6 +38,11 @@ class OnboardingPagesViewController: UIViewController {
 
 extension OnboardingPagesViewController {
     
+    func setupBg(){
+        addChild(bgOnBoardingVC)
+        view.addSubview(bgOnBoardingVC.view)
+    }
+    
     func style() {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
@@ -45,6 +52,7 @@ extension OnboardingPagesViewController {
     }
         
     func layout() {
+        setupBg()
         stackView.addArrangedSubview(imageView)
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(subtitleLabel)
@@ -80,21 +88,17 @@ extension OnboardingPagesViewController {
                 imageView.bottomAnchor.constraint(equalTo: titleLabel.topAnchor, constant: -15),
                 imageView.widthAnchor.constraint(equalToConstant: 270),
                 imageView.heightAnchor.constraint(equalToConstant: 300),
-//                stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-
-//                imageView.widthAnchor.constraint(equalToConstant: 200),
-
             ])
         }
     }
 }
 
 #Preview {
-//    OnboardingPagesViewController(
-//        imageName: "polaroid1",
-//        titleText: "Cada página traz uma nova situação",
-//        subtitleText: "Vivencie desafios reais de viagem e aprenda expressões para guardar na memória."
-//    )
-    OnBoardingMainViewController()
+    OnboardingPagesViewController(
+        imageName: "polaroid1",
+        titleText: "Cada página traz uma nova situação",
+        subtitleText: "Vivencie desafios reais de viagem e aprenda expressões para guardar na memória.", imageAccessibilityLabel: ""
+    )
+//    OnBoardingBackgroundViewController()
 }
 

@@ -85,7 +85,6 @@ enum Touristing:ContentType {
             .title("Pedindo informação:"),
             .dialogue(DialogueLine(italian: "Buon pomeriggio! Scusi, mi sa dire dove è il museo?", translation: "Boa tarde! Com licença, você poderia me dizer onde é museu?", type: .question)),
             .dialogue(DialogueLine(italian: "Buon pomeriggio! Il museo è a destra di quella piazza.", translation: "Boa tarde! O museu é a direita daquela praça.", type: .answer)),
-            .dialogue(DialogueLine(italian: "Buon pomeriggio! Il museo è a destra di quella piazza.", translation: "Boa tarde! O museu é a direita daquela praça.", type: .answer)),
             .dialogue(DialogueLine(italian: "Grazie! Sa dove posso trovare un buon ristorante qui vicino?", translation: "Obrigado! Você sabe onde posso encontrar um bom restaurante por aqui?", type: .question)),
             .dialogue(DialogueLine(italian: "Certo! C'è un ottimo ristorante italiano proprio dietro l'angolo. Si chiama 'La Trattoria'.", translation: "Claro! Há um excelente restaurante italiano logo ali na esquina. Chama-se 'La Trattoria'.", type: .answer)),
             .dialogue(DialogueLine(italian: "Perfetto! E come faccio ad arrivare?", translation: "Perfeito! E como faço para chegar?", type: .question)),
