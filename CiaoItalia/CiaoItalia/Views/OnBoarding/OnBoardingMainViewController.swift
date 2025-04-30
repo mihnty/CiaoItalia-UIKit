@@ -2,126 +2,68 @@
 //  OnBoardingMainViewController.swift
 //  CiaoItalia
 //
-//  Created by mih on 09/04/25.
+//  Created by mih on 28/04/25.
 //
 
 import UIKit
 
 class OnBoardingMainViewController: UIViewController {
-    let isScreenWide = UIScreen.main.bounds.width > 440
+        let isScreenWide = UIScreen.main.bounds.width > 440
+       
+        private let mainOnBoardingVC = DemoViewController()
+    
+        private let bgOnBoardingVC = OnBoardingBackgroundViewController()
+        
+        override func viewDidLoad() {
             
-    private lazy var backgroundImageView: UIImageView = {
-        return self.makeImageView(named: "backgroundOnBoard")
-    }()
-    
-    private lazy var mapImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "mapa"))
-        if isScreenWide {
-            imageView.contentMode = .scaleAspectFill
-        } else {
-            imageView.contentMode = .scaleAspectFit
+            super.viewDidLoad()
+            setup()
         }
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
-    
-    private lazy var tapeImageView: UIImageView = {
-        return self.makeImageView(named: "tape")
-    }()
-    
-    private func makeImageView(named imageName: String) -> UIImageView {
-        let imageView = UIImageView(image: UIImage(named: imageName))
-        imageView.contentMode = .scaleAspectFill
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }
-
-    private let mainOnBoardingVC = DemoViewController()
-    
-    private var isOnBoardingSeen: Bool!
-    
-//    private func showInitialOnBoarding() {
-//        if isOnBoardingSeen {
-//            NextViewController()
-//        } else {
-//            OnBoardingMainViewController()
-//        }
-//    }
-    
-    override func viewDidLoad() {
         
-        super.viewDidLoad()
-        setup()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        if isBeingPresented || isMovingToParent {
-        } else {
+        func setup() {
+            setupBg()
+            setupViews()
+            setupConstraints()
         }
-    }
+        
+        func setupViews(){
+            addChild(mainOnBoardingVC)
+            view.addSubview(mainOnBoardingVC.view)
+        }
     
-    func setup() {
-        view.addSubview(backgroundImageView)
-        setupImages()
-        setupViews()
-        setupConstraints()
+    func setupBg(){
+        addChild(bgOnBoardingVC)
+        view.addSubview(bgOnBoardingVC.view)
     }
-    
-    func setupImages(){
-        view.addSubview(mapImageView)
-        view.addSubview(tapeImageView)
-    }
-    
-    func setupViews(){
-        addChild(mainOnBoardingVC)
-        view.addSubview(mainOnBoardingVC.view)
-    }
-    
-    func setupConstraints() {
-        NSLayoutConstraint.activate([
+        
+        func setupConstraints() {
+            NSLayoutConstraint.activate([
+                
+                    mainOnBoardingVC.view.topAnchor.constraint(equalTo: view.topAnchor),
+                    mainOnBoardingVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                    mainOnBoardingVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                    mainOnBoardingVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                    
+                    bgOnBoardingVC.view.topAnchor.constraint(equalTo: view.topAnchor),
+                    bgOnBoardingVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                    bgOnBoardingVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                    bgOnBoardingVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                   
+            ])
+//            
+//            if (isScreenWide) {
+//                NSLayoutConstraint.activate([
+//                   
+//                ])
+//            } else {
+//                NSLayoutConstraint.activate([
+//
+//                ])
+//            }
             
-                backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor),
-                backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                backgroundImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                backgroundImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                
-                mainOnBoardingVC.view.topAnchor.constraint(equalTo: view.topAnchor),
-                mainOnBoardingVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                mainOnBoardingVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                mainOnBoardingVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                
-                mapImageView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-                mapImageView.widthAnchor.constraint(equalTo: view.widthAnchor),
-                
-                tapeImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: -4),
-                tapeImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 20),
-        ])
-        
-        if (isScreenWide) {
-            NSLayoutConstraint.activate([
-               
-                tapeImageView.widthAnchor.constraint(equalToConstant: 400),
-                
-                mapImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -180),
-                
-                
-            ])
-        } else {
-            NSLayoutConstraint.activate([
-
-                tapeImageView.widthAnchor.constraint(equalToConstant: 200),
-                
-                mapImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -100),
-
-
-            ])
         }
-        
     }
-}
 
-#Preview {
-    OnBoardingMainViewController()
-}
+    #Preview {
+        OnBoardingMainViewController()
+    }
