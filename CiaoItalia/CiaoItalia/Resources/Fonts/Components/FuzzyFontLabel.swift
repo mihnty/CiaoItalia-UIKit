@@ -19,6 +19,7 @@ class FuzzyFontLabel: UILabel {
         self.numberOfLines = 0
         self.adjustsFontForContentSizeCategory = true
         self.translatesAutoresizingMaskIntoConstraints = false
+        
     }
     
     required init?(coder: NSCoder) {

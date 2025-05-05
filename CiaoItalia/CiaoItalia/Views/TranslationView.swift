@@ -10,7 +10,26 @@ import UIKit
 class TranslationView:UIView {
 
    
-    let translateLabel: UILabel = {
+    lazy var translateLabel: UILabel = {
+        let lb = FuzzyFontLabel(text: "Português", textStyle: .body, textColor: .text)
+        lb.backgroundColor = UIColor(named: "cardColor")?.withAlphaComponent(0.6)
+        lb.layer.cornerRadius = 10
+        lb.layer.masksToBounds = true
+        lb.translatesAutoresizingMaskIntoConstraints = false
+        return lb
+    }()
+    
+    lazy var translateButton:UIButton = {
+        var bt = UIButton(type: .system)
+        bt.setTitle("Traduzir", for: .normal)
+        bt.backgroundColor = UIColor(named: "cardColor")?.withAlphaComponent(0.6)
+        bt.layer.cornerRadius = 10
+        bt.layer.masksToBounds = true
+        bt.translatesAutoresizingMaskIntoConstraints = false
+        return bt
+    }()
+    
+    lazy var targetLabel: UILabel = {
         let lb = FuzzyFontLabel(text: "Italiano", textStyle: .body, textColor: .text)
         lb.backgroundColor = UIColor(named: "cardColor")?.withAlphaComponent(0.6)
         lb.layer.cornerRadius = 10
@@ -19,11 +38,10 @@ class TranslationView:UIView {
         return lb
     }()
     
-    let targetLabel: UILabel = {
-        let lb = FuzzyFontLabel(text: "Português", textStyle: .body, textColor: .text)
-        lb.backgroundColor = UIColor(named: "cardColor")?.withAlphaComponent(0.6)
-        lb.layer.cornerRadius = 10
-        lb.layer.masksToBounds = true
+    lazy var translatedLabel:TranslateTextView = {
+        let lb = TranslateTextView()
+        lb.setPlaceholder(placeholder: "Tradução")
+        lb.disableWrite()
         lb.translatesAutoresizingMaskIntoConstraints = false
         return lb
     }()
@@ -36,13 +54,24 @@ class TranslationView:UIView {
     
     let swapLanguageButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "arrow.left.arrow.right"), for: .normal)
+        button.setImage(UIImage(systemName: "arrow.left.arrow.right")?.withTintColor(.caramel), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
     lazy var backgroundImageView: UIImageView = {
-        return UIImageView(image: UIImage(named: "backgroundPattern"))
+        let bg = UIImageView(image: UIImage(named: "backgroundPattern"))
+        bg.translatesAutoresizingMaskIntoConstraints = false
+        return bg
+    }()
+    
+    public let recordButton: UIButton = {
+        let btn = UIButton(type: .custom)
+        let micImage = UIImage(systemName: "microphone.fill")?.withTintColor(.caramel)
+        btn.setImage(micImage, for: .normal)
+        btn.tintColor = .systemBlue
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        return btn
     }()
     
     override init(frame: CGRect) {
@@ -62,7 +91,9 @@ class TranslationView:UIView {
         addSubview(swapLanguageButton)
         addSubview(translateLabel)
         addSubview(targetLabel)
-        
+        addSubview(recordButton)
+        addSubview(translatedLabel)
+        addSubview(translateButton)
         
         let tap = UITapGestureRecognizer(
             target: self,
@@ -90,7 +121,20 @@ class TranslationView:UIView {
             textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             textField.bottomAnchor.constraint(equalTo: self.centerYAnchor),
             
+            translateButton.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 20),
+            translateButton.leadingAnchor.constraint(equalTo: self.centerXAnchor, constant: -60),
+            translateButton.trailingAnchor.constraint(equalTo: self.centerXAnchor, constant: 60),
+            translateButton.heightAnchor.constraint(equalTo: swapLanguageButton.heightAnchor),
             
+            translatedLabel.topAnchor.constraint(equalTo: translateButton.bottomAnchor, constant: 20),
+            translatedLabel.heightAnchor.constraint(equalTo: textField.heightAnchor),
+            translatedLabel.trailingAnchor.constraint(equalTo: textField.trailingAnchor),
+            translatedLabel.leadingAnchor.constraint(equalTo: textField.leadingAnchor),
+            
+            recordButton.leadingAnchor.constraint(equalTo: textField.leadingAnchor),
+            recordButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor),
+            recordButton.trailingAnchor.constraint(equalTo: textField.leadingAnchor, constant: 50),
+            recordButton.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: -50),
             
             translateLabel.topAnchor.constraint(equalTo: swapLanguageButton.topAnchor),
             translateLabel.bottomAnchor.constraint(equalTo: swapLanguageButton.bottomAnchor),

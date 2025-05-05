@@ -61,10 +61,8 @@ public actor SpeechRecognizer: Observable {
         }
     }
     
-    @MainActor public func stopTranscribing() {
-        Task {
-            await reset()
-        }
+    public func stopTranscribing() {
+        request?.endAudio()
     }
 
     private func transcribe() {
@@ -122,11 +120,12 @@ public actor SpeechRecognizer: Observable {
         let receivedError = error != nil
         
         if receivedFinalResult || receivedError {
-            //print(receivedError)
             print(error)
-            //print(receivedFinalResult)
             audioEngine.stop()
             audioEngine.inputNode.removeTap(onBus: 0)
+            Task { @MainActor in
+                await reset()
+            }
         }
         
         if let result {
