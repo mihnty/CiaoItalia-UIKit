@@ -11,8 +11,6 @@ import Observation
 
 
 public actor SpeechRecognizer: Observable {
-    
-    
     @MainActor public var transcript: String = ""
     
     private var localeIdentifier: String
@@ -25,7 +23,7 @@ public actor SpeechRecognizer: Observable {
     private weak var delegate: SpeechRecognizerDelegate?
     
     
-    public func setDelegate(_ delegate: SpeechRecognizerDelegate) {
+    func setDelegate(_ delegate: SpeechRecognizerDelegate) {
         self.delegate = delegate
     }
 
@@ -52,7 +50,6 @@ public actor SpeechRecognizer: Observable {
     }
     
     @MainActor public func startTranscribing() {
-        print("tentou transcrever")
         Task {
             await transcribe()
         }
@@ -71,11 +68,12 @@ public actor SpeechRecognizer: Observable {
     }
 
     private func transcribe() {
+        
         guard let recognizer, recognizer.isAvailable else {
             self.transcribe(RecognizerError.recognizerIsUnavailable)
             return
         }
-        print("chamou transcribe")
+        
         do {
             let (audioEngine, request) = try Self.prepareEngine()
             self.audioEngine = audioEngine
@@ -124,6 +122,9 @@ public actor SpeechRecognizer: Observable {
         let receivedError = error != nil
         
         if receivedFinalResult || receivedError {
+            //print(receivedError)
+            print(error)
+            //print(receivedFinalResult)
             audioEngine.stop()
             audioEngine.inputNode.removeTap(onBus: 0)
         }
@@ -137,8 +138,10 @@ public actor SpeechRecognizer: Observable {
     nonisolated private func transcribe(_ message: String) {
         Task { @MainActor [weak self] in
             guard let self = self else { return }
+            print(message)
             await self.delegate?.speechRecognizer(self, didUpdateTranscript: message)
             self.transcript = message
+       
         }
     }
 
@@ -153,13 +156,12 @@ public actor SpeechRecognizer: Observable {
             guard let self = self else { return }
             await self.delegate?.speechRecognizer(self, didUpdateTranscript: msg)
             self.transcript = msg
+           
         }
     }
     public func setLanguage(to newLocale: String) async {
-        print("setou a linguagem")
        reset()
        localeIdentifier = newLocale
-        
        recognizer = SFSpeechRecognizer(locale: Locale(identifier: newLocale))
     }
 }

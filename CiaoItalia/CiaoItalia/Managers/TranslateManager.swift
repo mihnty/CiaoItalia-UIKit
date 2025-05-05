@@ -21,7 +21,7 @@ class TranslateManager {
 
    
 
-    @objc private func swapButtonTapped() {
+    @objc public func swapButtonTapped() {
         let temp = currentSourceLanguage
         currentSourceLanguage = currentTargetLanguage
         currentTargetLanguage = temp
@@ -40,7 +40,7 @@ class TranslateManager {
         */
     }
 
-    @objc private func translateButtonTapped() {
+    @objc public func translateButtonTapped() {
         guard input != "" else {
             result = "Please enter text to translate."
             return
@@ -113,6 +113,7 @@ class TranslateManager {
     }
 
 }
+
 extension Data {
     mutating func append(_ string: String) {
         if let d = string.data(using: .utf8) {
