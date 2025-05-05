@@ -13,27 +13,30 @@ class TabController: UITabBarController, UITabBarControllerDelegate {
         super.viewDidLoad()
         self.setupTabs()
         
-        self.selectedIndex = 0
+        self.selectedIndex = 1
         
         self.delegate = self
 
         let appearance = UITabBarAppearance()
-               appearance.configureWithTransparentBackground()
-        appearance.backgroundColor = .systemGray6
-               self.tabBar.standardAppearance = appearance
-               self.tabBar.scrollEdgeAppearance = appearance
-        self.tabBar.tintColor = .darkYellow
-               self.tabBar.unselectedItemTintColor = .gray
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundEffect = UIBlurEffect(style: .systemThinMaterial)
+        appearance.backgroundColor = nil
+
+        self.tabBar.standardAppearance = appearance
+        self.tabBar.scrollEdgeAppearance = appearance
+
+        self.tabBar.tintColor = .caramel
+//        self.tabBar.unselectedItemTintColor = .gray
     }
     
     // MARK: - Tab Setup
     
     private func setupTabs() {
-        let home = self.createNav(with: "Home", and: UIImage(systemName: "house.fill"), vc: CarouselContainerViewController())
+        let home = self.createNav(with: "Início", and: UIImage(systemName: "house.fill"), vc: CarouselContainerViewController())
         let translate = self.createNav(with: "Tradutor", and: UIImage(systemName: "translate"), vc: OnBoardingMainViewController())
         let expression = self.createNav(with: "Expressões Comum", and: UIImage(systemName: "person.wave.2.fill"), vc: MockViewController())
         
-        self.setViewControllers([home, translate, expression], animated: true)
+        self.setViewControllers([translate, home, expression], animated: true)
     }
     
     private func createNav(with title: String, and image: UIImage?, vc: UIViewController) -> UINavigationController {
