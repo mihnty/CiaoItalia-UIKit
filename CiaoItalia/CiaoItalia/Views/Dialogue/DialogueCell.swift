@@ -216,7 +216,6 @@ class DialogueCell: UITableViewCell {
     }
     func setSpeakingOff() {
         playIcon.image = UIImage(named: "dialogueSpeakerOff")
-        print("acabou aqui no dialogueCell \(String(describing: italian.text))")
     }
     func setPlayable(_ yes: Bool) {
         playButton.isEnabled = yes

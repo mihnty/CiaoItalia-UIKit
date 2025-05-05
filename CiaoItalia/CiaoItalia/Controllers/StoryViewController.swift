@@ -125,10 +125,12 @@ class StoryViewController: UIViewController, ContentDelegate {
             repertoryVC.view.isHidden = false
             repertoryLabel.isHidden = false
             dialogueVC.view.isHidden = true
+            SpeechManager.shared.delegate = repertoryVC
         case 1:
             repertoryVC.view.isHidden = true
             repertoryLabel.isHidden = true
             dialogueVC.view.isHidden = false
+            SpeechManager.shared.delegate = dialogueVC
         default:
             print("Algo deu errado")
         }
