@@ -8,8 +8,6 @@
 import UIKit
 
 class TranslationView:UIView {
-
-   
     lazy var translateLabel: UILabel = {
         let lb = FuzzyFontLabel(text: "Português", textStyle: .body, textColor: .text)
         lb.backgroundColor = UIColor(named: "cardColor")?.withAlphaComponent(0.6)
@@ -22,6 +20,7 @@ class TranslationView:UIView {
     lazy var translateButton:UIButton = {
         var bt = UIButton(type: .system)
         bt.setTitle("Traduzir", for: .normal)
+        bt.setTitleColor(.text, for: .normal)
         bt.backgroundColor = UIColor(named: "cardColor")?.withAlphaComponent(0.6)
         bt.layer.cornerRadius = 10
         bt.layer.masksToBounds = true
@@ -54,7 +53,7 @@ class TranslationView:UIView {
     
     let swapLanguageButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "arrow.left.arrow.right")?.withTintColor(.caramel), for: .normal)
+        button.setImage(UIImage(systemName: "arrow.left.arrow.right")?  .withTintColor(.caramel, renderingMode: .alwaysOriginal), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -67,7 +66,7 @@ class TranslationView:UIView {
     
     public let recordButton: UIButton = {
         let btn = UIButton(type: .custom)
-        let micImage = UIImage(systemName: "microphone.fill")?.withTintColor(.caramel)
+        let micImage = UIImage(systemName: "microphone.fill")?.withTintColor(.caramel, renderingMode: .alwaysOriginal)
         btn.setImage(micImage, for: .normal)
         btn.tintColor = .systemBlue
         btn.translatesAutoresizingMaskIntoConstraints = false
