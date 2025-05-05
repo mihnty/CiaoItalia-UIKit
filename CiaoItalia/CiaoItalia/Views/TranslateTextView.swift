@@ -42,8 +42,8 @@ class TranslateTextView: UITextView {
     private func commonInit() {
         self.font = .systemFont(ofSize: 16)
         self.layer.cornerRadius = 10
-        self.layer.borderWidth = 1
-        self.layer.borderColor = UIColor(named: "mediumGrey")?.cgColor
+        self.layer.borderWidth = 2
+        self.layer.borderColor = UIColor(named: "darkYellow")?.cgColor
         self.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         self.textContainer.lineFragmentPadding = 0
         self.backgroundColor = UIColor(named: "cardColor")?.withAlphaComponent(0.6)

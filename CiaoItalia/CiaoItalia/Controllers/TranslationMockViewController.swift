@@ -16,32 +16,34 @@ class TranslationViewController: UIViewController {
     
     override func loadView() {
        view = translationView
+        
     }
        
     override func viewDidLoad() {
-       super.viewDidLoad()
-       navigationItem.title = "Tradutor"
-       Task {
+        super.viewDidLoad()
+        navigationItem.title = "Tradutor"
+        translationView.textField.delegate = self
+        Task {
            await speechRecognizer.setDelegate(self)
            await speechRecognizer.setLanguage(to: "pt-BR")
-       }
+        }
       
-       translationView.recordButton.addTarget(
+        translationView.recordButton.addTarget(
            self,
            action: #selector(recordButtonTouchDown(_:)),
            for: .touchDown
-       )
-       translationView.recordButton.addTarget(
+        )
+        translationView.recordButton.addTarget(
            self,
            action: #selector(recordButtonTouchUp(_:)),
            for: [.touchUpInside, .touchCancel]
-       )
-    
-       translationView.swapLanguageButton.addTarget(
+        )
+
+        translationView.swapLanguageButton.addTarget(
            self,
            action: #selector(didTapSwapLanguage(_:)),
            for: .touchUpInside
-       )
+        )
         translationView.translateButton.addTarget(self,
             action: #selector(translate(_:)),
             for: .touchUpInside
@@ -61,16 +63,20 @@ class TranslationViewController: UIViewController {
        speechRecognizer.stopTranscribing()
     }
 
-    @objc private func didTapSwapLanguage(_ sender: UIButton) async {
-        translateManager.swapButtonTapped()
-        if translationView.translateLabel.text == "Italiano" {
-            translationView.translateLabel.text = "Português"
-            translationView.targetLabel.text = "Italiano"
-            await speechRecognizer.setLanguage(to: "pt-BR")
-        } else {
-            translationView.translateLabel.text = "Italiano"
-            translationView.targetLabel.text = "Português"
-            await speechRecognizer.setLanguage(to: "pt-BR")
+    @objc private func didTapSwapLanguage(_ sender: UIButton) {
+        Task { @MainActor in
+            translateManager.swapButtonTapped()
+            
+            if translationView.translateLabel.text == "Italiano" {
+                translationView.translateLabel.text = "Português"
+                translationView.targetLabel.text = "Italiano"
+                await speechRecognizer.setLanguage(to: "pt-BR")
+            } else {
+                translationView.translateLabel.text = "Italiano"
+                translationView.targetLabel.text = "Português"
+                // aqui provavelmente você quer "it-IT"
+                await speechRecognizer.setLanguage(to: "it-IT")
+            }
         }
     }
     @objc private func translate(_ sender:UIButton) {
@@ -87,7 +93,15 @@ extension TranslationViewController: SpeechRecognizerDelegate {
         print(transcript)
     }
 }
+extension TranslationViewController: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        let hasText = !textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
 
+       
+        translationView.translateButton.isEnabled = hasText
+        translationView.translateButton.alpha = hasText ? 1.0 : 0.5
+    }
+}
 #Preview {
     TranslationView()
 }

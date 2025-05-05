@@ -12,6 +12,8 @@ class TranslationView:UIView {
         let lb = FuzzyFontLabel(text: "Português", textStyle: .body, textColor: .text)
         lb.backgroundColor = UIColor(named: "cardColor")?.withAlphaComponent(0.6)
         lb.layer.cornerRadius = 10
+        lb.layer.borderWidth = 2
+        lb.layer.borderColor = UIColor(named: "darkYellow")?.cgColor
         lb.layer.masksToBounds = true
         lb.translatesAutoresizingMaskIntoConstraints = false
         return lb
@@ -24,6 +26,12 @@ class TranslationView:UIView {
         bt.backgroundColor = UIColor(named: "cardColor")?.withAlphaComponent(0.6)
         bt.layer.cornerRadius = 10
         bt.layer.masksToBounds = true
+        let scratchLabel = FuzzyFontLabel(text: "", textStyle: .body, textColor: .text)
+        bt.titleLabel?.font = scratchLabel.font
+        bt.layer.borderWidth = 2
+        bt.layer.borderColor = UIColor(named: "darkYellow")?.cgColor
+        bt.isEnabled = false
+        bt.alpha = 0.5
         bt.translatesAutoresizingMaskIntoConstraints = false
         return bt
     }()
@@ -32,6 +40,8 @@ class TranslationView:UIView {
         let lb = FuzzyFontLabel(text: "Italiano", textStyle: .body, textColor: .text)
         lb.backgroundColor = UIColor(named: "cardColor")?.withAlphaComponent(0.6)
         lb.layer.cornerRadius = 10
+        lb.layer.borderWidth = 2
+        lb.layer.borderColor = UIColor(named: "darkYellow")?.cgColor
         lb.layer.masksToBounds = true
         lb.translatesAutoresizingMaskIntoConstraints = false
         return lb
@@ -53,7 +63,7 @@ class TranslationView:UIView {
     
     let swapLanguageButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "arrow.left.arrow.right")?  .withTintColor(.caramel, renderingMode: .alwaysOriginal), for: .normal)
+        button.setImage(UIImage(systemName: "arrow.left.arrow.right")?  .withTintColor(.darkYellow, renderingMode: .alwaysOriginal), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -66,7 +76,7 @@ class TranslationView:UIView {
     
     public let recordButton: UIButton = {
         let btn = UIButton(type: .custom)
-        let micImage = UIImage(systemName: "microphone.fill")?.withTintColor(.caramel, renderingMode: .alwaysOriginal)
+        let micImage = UIImage(systemName: "microphone.fill")?.withTintColor(.darkYellow, renderingMode: .alwaysOriginal)
         btn.setImage(micImage, for: .normal)
         btn.tintColor = .systemBlue
         btn.translatesAutoresizingMaskIntoConstraints = false
@@ -153,3 +163,4 @@ class TranslationView:UIView {
     }
 
 }
+
