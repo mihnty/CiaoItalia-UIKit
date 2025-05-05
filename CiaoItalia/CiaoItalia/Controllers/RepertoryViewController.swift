@@ -25,8 +25,7 @@ class RepertoryViewController: UIViewController, UITableViewDelegate, UITableVie
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return delegate?.words.count ?? 0
     }
-
-    func changeWhoIsSpeaking(indexPath: IndexPath) {
+    func changeWhoIsSpeaking(indexPath:IndexPath?) {
         self.whoIsSpeaking = indexPath
     }
 
