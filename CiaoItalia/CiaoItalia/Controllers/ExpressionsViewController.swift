@@ -5,11 +5,11 @@
 //  Created by Alice Barbosa on 06/05/25.
 //
 
-
 import UIKit
+import Speech
 
-class ExpressionsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
-    
+class ExpressionsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, SFSpeechRecognizerDelegate {
+
     var expressions: Expressions
     var filteredExpressions: [ExpressionInfo]
     
@@ -27,6 +27,11 @@ class ExpressionsViewController: UIViewController, UITableViewDataSource, UITabl
         searchBar.placeholder = "Pesquisar"
         return searchBar
     }()
+    
+    var speechRecognizer: SFSpeechRecognizer?
+    var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
+    var recognitionTask: SFSpeechRecognitionTask?
+    var audioEngine: AVAudioEngine?
     
     init(expressions: Expressions){
         self.expressions = expressions
@@ -63,6 +68,7 @@ class ExpressionsViewController: UIViewController, UITableViewDataSource, UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        setupSpeechRecognition()
     }
     
     private func setup() {
@@ -80,6 +86,9 @@ class ExpressionsViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     private func setupSearchBar() {
+        searchBar.delegate = self
+        searchBar.showsBookmarkButton = true
+        searchBar.setImage(UIImage(systemName: "mic.fill"), for: .bookmark, state: .normal)
         searchBar.delegate = self
     }
     
@@ -124,8 +133,61 @@ class ExpressionsViewController: UIViewController, UITableViewDataSource, UITabl
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
     }
-}
+    
+    private func setupSpeechRecognition() {
+        SFSpeechRecognizer.requestAuthorization { authStatus in
+            OperationQueue.main.addOperation {
+                switch authStatus {
+                case .authorized:
+                    self.speechRecognizer = SFSpeechRecognizer()
+                    self.speechRecognizer?.delegate = self
+                default:
+                    print("Speech recognition authorization denied.")
+                }
+            }
+        }
+    }
 
+    func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
+        startVoiceSearch()
+    }
+    
+    private func startVoiceSearch() {
+        if recognitionTask != nil {
+            recognitionTask?.cancel()
+            recognitionTask = nil
+        }
+        
+        audioEngine = AVAudioEngine()
+        recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
+        
+        guard let inputNode = audioEngine?.inputNode else { return }
+        guard let recognitionRequest = recognitionRequest else { return }
+        
+        recognitionRequest.shouldReportPartialResults = true
+        
+        speechRecognizer?.recognitionTask(with: recognitionRequest) { result, error in
+            var isFinal = false
+            if let result = result {
+                self.searchBar.text = result.bestTranscription.formattedString
+                isFinal = result.isFinal
+            }
+            
+            if isFinal {
+                self.audioEngine?.stop()
+                inputNode.removeTap(onBus: 0)
+            }
+        }
+        
+        let format = inputNode.inputFormat(forBus: 0)
+        inputNode.installTap(onBus: 0, bufferSize: 1024, format: format) { (buffer, _) in
+            self.recognitionRequest?.append(buffer)
+        }
+        
+        audioEngine?.prepare()
+        try? audioEngine?.start()
+    }
+}
 
 #Preview {
     ExpressionsViewController(expressions: FirstWords())
