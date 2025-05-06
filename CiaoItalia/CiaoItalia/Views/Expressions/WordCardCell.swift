@@ -56,7 +56,7 @@ class WordCardCell: UITableViewCell {
     private var wordcard = {
        let rectangle = UIView()
         rectangle.translatesAutoresizingMaskIntoConstraints = false
-        rectangle.backgroundColor = .lightBeige
+        rectangle.backgroundColor = .lightBeige.withAlphaComponent(0.7)
         rectangle.layer.cornerRadius = 20
         return rectangle
     }()
