@@ -127,7 +127,7 @@ extension TranslationViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         let hasText = !textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         translationView.textField.setPlaceholder()
-       
+        translationView.translatedLabel.text = "" 
         translationView.translateButton.isEnabled = hasText
         UIView.animate(withDuration: 0.25) {
             self.translationView.translateButton.alpha = hasText ? 1.0 : 0.5
@@ -149,6 +149,7 @@ extension TranslationViewController: UITextViewDelegate {
     }
     func textViewDidEndEditing(_ textView: UITextView) {
         translationView.textField.setPlaceholder()
+        
     }
 }
 #Preview {
