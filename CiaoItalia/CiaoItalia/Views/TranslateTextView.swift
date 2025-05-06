@@ -41,18 +41,35 @@ class TranslateTextView: UITextView {
 
     private func commonInit() {
         self.font = .systemFont(ofSize: 16)
-        self.layer.cornerRadius = 10
+        self.layer.cornerRadius = 20
         self.layer.borderWidth = 2
         self.layer.borderColor = UIColor(named: "darkYellow")?.cgColor
-        self.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        self.textContainerInset = UIEdgeInsets(top: 20, left: 8, bottom: 60, right: 8)
         self.textContainer.lineFragmentPadding = 0
-        self.backgroundColor = UIColor(named: "cardColor")?.withAlphaComponent(0.6)
-        
+        self.scrollIndicatorInsets = UIEdgeInsets(top: 8, left: 8, bottom: 60, right: 8)
+        self.textContainer.lineFragmentPadding = 0
+        self.backgroundColor = UIColor(named: "cardColor")?.withAlphaComponent(0.2)
+        self.textContainerInset = UIEdgeInsets(top: 8,
+                                                   left: 8,
+                                                   bottom: 60,
+                                                   right: 8)
+        self.textContainer.lineFragmentPadding = 0
+
+       
+        self.contentInset = UIEdgeInsets(top: 0,
+                                         left: 0,
+                                         bottom: 60,
+                                         right: 0)
+        self.scrollIndicatorInsets = self.contentInset
+
+        if #available(iOS 11.0, *) {
+            self.contentInsetAdjustmentBehavior = .never
+        }
         addSubview(placeholderLabel)
 
         NSLayoutConstraint.activate([
-            placeholderLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: textContainerInset.left),
-            placeholderLabel.topAnchor.constraint(equalTo: topAnchor, constant: textContainerInset.top),
+            placeholderLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: textContainerInset.left + 20),
+            placeholderLabel.topAnchor.constraint(equalTo: topAnchor, constant: textContainerInset.top + 20),
             placeholderLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -textContainerInset.right)
         ])
 
@@ -66,6 +83,9 @@ class TranslateTextView: UITextView {
     }
     public func disableWrite() {
         self.isEditable = false
+    }
+    public func setPlaceholder() {
+        placeholderLabel.isHidden = !text.isEmpty
     }
 }
 

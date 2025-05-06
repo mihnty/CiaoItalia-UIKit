@@ -10,7 +10,7 @@ import UIKit
 class TranslationView:UIView {
     lazy var translateLabel: UILabel = {
         let lb = FuzzyFontLabel(text: "Português", textStyle: .body, textColor: .text)
-        lb.backgroundColor = UIColor(named: "cardColor")?.withAlphaComponent(0.6)
+        lb.backgroundColor = UIColor(named: "cardColor")?.withAlphaComponent(0.2)
         lb.layer.cornerRadius = 10
         lb.layer.borderWidth = 2
         lb.layer.borderColor = UIColor(named: "darkYellow")?.cgColor
@@ -23,7 +23,7 @@ class TranslationView:UIView {
         var bt = UIButton(type: .system)
         bt.setTitle("Traduzir", for: .normal)
         bt.setTitleColor(.text, for: .normal)
-        bt.backgroundColor = UIColor(named: "cardColor")?.withAlphaComponent(0.6)
+        bt.backgroundColor = UIColor(named: "cardColor")?.withAlphaComponent(0.2)
         bt.layer.cornerRadius = 10
         bt.layer.masksToBounds = true
         let scratchLabel = FuzzyFontLabel(text: "", textStyle: .body, textColor: .text)
@@ -38,7 +38,7 @@ class TranslationView:UIView {
     
     lazy var targetLabel: UILabel = {
         let lb = FuzzyFontLabel(text: "Italiano", textStyle: .body, textColor: .text)
-        lb.backgroundColor = UIColor(named: "cardColor")?.withAlphaComponent(0.6)
+        lb.backgroundColor = UIColor(named: "cardColor")?.withAlphaComponent(0.2)
         lb.layer.cornerRadius = 10
         lb.layer.borderWidth = 2
         lb.layer.borderColor = UIColor(named: "darkYellow")?.cgColor
@@ -73,7 +73,24 @@ class TranslationView:UIView {
         bg.translatesAutoresizingMaskIntoConstraints = false
         return bg
     }()
-    
+    lazy var stampIV:UIImageView = {
+        let iv = UIImageView(image: UIImage(named: "MainScreenSeal"))
+        iv.contentMode = .scaleAspectFill
+        iv.translatesAutoresizingMaskIntoConstraints = false
+        return iv
+    }()
+    lazy var tagIV:UIImageView = {
+        let iv = UIImageView(image: UIImage(named: "MainScreenTag"))
+        iv.contentMode = .scaleAspectFill
+        iv.translatesAutoresizingMaskIntoConstraints = false
+        return iv
+    }()
+    lazy var tapeIV:UIImageView = {
+        let iv = UIImageView(image: UIImage(named: "MainScreenTape"))
+        iv.contentMode = .scaleAspectFill
+        iv.translatesAutoresizingMaskIntoConstraints = false
+        return iv
+    }()
     public let recordButton: UIButton = {
         let btn = UIButton(type: .custom)
         let micImage = UIImage(systemName: "microphone.fill")?.withTintColor(.darkYellow, renderingMode: .alwaysOriginal)
@@ -96,6 +113,7 @@ class TranslationView:UIView {
         backgroundColor = .white
         
         addSubview(backgroundImageView)
+        setupStyle()
         addSubview(textField)
         addSubview(swapLanguageButton)
         addSubview(translateLabel)
@@ -103,6 +121,7 @@ class TranslationView:UIView {
         addSubview(recordButton)
         addSubview(translatedLabel)
         addSubview(translateButton)
+        
         
         let tap = UITapGestureRecognizer(
             target: self,
@@ -112,8 +131,23 @@ class TranslationView:UIView {
         self.addGestureRecognizer(tap)
         
         setupConstraints()
+        
     }
-    
+    private func setupStyle() {
+        addSubview(stampIV)
+        addSubview(tagIV)
+        addSubview(tapeIV)
+        NSLayoutConstraint.activate([
+            stampIV.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
+            stampIV.widthAnchor.constraint(equalToConstant: 90),
+            stampIV.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 40),
+            tagIV.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: 20),
+            tagIV.widthAnchor.constraint(equalToConstant: 100),
+            tagIV.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            tapeIV.topAnchor.constraint(equalTo: self.topAnchor, constant: -10),
+            tapeIV.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 30)
+        ])
+    }
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             backgroundImageView.topAnchor.constraint(equalTo: self.topAnchor),
@@ -121,7 +155,7 @@ class TranslationView:UIView {
             backgroundImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             backgroundImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             
-            swapLanguageButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
+            swapLanguageButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 50),
             swapLanguageButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             swapLanguageButton.heightAnchor.constraint(equalToConstant: 44),
             
