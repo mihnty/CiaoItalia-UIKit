@@ -25,6 +25,7 @@ class ExpressionsViewController: UIViewController, UITableViewDataSource, UITabl
         let searchBar = UISearchBar()
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         searchBar.placeholder = "Pesquisar"
+        searchBar.searchBarStyle = .minimal
         return searchBar
     }()
     
@@ -112,7 +113,7 @@ class ExpressionsViewController: UIViewController, UITableViewDataSource, UITabl
             searchBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
             searchBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
             
-            expressionsTableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 16),
+            expressionsTableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 12),
             expressionsTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             expressionsTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             expressionsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
