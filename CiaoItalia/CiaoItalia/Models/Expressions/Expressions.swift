@@ -7,4 +7,5 @@
 
 protocol Expressions {
     var expressionList: [ExpressionInfo] { get }
+    var title: String { get }
 }

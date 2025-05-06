@@ -16,4 +16,5 @@ struct FirstWords: Expressions {
         ExpressionInfo(italian: "Sì", translation: "Palavra afirmativa para concordar; sim."),
         ExpressionInfo(italian: "Prego", translation: "Usado para pedir algo educadamente; \"por favor\".")
     ]
+    var title = "Primeiras Palavras"
 }

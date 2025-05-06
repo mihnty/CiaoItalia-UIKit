@@ -132,8 +132,8 @@ class WordCardCell: UITableViewCell {
         NSLayoutConstraint.activate([
             wordcard.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 8),
             wordcard.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor),
-            wordcard.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 8),
-            wordcard.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -8),
+            wordcard.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 12),
+            wordcard.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -12),
             
             verticalstack.topAnchor.constraint(equalTo: wordcard.topAnchor),
             verticalstack.bottomAnchor.constraint(equalTo: wordcard.bottomAnchor),
@@ -171,5 +171,5 @@ class WordCardCell: UITableViewCell {
 }
 
 #Preview {
-    ExpressionsViewController(expressions: FirstWords().expressionList)
+    ExpressionsViewController(expressions: FirstWords())
 }

@@ -9,9 +9,17 @@
 import UIKit
 
 class ExpressionsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
-    var expressions: [ExpressionInfo]
+    var expressions: Expressions
     
-    init(expressions: [ExpressionInfo]){
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .mediumGray
+        label.textAlignment = .left
+        return label
+    }()
+    
+    init(expressions: Expressions){
         self.expressions = expressions
         super.init(nibName: nil, bundle: nil)
     }
@@ -21,11 +29,11 @@ class ExpressionsViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        expressions.count
+        expressions.expressionList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let line = expressions[indexPath.row]
+        let line = expressions.expressionList[indexPath.row]
         guard let cell = expressionsTableView.dequeueReusableCell(withIdentifier: WordCardCell.identifier, for: indexPath ) as? WordCardCell else {
             return UITableViewCell()
         }
@@ -48,12 +56,20 @@ class ExpressionsViewController: UIViewController, UITableViewDataSource, UITabl
         
     }
     private func setup(){
+        setupTitle()
         setupViewHierarchy()
         setupViewAttributes()
         setupConstraints()
     }
     
+    private func setupTitle() {
+        let titleFont = FuzzyFontLabel(text: expressions.title, textStyle: .title1)
+        titleLabel.font = titleFont.font
+        titleLabel.text = expressions.title
+    }
+    
     private func setupViewHierarchy() {
+        view.addSubview(titleLabel)
         view.addSubview(expressionsTableView)
     }
     
@@ -64,7 +80,9 @@ class ExpressionsViewController: UIViewController, UITableViewDataSource, UITabl
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            expressionsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
+            titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            expressionsTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
             expressionsTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             expressionsTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             expressionsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
@@ -73,5 +91,5 @@ class ExpressionsViewController: UIViewController, UITableViewDataSource, UITabl
 }
 
 #Preview {
-    ExpressionsViewController(expressions: FirstWords().expressionList)
+    ExpressionsViewController(expressions: FirstWords())
 }
