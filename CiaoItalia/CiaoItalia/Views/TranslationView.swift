@@ -93,7 +93,7 @@ class TranslationView:UIView {
     }()
     public let recordButton: UIButton = {
         let btn = UIButton(type: .custom)
-        let micImage = UIImage(systemName: "microphone.fill")?.withTintColor(.darkYellow, renderingMode: .alwaysOriginal)
+        let micImage = UIImage(systemName: "microphone.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular))?.withTintColor(.darkYellow, renderingMode: .alwaysOriginal)
         btn.setImage(micImage, for: .normal)
         btn.tintColor = .systemBlue
         btn.translatesAutoresizingMaskIntoConstraints = false
@@ -176,8 +176,9 @@ class TranslationView:UIView {
             
             recordButton.leadingAnchor.constraint(equalTo: textField.leadingAnchor),
             recordButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor),
-            recordButton.trailingAnchor.constraint(equalTo: textField.leadingAnchor, constant: 50),
-            recordButton.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: -50),
+            recordButton.widthAnchor.constraint(equalToConstant: 70),
+            recordButton.heightAnchor.constraint(equalToConstant: 70),
+           
             
             translateLabel.topAnchor.constraint(equalTo: swapLanguageButton.topAnchor),
             translateLabel.bottomAnchor.constraint(equalTo: swapLanguageButton.bottomAnchor),
