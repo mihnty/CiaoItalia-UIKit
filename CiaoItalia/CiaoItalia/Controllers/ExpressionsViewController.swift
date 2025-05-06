@@ -9,10 +9,10 @@
 import UIKit
 
 class ExpressionsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
-    var dialogue:[DialogueItem]
+    var expressions: [ExpressionInfo]
     
-    init(dialogue: [DialogueItem]){
-        self.dialogue = dialogue
+    init(expressions: [ExpressionInfo]){
+        self.expressions = expressions
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -21,39 +21,17 @@ class ExpressionsViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        dialogue.count
+        expressions.count
     }
-    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let line = dialogue[indexPath.row]
-        
-        
-    
-        
-        
-        
+        let line = expressions[indexPath.row]
         guard let cell = expressionsTableView.dequeueReusableCell(withIdentifier: WordCardCell.identifier, for: indexPath ) as? WordCardCell else {
-                return UITableViewCell()
-                
-            }
-        
-        switch(line){
-            
-        case .dialogue(let line):
-            
-            cell.configure(with: line)
-        default :
             return UITableViewCell()
         }
-            return cell
-        
-    
+        cell.configure(with: line)
+        return cell
     }
-    
-    
-    
     
     lazy var expressionsTableView: UITableView = {
         let expressionsTableView = UITableView()
@@ -92,16 +70,8 @@ class ExpressionsViewController: UIViewController, UITableViewDataSource, UITabl
             expressionsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
         ])
     }
-    
-     // MARK: - Navigation
-
-    
 }
 
-//#Preview{
-//    UINavigationController(rootViewController: CarouselContainerViewController())
-//}
-
-#Preview{
-    ExpressionsViewController(dialogue:     HotelCheckin().dialogue)
+#Preview {
+    ExpressionsViewController(expressions: FirstWords().expressionList)
 }

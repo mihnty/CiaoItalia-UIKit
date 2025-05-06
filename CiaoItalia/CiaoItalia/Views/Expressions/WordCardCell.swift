@@ -24,8 +24,6 @@ class WordCardCell: UITableViewCell {
         return text
         
     }()
-  
-
     
     private var playIcon = {
         let playIcon = UIImageView(image: UIImage(named: "dialogueSpeaker"))
@@ -47,8 +45,6 @@ class WordCardCell: UITableViewCell {
         return playButton
     }()
     
-
-    
     private var translation = {
         let text = UILabel()
         text.translatesAutoresizingMaskIntoConstraints = false
@@ -62,14 +58,8 @@ class WordCardCell: UITableViewCell {
         rectangle.translatesAutoresizingMaskIntoConstraints = false
         rectangle.backgroundColor = .lightBeige
         rectangle.layer.cornerRadius = 20
-        
-        
-        
-        
         return rectangle
     }()
-    
-    
     
     private var verticalstack: UIStackView = {
         let view = UIStackView()
@@ -81,26 +71,23 @@ class WordCardCell: UITableViewCell {
         return view
     }()
     
-    private var horizontalstack: UIStackView = {
+    private var horizontalStack: UIStackView = {
         let view = UIStackView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.axis = .horizontal
-        view.spacing = 5
+        view.distribution = .fill
+        view.alignment = .center
+        view.spacing = 8
         
         return view
     }()
 
-        
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.selectionStyle = .none
         self.backgroundColor = .clear
         setup()
-        
     }
-    
- 
-    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -115,24 +102,17 @@ class WordCardCell: UITableViewCell {
     }
     
     func setupHierarchy() {
-
-        
         contentView.addSubview(wordcard)
         wordcard.addSubview(verticalstack)
-        verticalstack.addArrangedSubview(horizontalstack)
+        verticalstack.addArrangedSubview(horizontalStack)
         verticalstack.addArrangedSubview(translation)
         wordcard.addSubview(playButton)
-        horizontalstack.addArrangedSubview(italian)
-        horizontalstack.addArrangedSubview(playIcon)
-        
-
-        
-        
-
+        horizontalStack.addArrangedSubview(italian)
+        horizontalStack.addArrangedSubview(playIcon)
+        let spacer = UIView()
+        spacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        horizontalStack.addArrangedSubview(spacer)
     }
-    
-    
-    
     
     func setupLayout() {
         self.backgroundColor = .clear
@@ -140,19 +120,20 @@ class WordCardCell: UITableViewCell {
         self.selectionStyle = .none
         wordcard.layer.borderWidth = 1
         wordcard.layer.borderColor = UIColor.darkYellow.cgColor
+        
+        italian.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        italian.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+
+        playIcon.setContentHuggingPriority(.required, for: .horizontal)
+        playIcon.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
     
     func setupConstraints(){
-
-       
         NSLayoutConstraint.activate([
-            
-            wordcard.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
-            wordcard.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            wordcard.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            wordcard.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            
-            
+            wordcard.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 8),
+            wordcard.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor),
+            wordcard.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 8),
+            wordcard.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -8),
             
             verticalstack.topAnchor.constraint(equalTo: wordcard.topAnchor),
             verticalstack.bottomAnchor.constraint(equalTo: wordcard.bottomAnchor),
@@ -163,8 +144,9 @@ class WordCardCell: UITableViewCell {
             playButton.leadingAnchor.constraint(equalTo: wordcard.leadingAnchor),
             playButton.trailingAnchor.constraint(equalTo: wordcard.trailingAnchor),
             playButton.bottomAnchor.constraint(equalTo: wordcard.bottomAnchor),
-        
-
+            
+            playIcon.widthAnchor.constraint(equalToConstant: 24),
+            playIcon.heightAnchor.constraint(equalToConstant: 24),
         ])
 
     }
@@ -173,36 +155,21 @@ class WordCardCell: UITableViewCell {
         playButton.addTarget(self, action: #selector(handlePlayButtonTapped), for: .touchUpInside)
     }
     
-    
     @objc func handlePlayButtonTapped(_ sender: UIButton) {
         guard let text = italian.text else { return }
         SpeechManager.shared.speak(text)
     }
     
-
-    
-    func configure(with line: DialogueLine) {
+    func configure(with line: ExpressionInfo) {
         italian.text = line.italian
         let italianFont = NormalFontLabel(text: line.italian, textStyle: .title2, textColor: .mediumGray, textWeight: .semibold)
         italian.font = italianFont.font
         translation.text = line.translation
         let translationFont = NormalFontLabel(text: line.italian, textStyle: .callout, textColor: .mediumGray, textWeight: .medium)
         translation.font = translationFont.font
-        
-        
-        
     }
-    
-    
-
 }
 
-//#Preview {
-//    let cell  = WordCardCell()
-//    cell.configure(with: DialogueLine(italian: "AAAAAAAA", translation: "BBBBBBBB", type: .answer))
-//    return cell
-//}
-
 #Preview {
-    ExpressionsViewController(dialogue: HotelCheckin().dialogue)
+    ExpressionsViewController(expressions: FirstWords().expressionList)
 }
