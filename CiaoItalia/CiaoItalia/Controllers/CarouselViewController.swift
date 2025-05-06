@@ -210,7 +210,6 @@ class CarouselViewController: UIViewController, UICollectionViewDataSource, UICo
         guard leftArrowButton.isEnabled && rightArrowButton.isEnabled else { return }
         let mockVC = MockViewController()
         let content = contents[currentIndex - 1]
-        print(content.self)
         if let navController = self.navigationController {
             navController.pushViewController(StoryViewController(content: content.allCases as! [any ContentType]), animated: true)
         } else {
