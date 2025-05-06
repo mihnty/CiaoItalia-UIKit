@@ -120,6 +120,11 @@ class StoryViewController: UIViewController, ContentDelegate {
     }
 
     @objc func changeTableView(_ sender: UISegmentedControl) {
+    
+        Task {
+            await SpeechManager.shared.synthesizer.stop()
+        }
+        
         switch sender.selectedSegmentIndex {
         case 0:
             repertoryVC.view.isHidden = false
@@ -130,6 +135,7 @@ class StoryViewController: UIViewController, ContentDelegate {
             repertoryVC.view.isHidden = true
             repertoryLabel.isHidden = true
             dialogueVC.view.isHidden = false
+            dialogueVC.reloadAllCells(reset: true)
             SpeechManager.shared.delegate = dialogueVC
         default:
             print("Algo deu errado")

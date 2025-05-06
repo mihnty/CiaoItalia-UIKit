@@ -78,7 +78,8 @@ class DialogueViewController: UIViewController,
         reloadAllCells()
     }
 
-    func changeWhoIsSpeaking(indexPath: IndexPath) {
+    func changeWhoIsSpeaking(indexPath: IndexPath?) {
+        guard let indexPath = indexPath else { return }
         if let old = currentSpeaking,
            let oldCell = dialogueTableView.cellForRow(at: old) as? DialogueCell {
             oldCell.setSpeakingOff()
@@ -122,12 +123,12 @@ class DialogueViewController: UIViewController,
         ])
     }
 
-    private func reloadAllCells() {
+    func reloadAllCells(reset: Bool = false) {
         dialogueTableView.visibleCells.forEach { cell in
             if let c = cell as? DialogueCell,
                let ip = dialogueTableView.indexPath(for: c) {
                 c.setPlayable(!isAudioPlaying)
-                if ip == currentSpeaking && isAudioPlaying {
+                if ip == currentSpeaking && isAudioPlaying && !reset {
                     c.setSpeakingOn()
                 } else {
                     c.setSpeakingOff()

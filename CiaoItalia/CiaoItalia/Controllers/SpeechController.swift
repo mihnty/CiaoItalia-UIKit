@@ -47,6 +47,7 @@ class SpeechManager:NSObject, AVSpeechSynthesizerDelegate {
     }
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didStart utterance: AVSpeechUtterance) {
         guard let path = self.indexPath else {
+            print("não possui referência ao index path")
             self.delegate?.changeWhoIsSpeaking(indexPath: nil)
             return
         }
@@ -55,8 +56,11 @@ class SpeechManager:NSObject, AVSpeechSynthesizerDelegate {
     }
 
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-        indexPath = nil
-        self.delegate?.finishSpeech()
+        DispatchQueue.main.async {
+            self.isPlaying = false
+            self.indexPath = nil
+            self.delegate?.finishSpeech()
+        }
     }
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didPause utterance: AVSpeechUtterance) {
         DispatchQueue.main.async {
@@ -65,6 +69,11 @@ class SpeechManager:NSObject, AVSpeechSynthesizerDelegate {
         }
     }
     
+    func stop() {
+        Task {
+            await self.synthesizer.stop()
+        }
+    }
 }
 actor Synthesizer {
     private var synthesizer = AVSpeechSynthesizer()
@@ -81,7 +90,13 @@ actor Synthesizer {
         utterance.rate = 0.5
         synthesizer.speak(utterance)
     }
+    func stop() {
+        if synthesizer.isSpeaking {
+            synthesizer.stopSpeaking(at: .immediate)
+        }
+    }
 }
+
 protocol SpeechManagerDelegate: AnyObject {
     func startSpeech()
     func finishSpeech()

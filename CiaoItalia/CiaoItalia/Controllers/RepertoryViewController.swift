@@ -33,7 +33,7 @@ class RepertoryViewController: UIViewController, UITableViewDelegate, UITableVie
         guard let whoIsSpeaking = whoIsSpeaking else { return }
         
         if let cell = tableView.cellForRow(at: whoIsSpeaking) as? RepertoryCardCell {
-            cell.setSpeaking()
+            cell.setSpeaking(value: true)
         }
     }
 
@@ -41,7 +41,7 @@ class RepertoryViewController: UIViewController, UITableViewDelegate, UITableVie
         guard let whoIsSpeaking = whoIsSpeaking else { return }
         
         if let cell = tableView.cellForRow(at: whoIsSpeaking) as? RepertoryCardCell {
-            cell.setSpeaking()
+            cell.setSpeaking(value: false)
         }
     }
 

@@ -26,8 +26,8 @@ class RepertoryCardCell: UITableViewCell {
         cardView.alpha = isPlayable ? 1.0 : 0.5
     }
     
-    func setSpeaking() {
-        cardView.isSpeaking.toggle()
+    func setSpeaking(value: Bool) {
+        cardView.isSpeaking = value
     }
 
     func setupCardView() {
