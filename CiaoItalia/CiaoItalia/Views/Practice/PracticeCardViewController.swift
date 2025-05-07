@@ -80,5 +80,5 @@ class PracticeCardView: UIView {
 }
 
 #Preview {
-    MainPracticeViewController()
+    PracticeCardView(imageName: "italyFlag", titleText: "Primeiras Palavras", subtitleText: "Comece com o vocabulário essencial para se familiarizar com o idioma", imageAccessibilityLabel: "Itália")
 }

@@ -19,6 +19,17 @@ class MainPracticeViewController: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
+   
+    private lazy var detailsImageView: UIImageView = {
+        return self.makeImageView(named: "titleDetails")
+    }()
+    
+    private func makeImageView(named imageName: String) -> UIImageView {
+        let imageView = UIImageView(image: UIImage(named: imageName))
+        imageView.contentMode = .scaleAspectFill
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }
     
     private var titleLabel: UILabel = {
         let label = FuzzyFontLabel(text: "Prática", textStyle: .largeTitle, textColor: .lightGrayText)
@@ -39,11 +50,9 @@ class MainPracticeViewController: UIViewController {
         imageAccessibilityLabel: "Foto da bandeira da Itália"
     )
 
-    
     private let bgPracticeVC = PracticeBackgroundViewController()
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         setup()
     }
@@ -51,27 +60,23 @@ class MainPracticeViewController: UIViewController {
     func setup() {
         setupBg()
         setupViews()
+        setupTitle()
         setupConstraints()
     }
     
     func setupTitle(){
         titleLabel = FuzzyFontLabel(text: "Prática", textStyle: isScreenWide ? .extraLargeTitle : .largeTitle, textColor: .lightGrayText)
-        titleStackView.addArrangedSubview(titleLabel)
-//        titleStackView.addArrangedSubview(detailsImageView)
         view.addSubview(titleStackView)
+        view.addSubview(detailsImageView)
+        titleStackView.addArrangedSubview(titleLabel)
+        titleStackView.addArrangedSubview(detailsImageView)
     }
         
     func setupViews(){
         view.addSubview(mainCard1)
         mainCard1.translatesAutoresizingMaskIntoConstraints = false
-
     }
     
-    @objc func cardTapped() {
-        let nextVC = OnBoardingMainViewController()
-        navigationController?.pushViewController(nextVC, animated: true)
-    }
-        
     func setupBg() {
         addChild(bgPracticeVC)
         view.addSubview(bgPracticeVC.view)
@@ -90,9 +95,22 @@ class MainPracticeViewController: UIViewController {
             mainCard1.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             mainCard1.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             mainCard1.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            detailsImageView.widthAnchor.constraint(equalToConstant: 50)
         ])
+        
+        if isScreenWide {
+            NSLayoutConstraint.activate([
+                titleStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 24),
+                titleStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 130)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                titleStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+                titleStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20)
+            ])
+        }
     }
-
 }
 
 #Preview {
