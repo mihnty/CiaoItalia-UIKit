@@ -121,17 +121,13 @@ class ExpressionsViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText.isEmpty {
+        let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        if query.isEmpty {
             filteredExpressions = expressions.expressionList
         } else {
             filteredExpressions = expressions.expressionList.filter { line in
-                var matchString: String = ""
-                line.keywords.forEach { keyword in
-                    if keyword.lowercased().contains(searchText.lowercased()) {
-                        matchString.append(keyword.lowercased())
-                    }
-                }
-                return line.italian.lowercased().contains(searchText.lowercased()) || matchString.lowercased().contains(searchText.lowercased())
+                line.italian.localizedCaseInsensitiveContains(query)
+                || line.keywords.contains { $0.localizedCaseInsensitiveContains(query) }
             }
         }
         expressionsTableView.reloadData()
