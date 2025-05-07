@@ -122,6 +122,18 @@ class DialogueViewController: UIViewController,
             dialogueTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        for cell in dialogueTableView.visibleCells {
+            if let audioCell = cell as? DialogueCell {
+                audioCell.stopAudio()
+            }
+        }
+    }
+    
+     // MARK: - Navigation
 
     func reloadAllCells(reset: Bool = false) {
         dialogueTableView.visibleCells.forEach { cell in
