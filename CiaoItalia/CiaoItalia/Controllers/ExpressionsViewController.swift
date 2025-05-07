@@ -125,7 +125,13 @@ class ExpressionsViewController: UIViewController, UITableViewDataSource, UITabl
             filteredExpressions = expressions.expressionList
         } else {
             filteredExpressions = expressions.expressionList.filter { line in
-                return line.italian.lowercased().contains(searchText.lowercased())
+                var matchString: String = ""
+                line.keywords.forEach { keyword in
+                    if keyword.lowercased().contains(searchText.lowercased()) {
+                        matchString.append(keyword.lowercased())
+                    }
+                }
+                return line.italian.lowercased().contains(searchText.lowercased()) || matchString.lowercased().contains(searchText.lowercased())
             }
         }
         expressionsTableView.reloadData()

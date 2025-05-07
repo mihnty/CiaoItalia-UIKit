@@ -8,4 +8,5 @@
 struct ExpressionInfo {
     let italian: String
     let translation: String
+    let keywords: [String]
 }
