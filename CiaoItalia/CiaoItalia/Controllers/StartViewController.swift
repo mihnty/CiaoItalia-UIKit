@@ -159,7 +159,7 @@ class StartViewController: UIViewController {
         openButton.transform = CGAffineTransform(rotationAngle: -(.pi / 60))
     }
     @objc func openApp(){
-        let nextView = CarouselContainerViewController()
+        let nextView = TabController()
         nextView.view.backgroundColor = .white
         navigationController?.pushViewController(nextView, animated: true)
     }
