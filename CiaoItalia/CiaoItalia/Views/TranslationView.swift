@@ -10,6 +10,7 @@ import UIKit
 class TranslationView:UIView {
     
     let isScreenWide = UIScreen.main.bounds.width > 440
+    var isWaiting:Bool = false
     
     lazy var translateLabel: UILabel = {
         let lb = FuzzyFontLabel(text: "Português", textStyle: .body, textColor: .text)

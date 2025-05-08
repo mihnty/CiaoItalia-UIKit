@@ -18,7 +18,7 @@ class TranslateTextView: UITextView {
     }()
 
     
-
+    var isWaiting:Bool = false
     var placeholder: String = "" {
         didSet {
             placeholderLabel.text = placeholder
@@ -90,6 +90,16 @@ class TranslateTextView: UITextView {
     }
     public func setPlaceholder() {
         placeholderLabel.isHidden = !text.isEmpty
+    }
+    public func setText(text:String) {
+        isWaiting.toggle()
+        self.text = text
+    }
+    public func setIsWaiting() {
+        isWaiting.toggle()
+        if isWaiting {
+            placeholderLabel.text = "..."
+        }
     }
 }
 

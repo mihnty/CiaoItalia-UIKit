@@ -8,7 +8,6 @@
 import UIKit
 
 class TranslateManager {
-    
     // MARK: - Translation Properties
     private let apiKey = "AIzaSyCatRqN67PoxP6swxVyx3QIKY5pRYIE28Y"
     private let translationURL = URL(string: "https://translation.googleapis.com/language/translate/v2")!
@@ -19,7 +18,7 @@ class TranslateManager {
     public var input:String = ""
     public var result:String = ""
 
-   
+    var textView:UITextView?
 
     @objc public func swapButtonTapped() {
         let temp = currentSourceLanguage
@@ -45,7 +44,7 @@ class TranslateManager {
             result = "Please enter text to translate."
             return
         }
-    
+        
         
         let boundary = "Boundary-\(UUID().uuidString)"
         let postData = createMultipartBody(with: self.input, boundary: boundary)
@@ -57,11 +56,22 @@ class TranslateManager {
         
         URLSession.shared.dataTask(with: request) { [weak self] data, _, error in
             if let error = error {
-                DispatchQueue.main.async { self?.result = "Error: \(error)" }
+                DispatchQueue.main.async {
+                    self?.result = "Error: \(error)"
+                    self?.textView?.text = self?.result
+                    print(self?.textView ?? "vazio")
+                    print(self?.textView?.text)
+                }
                 return
             }
             guard let data = data else {
-                DispatchQueue.main.async { self?.result = "No data." }
+                DispatchQueue.main.async {
+                    self?.result = "No data."
+                    self?.textView?.text = self?.result
+                    print(self?.textView ?? "vazio")
+                    print(self?.result)
+                    print(self?.textView?.text)
+                }
                 return
             }
             do {
@@ -72,20 +82,24 @@ class TranslateManager {
                    let translated = translations.first?["translatedText"] as? String {
                     DispatchQueue.main.async {
                         self?.result = translated
+                        self?.textView?.text = self?.result
                     }
                 } else if let err = json?["error"] as? [String:Any],
                           let msg = err["message"] as? String {
                     DispatchQueue.main.async {
                         self?.result = "Error: \(msg)"
+                        self?.textView?.text = self?.result
                     }
                 } else {
                     DispatchQueue.main.async {
                         self?.result = "Unexpected response."
+                        self?.textView?.text = self?.result
                     }
                 }
             } catch {
                 DispatchQueue.main.async {
                     self?.result = "Parse error."
+                    self?.textView?.text = self?.result
                 }
             }
         }.resume()
@@ -120,4 +134,8 @@ extension Data {
             append(d)
         }
     }
+}
+
+protocol TranslateTextViewDelegate {
+    func setText(text:String)
 }

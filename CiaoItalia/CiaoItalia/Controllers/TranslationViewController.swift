@@ -26,6 +26,7 @@ class TranslationViewController: UIViewController {
         view.backgroundColor = .background
         
         translationView.textField.delegate = self
+        translateManager.textView = translationView.translatedLabel
         Task {
            await speechRecognizer.setDelegate(self)
            await speechRecognizer.setLanguage(to: "pt-BR")
@@ -94,9 +95,10 @@ class TranslationViewController: UIViewController {
         }
     }
     @objc private func translate(_ sender:UIButton) {
+        translationView.textField.setIsWaiting() 
         translateManager.input = translationView.textField.text
         translateManager.translateButtonTapped()
-        translationView.translatedLabel.text = translateManager.result
+        translationView.translatedLabel.setText(text: translateManager.result)
     }
 }
 
@@ -117,23 +119,23 @@ extension TranslationViewController: UITextViewDelegate {
             self.translationView.translateButton.alpha = hasText ? 1.0 : 0.5
         }
     }
-    //limitar o número de caracteres da entrada
     func textView(_ textView: UITextView,
                     shouldChangeTextIn range: NSRange,
                     replacementText text: String) -> Bool {
+        //fechar o teclado quando apertar em return
         if text == "\n" {
             textView.resignFirstResponder()
             return false
         }
           
-        
+        //contar o máximo de caracteres
         let maxChars = 140
         let current = textView.text ?? ""
         guard let stringRange = Range(range, in: current) else { return false }
         let updated = current.replacingCharacters(in: stringRange, with: text)
         return updated.count <= maxChars
     }
-    //fechar o teclado quando apertar em return
+
     
    
     func textViewDidBeginEditing(_ textView: UITextView) {
