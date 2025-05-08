@@ -119,8 +119,10 @@ class StoryViewController: UIViewController, ContentDelegate {
         view.addSubview(titleLabel)
     }
 
-    @objc func changeTableView(_ sender: UISegmentedControl) {
+//    @objc func changeTableView(_ sender: UISegmentedControl) {
     
+    @objc func changeTableView(_ sender:UISegmentedControl){
+        SpeechManager.shared.stop()
         Task {
             await SpeechManager.shared.synthesizer.stop()
         }
