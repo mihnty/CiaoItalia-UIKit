@@ -9,10 +9,10 @@ import UIKit
 class PracticeTableViewController: UIViewController {
     private let tableView = UITableView()
 
-    private let data: [(image: String, title: String, subtitle: String)] = [
-        ("italyFlag", "Primeiras Palavras", "Comece com o vocabulário essencial para se familiarizar com o idioma."),
-        ("italyFood", "Comer & Beber", "Palavras e expressões para se virar em restaurantes, cafés e mercados."),
-        ("italyBike", "Falsos Cognatos", "Evite mal-entendidos com essas palavras confusas."),
+    private let data: [(image: String, title: String, subtitle: String, expression: Expressions)] = [
+        ("italyFlag", "Primeiras Palavras", "Comece com o vocabulário essencial para se familiarizar com o idioma.", FirstWords()),
+        ("italyFood", "Comer & Beber", "Palavras e expressões para se virar em restaurantes, cafés e mercados.", EatAndDrink()),
+        ("italyBike", "Falsos Cognatos", "Evite mal-entendidos com essas palavras confusas.", FalseCognates()),
     ]
 
     override func viewDidLoad() {
@@ -68,7 +68,7 @@ extension PracticeTableViewController: UITableViewDelegate, UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let navController = self.navigationController {
-            navController.pushViewController(MockViewController(), animated: true)
+            navController.pushViewController(ExpressionsViewController(expressions: data[indexPath.row].expression), animated: true)
         } else {
             MockViewController().modalPresentationStyle = .fullScreen
             present(MockViewController(), animated: true, completion: nil)

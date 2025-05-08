@@ -42,6 +42,13 @@ class MainPracticeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.backBarButtonItem = UIBarButtonItem(
+            title: "Italiano na Prática",
+            style: .plain,
+            target: nil,
+            action: nil
+          )
+        navigationController?.navigationBar.tintColor = .mediumGray
         setup()
     }
     
