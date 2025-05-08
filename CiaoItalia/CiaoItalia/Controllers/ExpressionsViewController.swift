@@ -12,6 +12,7 @@ class ExpressionsViewController: UIViewController, UITableViewDataSource, UITabl
 
     var expressions: Expressions
     var filteredExpressions: [ExpressionInfo]
+    var isRecording = false
     
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -121,18 +122,28 @@ class ExpressionsViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText.isEmpty {
+        let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        if query.isEmpty {
             filteredExpressions = expressions.expressionList
         } else {
             filteredExpressions = expressions.expressionList.filter { line in
-                return line.italian.lowercased().contains(searchText.lowercased())
+                line.italian.localizedCaseInsensitiveContains(query)
+                || line.keywords.contains { $0.localizedCaseInsensitiveContains(query) }
             }
         }
         expressionsTableView.reloadData()
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
+        //searchBar.resignFirstResponder()
+        if isRecording {
+            stopVoiceSearch()
+        }else{
+            startVoiceSearch()
+        }
+        
+        isRecording.toggle()
+        updateMicIcon()
     }
     
     private func setupSpeechRecognition() {
@@ -150,10 +161,18 @@ class ExpressionsViewController: UIViewController, UITableViewDataSource, UITabl
     }
 
     func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
-        startVoiceSearch()
+        if isRecording {
+            stopVoiceSearch()
+        } else {
+            startVoiceSearch()
+        }
+
+        isRecording.toggle()
+        updateMicIcon()
     }
     
     private func startVoiceSearch() {
+        searchBar.resignFirstResponder()
         if recognitionTask != nil {
             recognitionTask?.cancel()
             recognitionTask = nil
@@ -187,6 +206,25 @@ class ExpressionsViewController: UIViewController, UITableViewDataSource, UITabl
         
         audioEngine?.prepare()
         try? audioEngine?.start()
+    }
+    
+    private func stopVoiceSearch(){
+        recognitionTask?.cancel()
+            recognitionTask = nil
+            
+            audioEngine?.stop()
+            audioEngine?.inputNode.removeTap(onBus: 0)
+            
+            recognitionRequest = nil
+            audioEngine = nil
+    }
+    
+    private func updateMicIcon() {
+        let micColor: UIColor = isRecording ? .systemRed : .label
+        
+        if let micImage = UIImage(systemName: "mic.fill")?.withTintColor(micColor, renderingMode: .alwaysOriginal) {
+            searchBar.setImage(micImage, for: .bookmark, state: .normal)
+        }
     }
 }
 
