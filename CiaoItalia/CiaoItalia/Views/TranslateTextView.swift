@@ -50,7 +50,7 @@ class TranslateTextView: UITextView {
         self.contentInset          = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
         self.scrollIndicatorInsets = self.contentInset
         self.textContainer.lineFragmentPadding = 0
-        self.backgroundColor = UIColor(named: "cardColor")?.withAlphaComponent(0.2)
+        self.backgroundColor = UIColor(named: "darkBeige")?.withAlphaComponent(0.6)
         self.textContainerInset = UIEdgeInsets(top: 12,
                                                    left: 8,
                                                    bottom: 60,

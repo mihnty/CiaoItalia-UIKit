@@ -21,25 +21,9 @@ class TranslationViewController: UIViewController {
        
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationBar.setTitleVerticalPositionAdjustment(20, for: .default)
-        let navWidth = navigationController?.navigationBar.bounds.width ?? view.bounds.width
-         let container = UIView(frame: CGRect(x: 0, y: 0,
-                                              width: navWidth,
-                                              height: navigationController?.navigationBar.bounds.height ?? 100))
-        container.backgroundColor = .clear
-        let fuzzy = FuzzyFontLabel(text: "Tradutor",
-                                       textStyle: .title1,
-                                       textColor: .text)
-        fuzzy.translatesAutoresizingMaskIntoConstraints = false
-        container.addSubview(fuzzy)
         
-        NSLayoutConstraint.activate([
-          fuzzy.topAnchor.constraint(equalTo: container.topAnchor),
-          fuzzy.leadingAnchor.constraint(equalTo: container.leadingAnchor)
-        ])
-        
-        
-        navigationItem.titleView = container
+        navigationItem.backButtonTitle = "Tradução"
+        view.backgroundColor = .background
         
         translationView.textField.delegate = self
         Task {
