@@ -13,6 +13,7 @@ class ExpressionsViewController: UIViewController, UITableViewDataSource, UITabl
     var expressions: Expressions
     var filteredExpressions: [ExpressionInfo]
     var isRecording = false
+    private let bgPracticeVC = PracticeBackgroundViewController()
     
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -74,11 +75,19 @@ class ExpressionsViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     private func setup() {
+        setupBg()
         setupTitle()
         setupSearchBar()
         setupViewHierarchy()
         setupViewAttributes()
         setupConstraints()
+    }
+    
+    func setupBg() {
+        addChild(bgPracticeVC)
+        view.addSubview(bgPracticeVC.view)
+        bgPracticeVC.view.translatesAutoresizingMaskIntoConstraints = false
+        bgPracticeVC.didMove(toParent: self)
     }
     
     private func setupTitle() {
