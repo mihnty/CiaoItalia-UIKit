@@ -173,7 +173,7 @@ class TranslationView:UIView {
         self.addSubview(tapeImageView)
         self.addSubview(tagImageView)
         
-        titleLabel = FuzzyFontLabel(text: "Diário de Viagem", textStyle: isScreenWide ? .extraLargeTitle : .largeTitle, textColor: .lightGrayText)
+        titleLabel = FuzzyFontLabel(text: "Tradução", textStyle: isScreenWide ? .extraLargeTitle : .largeTitle, textColor: .lightGrayText)
         titleStackView.addArrangedSubview(titleLabel)
         titleStackView.addArrangedSubview(detailsImageView)
         self.addSubview(titleStackView)
