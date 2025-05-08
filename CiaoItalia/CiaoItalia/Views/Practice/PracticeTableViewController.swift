@@ -66,7 +66,7 @@ extension PracticeTableViewController: UITableViewDelegate, UITableViewDataSourc
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let navController = self.navigationController {
             navController.pushViewController(MockViewController(), animated: true)
         } else {
