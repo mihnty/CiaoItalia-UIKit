@@ -209,7 +209,7 @@ extension DemoViewController {
     
     @objc func nextTapped(_ sender: UIButton) {
         if pageControl.currentPage == pages.count - 1 {
-            let nextVC = UINavigationController(rootViewController: CarouselContainerViewController())
+            let nextVC = UINavigationController(rootViewController: TabController())
             nextVC.modalPresentationStyle = .fullScreen
             let transition = CATransition()
             transition.duration = 0.3
