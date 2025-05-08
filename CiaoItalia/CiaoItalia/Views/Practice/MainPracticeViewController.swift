@@ -36,19 +36,7 @@ class MainPracticeViewController: UIViewController {
         return label
     }()
     
-    private let mainCard1 = PracticeCardView(
-        imageName: "italyFlag",
-        titleText: "Primeiras Palavras",
-        subtitleText: "Comece com o vocabulário essencial para se familiarizar com o idioma.",
-        imageAccessibilityLabel: "Foto da bandeira da Itália"
-    )
-
-    private let mainCard2 = PracticeCardView(
-        imageName: "italyFlag",
-        titleText: "Primeiras Palavras",
-        subtitleText: "Comece com o vocabulário essencial para se familiarizar com o idioma.",
-        imageAccessibilityLabel: "Foto da bandeira da Itália"
-    )
+    private let tableCard = PracticeTableViewController()
 
     private let bgPracticeVC = PracticeBackgroundViewController()
     
@@ -72,9 +60,11 @@ class MainPracticeViewController: UIViewController {
         titleStackView.addArrangedSubview(detailsImageView)
     }
         
-    func setupViews(){
-        view.addSubview(mainCard1)
-        mainCard1.translatesAutoresizingMaskIntoConstraints = false
+    func setupViews() {
+        addChild(tableCard)
+        view.addSubview(tableCard.view)
+        tableCard.view.translatesAutoresizingMaskIntoConstraints = false
+        tableCard.didMove(toParent: self)
     }
     
     func setupBg() {
@@ -85,16 +75,13 @@ class MainPracticeViewController: UIViewController {
     }
     
     func setupConstraints() {
+        
         NSLayoutConstraint.activate([
+
             bgPracticeVC.view.topAnchor.constraint(equalTo: view.topAnchor),
             bgPracticeVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             bgPracticeVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             bgPracticeVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            
-            mainCard1.topAnchor.constraint(equalTo: view.topAnchor),
-            mainCard1.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            mainCard1.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            mainCard1.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
             detailsImageView.widthAnchor.constraint(equalToConstant: 50)
         ])
@@ -102,12 +89,22 @@ class MainPracticeViewController: UIViewController {
         if isScreenWide {
             NSLayoutConstraint.activate([
                 titleStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 24),
-                titleStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 130)
+                titleStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 130),
+                
+                tableCard.view.topAnchor.constraint(equalTo: detailsImageView.topAnchor, constant: 74),
+                tableCard.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                tableCard.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                tableCard.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             ])
         } else {
             NSLayoutConstraint.activate([
                 titleStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-                titleStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20)
+                titleStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+                
+                tableCard.view.topAnchor.constraint(equalTo: detailsImageView.topAnchor, constant: 70),
+                tableCard.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                tableCard.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                tableCard.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             ])
         }
     }

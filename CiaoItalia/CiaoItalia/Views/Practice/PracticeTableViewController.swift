@@ -1,29 +1,29 @@
 //
-//  PracticeTestViewController.swift
+//  PracticeTableViewController.swift
 //  CiaoItalia
 //
 //  Created by mih on 06/05/25.
 //
 
 import UIKit
-class PracticeTestViewController: UIViewController {
-    
+class PracticeTableViewController: UIViewController {
+    private let tableView = UITableView()
+
     private let data: [(image: String, title: String, subtitle: String)] = [
         ("italyFlag", "Primeiras Palavras", "Comece com o vocabulário essencial para se familiarizar com o idioma."),
         ("italyFood", "Comer & Beber", "Palavras e expressões para se virar em restaurantes, cafés e mercados."),
         ("italyBike", "Falsos Cognatos", "Evite mal-entendidos com essas palavras confusas."),
     ]
 
-    private let tableView = UITableView()
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .clear
 
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(PracticeCardTableViewCell.self, forCellReuseIdentifier: PracticeCardTableViewCell.identifier)
         tableView.separatorStyle = .none
+        tableView.backgroundColor = .clear
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
         view.addSubview(tableView)
@@ -37,34 +37,45 @@ class PracticeTestViewController: UIViewController {
     }
 }
 
-extension PracticeTestViewController: UITableViewDelegate, UITableViewDataSource {
-        
+extension PracticeTableViewController: UITableViewDelegate, UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return data.count
     }
-
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 240
+        let isScreenWide = UIScreen.main.bounds.width > 440
+        
+        return isScreenWide ? 440 : 230
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
+        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: PracticeCardTableViewCell.identifier, for: indexPath) as? PracticeCardTableViewCell else {
             return UITableViewCell()
         }
-
+        
         let item = data[indexPath.row]
+        cell.backgroundColor = .clear
         cell.configure(
             imageName: item.image,
             title: item.title,
             subtitle: item.subtitle,
             accessibilityLabel: "Imagem relacionada a \(item.title)"
         )
-
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        if let navController = self.navigationController {
+            navController.pushViewController(MockViewController(), animated: true)
+        } else {
+            MockViewController().modalPresentationStyle = .fullScreen
+            present(MockViewController(), animated: true, completion: nil)
+        }
     }
 }
 
 #Preview {
-    PracticeTestViewController()
+    UINavigationController(rootViewController:MainPracticeViewController())
 }

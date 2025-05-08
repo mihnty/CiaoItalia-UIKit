@@ -23,7 +23,6 @@ class PracticeCardTableViewCell: UITableViewCell {
     }
 
     func configure(imageName: String, title: String, subtitle: String, accessibilityLabel: String) {
-//        cardView?.removeFromSuperview()
 
         let newCard = PracticeCardView(
             imageName: imageName,
@@ -41,8 +40,4 @@ class PracticeCardTableViewCell: UITableViewCell {
             newCard.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
         ])
     }
-}
-
-#Preview {
-    PracticeTestViewController()
 }
