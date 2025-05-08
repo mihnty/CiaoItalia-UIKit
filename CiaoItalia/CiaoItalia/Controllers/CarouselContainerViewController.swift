@@ -105,7 +105,7 @@ class CarouselContainerViewController: UIViewController {
         NSLayoutConstraint.activate([
             tagImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -32),
             
-            sealImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 56),
+            sealImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10),
             sealImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 8),
             
             tapeImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: -4),
@@ -156,15 +156,15 @@ class CarouselContainerViewController: UIViewController {
                 scribbleImageView2.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 140),
                 scribbleImageView2.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 140),
                 
-                tagImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -24),
+                tagImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -55),
 
                 mammaImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -32),
                 
                 tapeImageView.widthAnchor.constraint(equalToConstant: 200),
                 
                 
-                titleStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-                titleStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40)
+                titleStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+                titleStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: -20)
 
             ])
         }
@@ -174,5 +174,7 @@ class CarouselContainerViewController: UIViewController {
 }
 
 #Preview {
-    UINavigationController(rootViewController: CarouselContainerViewController())
+//    UINavigationController(rootViewController: CarouselContainerViewController())
+    UINavigationController(rootViewController: TabController())
+
 }
