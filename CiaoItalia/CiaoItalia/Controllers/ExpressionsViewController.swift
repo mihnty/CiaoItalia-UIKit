@@ -8,7 +8,10 @@
 import UIKit
 // import Speech
 
-class ExpressionsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate/*, SFSpeechRecognizerDelegate*/ {
+class ExpressionsViewController: UIViewController,
+                                 UITableViewDataSource,
+                                 UITableViewDelegate,
+                                 UISearchBarDelegate /*, SFSpeechRecognizerDelegate*/ {
 
     var expressions: Expressions
     var filteredExpressions: [ExpressionInfo]
@@ -38,7 +41,7 @@ class ExpressionsViewController: UIViewController, UITableViewDataSource, UITabl
     var audioEngine: AVAudioEngine?
     */
 
-    init(expressions: Expressions){
+    init(expressions: Expressions) {
         self.expressions = expressions
         self.filteredExpressions = expressions.expressionList
         super.init(nibName: nil, bundle: nil)
@@ -54,7 +57,10 @@ class ExpressionsViewController: UIViewController, UITableViewDataSource, UITabl
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let line = filteredExpressions[indexPath.row]
-        guard let cell = expressionsTableView.dequeueReusableCell(withIdentifier: WordCardCell.identifier, for: indexPath ) as? WordCardCell else {
+        guard let cell = expressionsTableView.dequeueReusableCell(
+                withIdentifier: WordCardCell.identifier,
+                for: indexPath) as? WordCardCell
+        else {
             return UITableViewCell()
         }
         cell.configure(with: line)
@@ -62,12 +68,12 @@ class ExpressionsViewController: UIViewController, UITableViewDataSource, UITabl
     }
 
     lazy var expressionsTableView: UITableView = {
-        let expressionsTableView = UITableView()
-        expressionsTableView.translatesAutoresizingMaskIntoConstraints = false
-        expressionsTableView.dataSource = self
-        expressionsTableView.delegate = self
-        expressionsTableView.register(WordCardCell.self, forCellReuseIdentifier: WordCardCell.identifier)
-        return expressionsTableView
+        let table = UITableView()
+        table.translatesAutoresizingMaskIntoConstraints = false
+        table.dataSource = self
+        table.delegate = self
+        table.register(WordCardCell.self, forCellReuseIdentifier: WordCardCell.identifier)
+        return table
     }()
 
     override func viewDidLoad() {
@@ -103,7 +109,7 @@ class ExpressionsViewController: UIViewController, UITableViewDataSource, UITabl
         searchBar.delegate = self
         //searchBar.showsBookmarkButton = true
         //searchBar.setImage(UIImage(systemName: "mic.fill"), for: .bookmark, state: .normal)
-        searchBar.delegate = self
+        view.addSubview(searchBar)
     }
 
     private func setupViewHierarchy() {
@@ -129,12 +135,19 @@ class ExpressionsViewController: UIViewController, UITableViewDataSource, UITabl
             expressionsTableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 12),
             expressionsTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             expressionsTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            expressionsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+            expressionsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        let query = searchText
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .lowercased()
+
         if query.isEmpty {
             filteredExpressions = expressions.expressionList
         } else {
