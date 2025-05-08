@@ -17,7 +17,12 @@ class TranslateManager {
  
     public var input:String = ""
     public var result:String = ""
-
+ 
+    public var isWrong: Bool = false {
+        didSet { onReadyChange?(isWrong) }
+    }
+    var onReadyChange: ((Bool) -> Void)?
+    
     var textView:UITextView?
 
     @objc public func swapButtonTapped() {
@@ -58,19 +63,14 @@ class TranslateManager {
             if let error = error {
                 DispatchQueue.main.async {
                     self?.result = "Error: \(error)"
-                    self?.textView?.text = self?.result
-                    print(self?.textView ?? "vazio")
-                    print(self?.textView?.text)
+                    self?.isWrong = true
                 }
                 return
             }
             guard let data = data else {
                 DispatchQueue.main.async {
                     self?.result = "No data."
-                    self?.textView?.text = self?.result
-                    print(self?.textView ?? "vazio")
-                    print(self?.result)
-                    print(self?.textView?.text)
+                    self?.isWrong = true
                 }
                 return
             }
@@ -88,18 +88,18 @@ class TranslateManager {
                           let msg = err["message"] as? String {
                     DispatchQueue.main.async {
                         self?.result = "Error: \(msg)"
-                        self?.textView?.text = self?.result
+                        self?.isWrong = true
                     }
                 } else {
                     DispatchQueue.main.async {
                         self?.result = "Unexpected response."
-                        self?.textView?.text = self?.result
+                        self?.isWrong = true
                     }
                 }
             } catch {
                 DispatchQueue.main.async {
                     self?.result = "Parse error."
-                    self?.textView?.text = self?.result
+                    self?.isWrong = true
                 }
             }
         }.resume()
@@ -137,5 +137,5 @@ extension Data {
 }
 
 protocol TranslateTextViewDelegate {
-    func setText(text:String)
+    func setText()
 }

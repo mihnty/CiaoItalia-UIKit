@@ -91,9 +91,8 @@ class TranslateTextView: UITextView {
     public func setPlaceholder() {
         placeholderLabel.isHidden = !text.isEmpty
     }
-    public func setText(text:String) {
+    public func setText() {
         isWaiting.toggle()
-        self.text = text
     }
     public func setIsWaiting() {
         isWaiting.toggle()

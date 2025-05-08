@@ -27,6 +27,14 @@ class TranslationViewController: UIViewController {
         
         translationView.textField.delegate = self
         translateManager.textView = translationView.translatedLabel
+        
+        translateManager.onReadyChange = { [weak self] ready in
+          guard let self = self, ready else { return }
+          DispatchQueue.main.async {
+            self.showAlert()
+          }
+        }
+        
         Task {
            await speechRecognizer.setDelegate(self)
            await speechRecognizer.setLanguage(to: "pt-BR")
@@ -98,8 +106,27 @@ class TranslationViewController: UIViewController {
         translationView.textField.setIsWaiting() 
         translateManager.input = translationView.textField.text
         translateManager.translateButtonTapped()
-        translationView.translatedLabel.setText(text: translateManager.result)
+        translationView.translatedLabel.setText()
     }
+    func showAlert() {
+      
+        let alert = UIAlertController(
+            title: "Erro na tradução",
+        message: "Desculpe, algo deu errado durante a tradução",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(
+            title: "OK",
+            style: .default,
+            handler: { _ in
+                self.translateManager.isWrong = false
+                print("Usuário tocou em OK")
+            }
+        ))
+        
+        present(alert, animated: true, completion: nil)
+    }
+
 }
 
 extension TranslationViewController: SpeechRecognizerDelegate {
