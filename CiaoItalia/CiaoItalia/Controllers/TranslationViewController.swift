@@ -121,13 +121,21 @@ extension TranslationViewController: UITextViewDelegate {
     func textView(_ textView: UITextView,
                     shouldChangeTextIn range: NSRange,
                     replacementText text: String) -> Bool {
+        if text == "\n" {
+            textView.resignFirstResponder()
+            return false
+        }
+          
+        
         let maxChars = 140
         let current = textView.text ?? ""
         guard let stringRange = Range(range, in: current) else { return false }
         let updated = current.replacingCharacters(in: stringRange, with: text)
         return updated.count <= maxChars
     }
+    //fechar o teclado quando apertar em return
     
+   
     func textViewDidBeginEditing(_ textView: UITextView) {
         translationView.textField.setPlaceholder(isEditing: true)
     }
@@ -135,6 +143,7 @@ extension TranslationViewController: UITextViewDelegate {
         translationView.textField.setPlaceholder()
         
     }
+    
 }
 #Preview {
     TranslationView()
