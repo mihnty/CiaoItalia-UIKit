@@ -197,6 +197,17 @@ class DialogueCell: UITableViewCell {
     private func setupActions() {
         playButton.addTarget(self, action: #selector(handlePlayButtonTapped), for: .touchUpInside)
     }
+    
+    
+//    @objc func handlePlayButtonTapped(_ sender: UIButton) {
+//        guard let text = italian.text else { return }
+//        SpeechManager.shared.speak(text)
+//    }
+    
+    func stopAudio(){
+        SpeechManager.shared.stop()
+    }
+    
 
     @objc private func handlePlayButtonTapped() {
         guard let text = italian.text, !text.isEmpty else { return }

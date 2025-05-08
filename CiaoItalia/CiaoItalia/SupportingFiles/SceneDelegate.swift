@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
  
         var controller: UIViewController = UIViewController()
         if UserDefaults.standard.hasBoarded {
-            controller = ExpressionsViewController(expressions: FirstWords())
+            controller = TabController()
         } else {
             controller = OnBoardingMainViewController()
         }

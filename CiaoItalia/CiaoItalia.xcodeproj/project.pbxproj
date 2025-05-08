@@ -150,8 +150,8 @@
 				INFOPLIST_FILE = CiaoItalia/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Ciao, Italia";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Precisamos acessar o microfone para a pesquisa por voz";
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Precisamos acessar o microfone para a pesquisa por voz";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Precisamos do acesso ao microfone para capturar a fala. ";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Precisamos do acesso ao reconhecimento de fala para traduzir sua gravação.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -187,8 +187,8 @@
 				INFOPLIST_FILE = CiaoItalia/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Ciao, Italia";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Precisamos acessar o microfone para a pesquisa por voz";
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Precisamos acessar o microfone para a pesquisa por voz";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Precisamos do acesso ao microfone para capturar a fala. ";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Precisamos do acesso ao reconhecimento de fala para traduzir sua gravação.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
