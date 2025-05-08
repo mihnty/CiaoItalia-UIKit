@@ -88,8 +88,8 @@ class MainPracticeViewController: UIViewController {
         
         if isScreenWide {
             NSLayoutConstraint.activate([
-                titleStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 24),
-                titleStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 130),
+                titleStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                titleStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
                 
                 tableCard.view.topAnchor.constraint(equalTo: detailsImageView.topAnchor, constant: 74),
                 tableCard.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -99,9 +99,9 @@ class MainPracticeViewController: UIViewController {
         } else {
             NSLayoutConstraint.activate([
                 titleStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-                titleStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+                titleStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: -20),
                 
-                tableCard.view.topAnchor.constraint(equalTo: detailsImageView.topAnchor, constant: 70),
+                tableCard.view.topAnchor.constraint(equalTo: detailsImageView.topAnchor, constant: 50),
                 tableCard.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
                 tableCard.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                 tableCard.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -111,5 +111,5 @@ class MainPracticeViewController: UIViewController {
 }
 
 #Preview {
-    MainPracticeViewController()
+    UINavigationController(rootViewController:TabController())
 }
