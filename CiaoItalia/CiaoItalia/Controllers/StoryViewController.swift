@@ -15,11 +15,16 @@ class StoryViewController: UIViewController, ContentDelegate {
     }()
     lazy var repertoryVC = RepertoryViewController()
     lazy var dialogueVC = DialogueViewController(dialogue: [])
+    
     var words: [any ContentType] = []
     lazy var segmentedControl = UISegmentedControl(items: ["Repertório", "Diálogo"])
+    
+    var isAudioPlaying = false
+
     lazy var backgroundImageView: UIImageView = {
         return UIImageView(image: UIImage(named: "backgroundPattern"))
     }()
+    
     init(content:[any ContentType]) {
         super.init(nibName: nil, bundle: nil)
         self.words = content
@@ -29,27 +34,29 @@ class StoryViewController: UIViewController, ContentDelegate {
             headerImage.isAccessibilityElement = true
             dialogueVC.dialogue = dialogue
             titleLabel = FuzzyFontLabel(text: title, textStyle: .largeTitle)
-            
         } else {
             print("content está vazio")
         }
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         navigationController?.navigationBar.tintColor = UIColor(named:"textColor")
-        
         view.backgroundColor = UIColor(named: "background")
-        
+
         setupView()
         repertoryVC.didMove(toParent: self)
         setupConstraints()
+
+        repertoryVC.isAudioPlaying = isAudioPlaying
+        dialogueVC.isAudioPlaying = isAudioPlaying
     }
+
     func setupConstraints() {
         dialogueVC.view.isHidden = true
         NSLayoutConstraint.activate([
@@ -77,61 +84,70 @@ class StoryViewController: UIViewController, ContentDelegate {
         ])
         repertoryVC.setupConstraints()
     }
+
     func setupView(){
         backgroundImageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(backgroundImageView)
-        
+
         headerImage.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(headerImage)
-        
+
         repertoryVC.delegate = self
         repertoryVC.view.translatesAutoresizingMaskIntoConstraints = false
         addChild(repertoryVC)
         view.addSubview(repertoryVC.view)
-        
-        
+
         dialogueVC.view.translatesAutoresizingMaskIntoConstraints = false
         dialogueVC.view.isHidden = true
         addChild(dialogueVC)
         view.addSubview(dialogueVC.view)
-       
+
         repertoryLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(repertoryLabel)
-        
+
         segmentedControl.selectedSegmentIndex = 0
         segmentedControl.backgroundColor = .systemGray6.withAlphaComponent(0.2)
         segmentedControl.selectedSegmentTintColor =  UIColor(named: "background")
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         segmentedControl.addTarget(self, action: #selector(changeTableView(_:)), for: .valueChanged)
         view.addSubview(segmentedControl)
-        
+
         titleLabel.textColor = UIColor(named: "textColor")
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 0
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false 
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(titleLabel)
     }
+
+//    @objc func changeTableView(_ sender: UISegmentedControl) {
     
     @objc func changeTableView(_ sender:UISegmentedControl){
+        SpeechManager.shared.stop()
+        Task {
+            await SpeechManager.shared.synthesizer.stop()
+        }
+        
         switch sender.selectedSegmentIndex {
         case 0:
             repertoryVC.view.isHidden = false
             repertoryLabel.isHidden = false
             dialogueVC.view.isHidden = true
+            SpeechManager.shared.delegate = repertoryVC
         case 1:
             repertoryVC.view.isHidden = true
             repertoryLabel.isHidden = true
             dialogueVC.view.isHidden = false
+            dialogueVC.reloadAllCells(reset: true)
+            SpeechManager.shared.delegate = dialogueVC
         default:
-            print("algo deu errado")
+            print("Algo deu errado")
         }
     }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
     }
-
 }
-  
 
 #Preview {
     UINavigationController(rootViewController: CarouselContainerViewController())
