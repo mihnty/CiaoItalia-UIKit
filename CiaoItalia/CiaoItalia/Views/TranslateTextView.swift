@@ -18,7 +18,7 @@ class TranslateTextView: UITextView {
     }()
 
     
-
+    var isWaiting:Bool = false
     var placeholder: String = "" {
         didSet {
             placeholderLabel.text = placeholder
@@ -50,7 +50,7 @@ class TranslateTextView: UITextView {
         self.contentInset          = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
         self.scrollIndicatorInsets = self.contentInset
         self.textContainer.lineFragmentPadding = 0
-        self.backgroundColor = UIColor(named: "cardColor")?.withAlphaComponent(0.2)
+        self.backgroundColor = UIColor(named: "darkBeige")?.withAlphaComponent(0.6)
         self.textContainerInset = UIEdgeInsets(top: 12,
                                                    left: 8,
                                                    bottom: 60,
@@ -90,6 +90,15 @@ class TranslateTextView: UITextView {
     }
     public func setPlaceholder() {
         placeholderLabel.isHidden = !text.isEmpty
+    }
+    public func setText() {
+        isWaiting.toggle()
+    }
+    public func setIsWaiting() {
+        isWaiting.toggle()
+        if isWaiting {
+            placeholderLabel.text = "..."
+        }
     }
 }
 

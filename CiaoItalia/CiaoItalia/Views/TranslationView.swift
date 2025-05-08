@@ -8,9 +8,13 @@
 import UIKit
 
 class TranslationView:UIView {
+    
+    let isScreenWide = UIScreen.main.bounds.width > 440
+    var isWaiting:Bool = false
+    
     lazy var translateLabel: UILabel = {
         let lb = FuzzyFontLabel(text: "Português", textStyle: .body, textColor: .text)
-        lb.backgroundColor = UIColor(named: "cardColor")?.withAlphaComponent(0.2)
+        lb.backgroundColor = UIColor(named: "darkBeige")
         lb.layer.cornerRadius = 10
         lb.layer.borderWidth = 2
         lb.layer.borderColor = UIColor(named: "darkYellow")?.cgColor
@@ -23,7 +27,7 @@ class TranslationView:UIView {
         var bt = UIButton(type: .system)
         bt.setTitle("Traduzir", for: .normal)
         bt.setTitleColor(.text, for: .normal)
-        bt.backgroundColor = UIColor(named: "cardColor")?.withAlphaComponent(0.2)
+        bt.backgroundColor = UIColor(named: "darkBeige")
         bt.layer.cornerRadius = 10
         bt.layer.masksToBounds = true
         let scratchLabel = FuzzyFontLabel(text: "", textStyle: .body, textColor: .text)
@@ -38,7 +42,7 @@ class TranslationView:UIView {
     
     lazy var targetLabel: UILabel = {
         let lb = FuzzyFontLabel(text: "Italiano", textStyle: .body, textColor: .text)
-        lb.backgroundColor = UIColor(named: "cardColor")?.withAlphaComponent(0.2)
+        lb.backgroundColor = UIColor(named: "darkBeige")
         lb.layer.cornerRadius = 10
         lb.layer.borderWidth = 2
         lb.layer.borderColor = UIColor(named: "darkYellow")?.cgColor
@@ -68,29 +72,58 @@ class TranslationView:UIView {
         return button
     }()
     
-    lazy var backgroundImageView: UIImageView = {
-        let bg = UIImageView(image: UIImage(named: "backgroundPattern"))
-        bg.translatesAutoresizingMaskIntoConstraints = false
-        return bg
+    private let backgroundImageView: UIImageView = {
+        return UIImageView(image: UIImage(named: "backgroundPattern"))
     }()
-    lazy var stampIV:UIImageView = {
-        let iv = UIImageView(image: UIImage(named: "MainScreenSeal"))
-        iv.contentMode = .scaleAspectFill
-        iv.translatesAutoresizingMaskIntoConstraints = false
-        return iv
+    
+    private lazy var scribbleImageView1: UIImageView = {
+        return self.makeImageView(named: "MainScreenScribble")
     }()
-    lazy var tagIV:UIImageView = {
-        let iv = UIImageView(image: UIImage(named: "MainScreenTag"))
-        iv.contentMode = .scaleAspectFill
-        iv.translatesAutoresizingMaskIntoConstraints = false
-        return iv
+    
+    private lazy var scribbleImageView2: UIImageView = {
+        return self.makeImageView(named: "MainScreenScribble")
     }()
-    lazy var tapeIV:UIImageView = {
-        let iv = UIImageView(image: UIImage(named: "MainScreenTape"))
-        iv.contentMode = .scaleAspectFill
-        iv.translatesAutoresizingMaskIntoConstraints = false
-        return iv
+    
+    private lazy var sealImageView: UIImageView = {
+        return self.makeImageView(named: "MainScreenSeal")
     }()
+    
+    private lazy var mammaImageView: UIImageView = {
+        return self.makeImageView(named: "MainScreenMamma")
+    }()
+    
+    private lazy var tapeImageView: UIImageView = {
+        return self.makeImageView(named: "MainScreenTape")
+    }()
+    
+    private lazy var tagImageView: UIImageView = {
+        return self.makeImageView(named: "MainScreenTag")
+    }()
+    
+    private lazy var detailsImageView: UIImageView = {
+        return self.makeImageView(named: "titleDetails")
+    }()
+    private lazy var titleStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [])
+        stackView.axis = .horizontal
+        stackView.spacing = 12
+        stackView.distribution = .equalSpacing
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    private var titleLabel: UILabel = {
+        let label = FuzzyFontLabel(text: "Tradução", textStyle: .largeTitle, textColor: .lightGrayText)
+        return label
+    }()
+    
+    private func makeImageView(named imageName: String) -> UIImageView {
+        let imageView = UIImageView(image: UIImage(named: imageName))
+        imageView.contentMode = .scaleAspectFill
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }
+    
+    
     public let recordButton: UIButton = {
         let btn = UIButton(type: .custom)
         let micImage = UIImage(systemName: "microphone.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular))?.withTintColor(.darkYellow, renderingMode: .alwaysOriginal)
@@ -134,22 +167,32 @@ class TranslationView:UIView {
         
     }
     private func setupStyle() {
-        addSubview(stampIV)
-        addSubview(tagIV)
-        addSubview(tapeIV)
-        NSLayoutConstraint.activate([
-            stampIV.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
-            stampIV.widthAnchor.constraint(equalToConstant: 90),
-            stampIV.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 40),
-            tagIV.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: 20),
-            tagIV.widthAnchor.constraint(equalToConstant: 100),
-            tagIV.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            tapeIV.topAnchor.constraint(equalTo: self.topAnchor, constant: -10),
-            tapeIV.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 30)
-        ])
+        self.addSubview(scribbleImageView1)
+        self.addSubview(scribbleImageView2)
+        self.addSubview(sealImageView)
+        self.addSubview(mammaImageView)
+        self.addSubview(tapeImageView)
+        self.addSubview(tagImageView)
+        
+        titleLabel = FuzzyFontLabel(text: "Tradução", textStyle: isScreenWide ? .extraLargeTitle : .largeTitle, textColor: .lightGrayText)
+        titleStackView.addArrangedSubview(titleLabel)
+        titleStackView.addArrangedSubview(detailsImageView)
+        self.addSubview(titleStackView)
     }
     private func setupConstraints() {
         NSLayoutConstraint.activate([
+            tagImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: -32),
+            
+            sealImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
+            sealImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 8),
+            
+            tapeImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: -4),
+            tapeImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 20),
+            
+            mammaImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 80),
+            
+            detailsImageView.widthAnchor.constraint(equalToConstant: 50),
+            
             backgroundImageView.topAnchor.constraint(equalTo: self.topAnchor),
             backgroundImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             backgroundImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
@@ -191,6 +234,49 @@ class TranslationView:UIView {
             targetLabel.leadingAnchor.constraint(equalTo: swapLanguageButton.trailingAnchor, constant: 20)
             
         ])
+        
+        if (isScreenWide) {
+            NSLayoutConstraint.activate([
+                scribbleImageView1.topAnchor.constraint(equalTo: self.topAnchor),
+                scribbleImageView1.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+                
+                scribbleImageView2.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+                scribbleImageView2.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 70),
+                
+                tagImageView.widthAnchor.constraint(equalToConstant: 400),
+                tagImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -120),
+                
+                mammaImageView.widthAnchor.constraint(equalToConstant: 230),
+                mammaImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -50),
+                
+                tapeImageView.widthAnchor.constraint(equalToConstant: 400),
+                
+                sealImageView.widthAnchor.constraint(equalToConstant: 300),
+                
+                titleStackView.centerXAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor),
+                titleStackView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 130)
+
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                scribbleImageView1.topAnchor.constraint(equalTo: self.topAnchor, constant: -140),
+                scribbleImageView1.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: -140),
+                
+                scribbleImageView2.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 140),
+                scribbleImageView2.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 140),
+                
+                tagImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -55),
+
+                mammaImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -32),
+                
+                tapeImageView.widthAnchor.constraint(equalToConstant: 200),
+                
+                
+                titleStackView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+                titleStackView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: -20)
+
+            ])
+        }
     }
     
     @objc private func dismissKeyboard() {

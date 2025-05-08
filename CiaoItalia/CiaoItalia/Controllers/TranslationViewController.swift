@@ -21,27 +21,20 @@ class TranslationViewController: UIViewController {
        
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationBar.setTitleVerticalPositionAdjustment(20, for: .default)
-        let navWidth = navigationController?.navigationBar.bounds.width ?? view.bounds.width
-         let container = UIView(frame: CGRect(x: 0, y: 0,
-                                              width: navWidth,
-                                              height: navigationController?.navigationBar.bounds.height ?? 100))
-        container.backgroundColor = .clear
-        let fuzzy = FuzzyFontLabel(text: "Tradutor",
-                                       textStyle: .title1,
-                                       textColor: .text)
-        fuzzy.translatesAutoresizingMaskIntoConstraints = false
-        container.addSubview(fuzzy)
         
-        NSLayoutConstraint.activate([
-          fuzzy.topAnchor.constraint(equalTo: container.topAnchor),
-          fuzzy.leadingAnchor.constraint(equalTo: container.leadingAnchor)
-        ])
-        
-        
-        navigationItem.titleView = container
+        navigationItem.backButtonTitle = "Tradução"
+        view.backgroundColor = .background
         
         translationView.textField.delegate = self
+        translateManager.textView = translationView.translatedLabel
+        
+        translateManager.onReadyChange = { [weak self] ready in
+          guard let self = self, ready else { return }
+          DispatchQueue.main.async {
+            self.showAlert()
+          }
+        }
+        
         Task {
            await speechRecognizer.setDelegate(self)
            await speechRecognizer.setLanguage(to: "pt-BR")
@@ -110,10 +103,30 @@ class TranslationViewController: UIViewController {
         }
     }
     @objc private func translate(_ sender:UIButton) {
+        translationView.textField.setIsWaiting() 
         translateManager.input = translationView.textField.text
         translateManager.translateButtonTapped()
-        translationView.translatedLabel.text = translateManager.result
+        translationView.translatedLabel.setText()
     }
+    func showAlert() {
+      
+        let alert = UIAlertController(
+            title: "Erro na tradução",
+        message: "Desculpe, algo deu errado durante a tradução",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(
+            title: "OK",
+            style: .default,
+            handler: { _ in
+                self.translateManager.isWrong = false
+                print("Usuário tocou em OK")
+            }
+        ))
+        
+        present(alert, animated: true, completion: nil)
+    }
+
 }
 
 extension TranslationViewController: SpeechRecognizerDelegate {
@@ -133,17 +146,25 @@ extension TranslationViewController: UITextViewDelegate {
             self.translationView.translateButton.alpha = hasText ? 1.0 : 0.5
         }
     }
-    //limitar o número de caracteres da entrada
     func textView(_ textView: UITextView,
                     shouldChangeTextIn range: NSRange,
                     replacementText text: String) -> Bool {
+        //fechar o teclado quando apertar em return
+        if text == "\n" {
+            textView.resignFirstResponder()
+            return false
+        }
+          
+        //contar o máximo de caracteres
         let maxChars = 140
         let current = textView.text ?? ""
         guard let stringRange = Range(range, in: current) else { return false }
         let updated = current.replacingCharacters(in: stringRange, with: text)
         return updated.count <= maxChars
     }
+
     
+   
     func textViewDidBeginEditing(_ textView: UITextView) {
         translationView.textField.setPlaceholder(isEditing: true)
     }
@@ -151,6 +172,7 @@ extension TranslationViewController: UITextViewDelegate {
         translationView.textField.setPlaceholder()
         
     }
+    
 }
 #Preview {
     TranslationView()

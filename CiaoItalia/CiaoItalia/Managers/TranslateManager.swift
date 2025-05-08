@@ -18,8 +18,13 @@ class TranslateManager {
  
     public var input:String = ""
     public var result:String = ""
-
-   
+ 
+    public var isWrong: Bool = false {
+        didSet { onReadyChange?(isWrong) }
+    }
+    var onReadyChange: ((Bool) -> Void)?
+    
+    var textView:UITextView?
 
     @objc public func swapButtonTapped() {
         let temp = currentSourceLanguage
@@ -45,7 +50,7 @@ class TranslateManager {
             result = "Please enter text to translate."
             return
         }
-    
+        
         
         let boundary = "Boundary-\(UUID().uuidString)"
         let postData = createMultipartBody(with: self.input, boundary: boundary)
@@ -57,11 +62,17 @@ class TranslateManager {
         
         URLSession.shared.dataTask(with: request) { [weak self] data, _, error in
             if let error = error {
-                DispatchQueue.main.async { self?.result = "Error: \(error)" }
+                DispatchQueue.main.async {
+                    self?.result = "Error: \(error)"
+                    self?.isWrong = true
+                }
                 return
             }
             guard let data = data else {
-                DispatchQueue.main.async { self?.result = "No data." }
+                DispatchQueue.main.async {
+                    self?.result = "No data."
+                    self?.isWrong = true
+                }
                 return
             }
             do {
@@ -72,20 +83,24 @@ class TranslateManager {
                    let translated = translations.first?["translatedText"] as? String {
                     DispatchQueue.main.async {
                         self?.result = translated
+                        self?.textView?.text = self?.result
                     }
                 } else if let err = json?["error"] as? [String:Any],
                           let msg = err["message"] as? String {
                     DispatchQueue.main.async {
                         self?.result = "Error: \(msg)"
+                        self?.isWrong = true
                     }
                 } else {
                     DispatchQueue.main.async {
                         self?.result = "Unexpected response."
+                        self?.isWrong = true
                     }
                 }
             } catch {
                 DispatchQueue.main.async {
                     self?.result = "Parse error."
+                    self?.isWrong = true
                 }
             }
         }.resume()
@@ -120,4 +135,8 @@ extension Data {
             append(d)
         }
     }
+}
+
+protocol TranslateTextViewDelegate {
+    func setText()
 }
