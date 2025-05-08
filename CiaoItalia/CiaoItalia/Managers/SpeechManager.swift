@@ -9,7 +9,6 @@ import AVFoundation
 
 class SpeechManager:NSObject, AVSpeechSynthesizerDelegate {
     static let shared = SpeechManager()
-    private(set) var isPlaying = false
     let synthesizer = Synthesizer()
     var indexPath:IndexPath?
     weak var delegate:SpeechManagerDelegate?
@@ -28,19 +27,13 @@ class SpeechManager:NSObject, AVSpeechSynthesizerDelegate {
             print("audio session config error: " + error.localizedDescription)
         }
     }
-
-    func speak(_ text: String, indexPath: IndexPath) {
-        guard !isPlaying else { return }
-        isPlaying = true
+    func speak(_ text:String, indexPath:IndexPath){
         Task { @MainActor in
             await self.synthesizer.speak(text)
             self.indexPath = indexPath
         }
     }
-
-    func speak(_ text: String) {
-        guard !isPlaying else { return }
-        isPlaying = true
+    func speak(_ text:String){
         Task { @MainActor in
             await self.synthesizer.speak(text)
         }
@@ -48,7 +41,6 @@ class SpeechManager:NSObject, AVSpeechSynthesizerDelegate {
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didStart utterance: AVSpeechUtterance) {
         guard let path = self.indexPath else {
             print("não possui referência ao index path")
-            self.delegate?.changeWhoIsSpeaking(indexPath: nil)
             return
         }
         self.delegate?.changeWhoIsSpeaking(indexPath: path)
@@ -56,24 +48,12 @@ class SpeechManager:NSObject, AVSpeechSynthesizerDelegate {
     }
 
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-        DispatchQueue.main.async {
-            self.isPlaying = false
-            self.indexPath = nil
-            self.delegate?.finishSpeech()
-        }
+        self.delegate?.finishSpeech()
     }
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didPause utterance: AVSpeechUtterance) {
-        DispatchQueue.main.async {
-            self.isPlaying = false
-            self.delegate?.finishSpeech()
-        }
+        self.delegate?.finishSpeech()
     }
     
-    func stop() {
-        Task {
-            await self.synthesizer.stop()
-        }
-    }
 }
 actor Synthesizer {
     private var synthesizer = AVSpeechSynthesizer()
@@ -90,15 +70,9 @@ actor Synthesizer {
         utterance.rate = 0.5
         synthesizer.speak(utterance)
     }
-    func stop() {
-        if synthesizer.isSpeaking {
-            synthesizer.stopSpeaking(at: .immediate)
-        }
-    }
 }
-
 protocol SpeechManagerDelegate: AnyObject {
     func startSpeech()
     func finishSpeech()
-    func changeWhoIsSpeaking(indexPath:IndexPath?)
+    func changeWhoIsSpeaking(indexPath:IndexPath)
 }
